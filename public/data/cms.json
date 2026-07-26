@@ -1,0 +1,29 @@
+{
+  "bio": "Hey, I'm Reef. I build things, break things, and occasionally sleep. Welcome to my little corner of the internet.",
+  "email": "reef@example.com",
+  "socials": [
+    {"id":"discord","name":"Discord","url":"https://discord.com/users/744808879036170272","icon":"mc-discord"},
+    {"id":"github","name":"GitHub","url":"https://github.com/Rafie-kun","icon":"mc-github"},
+    {"id":"spotify","name":"Spotify","url":"https://open.spotify.com/user/reef","icon":"mc-spotify"},
+    {"id":"instagram","name":"Instagram","url":"","icon":"mc-instagram"},
+    {"id":"twitter","name":"Twitter/X","url":"","icon":"mc-twitter"}
+  ],
+  "friends": [
+    {"id":"placeholder-0","name":"???","url":"#","imageUrl":"/badges/placeholder.png"},
+    {"id":"placeholder-1","name":"???","url":"#","imageUrl":"/badges/placeholder.png"},
+    {"id":"placeholder-2","name":"???","url":"#","imageUrl":"/badges/placeholder.png"},
+    {"id":"placeholder-3","name":"???","url":"#","imageUrl":"/badges/placeholder.png"},
+    {"id":"placeholder-4","name":"???","url":"#","imageUrl":"/badges/placeholder.png"},
+    {"id":"placeholder-5","name":"???","url":"#","imageUrl":"/badges/placeholder.png"}
+  ],
+  "library": [],
+  "projects": [],
+  "easterEggs": [
+    {"id":"1","phrase":"Also try touching grass!"},
+    {"id":"2","phrase":"Also try sleeping!"},
+    {"id":"3","phrase":"Also try GitHub!"},
+    {"id":"4","phrase":"Also try talking to Reef!"},
+    {"id":"5","phrase":"Also try Limbo!"}
+  ],
+  "soundEnabled": true
+}

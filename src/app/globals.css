@@ -1,0 +1,288 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-mono-alt: 'VT323', monospace;
+}
+
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('https://fonts.gstatic.com/s/pressstart2p/v15/e3t4euO8T-2oEkB4j3B9U0o1.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'VT323';
+  src: url('https://fonts.gstatic.com/s/vt323/v17/pxiKyp0ihI5k.woff2') format('woff2');
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0a0a0a;
+  color: #e0e0e0;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+::selection {
+  background: #55FF55;
+  color: #000;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border: 2px solid #555;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8B8B8B;
+  border: 2px solid #555;
+  image-rendering: pixelated;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #AAA;
+}
+
+body {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect x='0' y='0' width='2' height='16' fill='%23fff'/%3E%3Crect x='14' y='0' width='2' height='16' fill='%23fff'/%3E%3Crect x='0' y='0' width='16' height='2' fill='%23fff'/%3E%3Crect x='0' y='14' width='16' height='2' fill='%23fff'/%3E%3C/svg%3E") 8 8, crosshair;
+}
+
+a, button, [role="button"], input, textarea, select {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect x='0' y='0' width='2' height='16' fill='%23fff'/%3E%3Crect x='14' y='0' width='2' height='16' fill='%23fff'/%3E%3Crect x='0' y='0' width='16' height='2' fill='%23fff'/%3E%3Crect x='0' y='14' width='16' height='2' fill='%23fff'/%3E%3C/svg%3E") 8 8, pointer;
+}
+
+.mc-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  background: #8B8B8B;
+  border-top: 2px solid #FFFFFF88;
+  border-left: 2px solid #FFFFFF88;
+  border-bottom: 2px solid #00000088;
+  border-right: 2px solid #00000088;
+  color: #E0E0E0;
+  padding: 8px 16px;
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: filter 0.05s steps(1);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mc-btn:hover {
+  filter: brightness(1.2);
+}
+
+.mc-btn:active {
+  filter: brightness(0.8);
+}
+
+.mc-btn-primary {
+  background: #5B8C2A;
+  border-top-color: #8BC34A88;
+  border-left-color: #8BC34A88;
+  border-bottom-color: #2A5A0A88;
+  border-right-color: #2A5A0A88;
+}
+
+.mc-input {
+  background: #1a1a1a;
+  border: 2px solid #555;
+  color: #e0e0e0;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  padding: 8px 12px;
+  outline: none;
+  image-rendering: pixelated;
+  width: 100%;
+}
+
+.mc-input:focus {
+  border-color: #8B8B8B;
+}
+
+.mc-hotbar-slot {
+  width: 58px;
+  height: 58px;
+  background: #8B8B8B;
+  border-top: 2px solid #00000088;
+  border-left: 2px solid #00000088;
+  border-bottom: 2px solid #FFFFFF44;
+  border-right: 2px solid #FFFFFF44;
+  image-rendering: pixelated;
+  cursor: pointer;
+  transition: all 0.1s steps(2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #e0e0e0;
+}
+
+.mc-hotbar-slot:hover {
+  background: #AAA;
+  border-top-color: #FFFFFF88;
+  border-left-color: #FFFFFF88;
+}
+
+.mc-hotbar-slot.active {
+  background: #FFD700;
+  border-top-color: #FFFFFF88;
+  border-left-color: #FFFFFF88;
+  border-bottom-color: #B8860B88;
+  border-right-color: #B8860B88;
+}
+
+.mc-tab {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  padding: 6px 12px;
+  background: #555;
+  border-top: 2px solid #FFFFFF44;
+  border-left: 2px solid #FFFFFF44;
+  border-bottom: 2px solid #00000088;
+  border-right: 2px solid #00000088;
+  color: #AAA;
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: all 0.05s steps(1);
+}
+
+.mc-tab:hover {
+  background: #777;
+  color: #FFF;
+}
+
+.mc-tab.active {
+  background: #8B8B8B;
+  color: #FFD700;
+  border-top-color: #FFD70088;
+  border-left-color: #FFD70088;
+  border-bottom-color: #00000088;
+  border-right-color: #00000088;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: -200% center; }
+  50% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(85, 255, 85, 0.3); }
+  50% { box-shadow: 0 0 15px rgba(85, 255, 85, 0.6); }
+}
+
+@keyframes sky-cycle {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+@keyframes pixel-float {
+  0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+}
+
+@keyframes spin-record {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-spin-record {
+  animation: spin-record 3s linear infinite;
+}
+
+.mc-tooltip {
+  position: relative;
+}
+
+.mc-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a001a;
+  border: 2px solid #8B008B;
+  color: #e0e0e0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  z-index: 100;
+  margin-bottom: 4px;
+}
+
+.mc-tooltip:hover::after {
+  opacity: 1;
+}
+
+.xp-bar {
+  height: 4px;
+  background: #333;
+  border: 1px solid #555;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #55FF55, #33CC33);
+  transition: width 0.3s ease;
+}
+
+.xp-bar-fill.gold {
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+}
+
+@media (max-width: 768px) {
+  .mc-hotbar-slot {
+    width: 48px;
+    height: 48px;
+    font-size: 6px;
+  }
+}
