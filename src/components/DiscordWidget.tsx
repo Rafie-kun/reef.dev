@@ -2,27 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { useLanyard } from '@/lib/lanyard';
+import { audio } from '@/lib/audio';
 import McIcon from './McIcon';
 
-const STATUS_MAP: Record<string, { color: string; label: string }> = {
-  online: { color: 'bg-green-400', label: 'Online' },
-  idle: { color: 'bg-yellow-400', label: 'Idle' },
-  dnd: { color: 'bg-red-500', label: 'Do Not Disturb' },
-  offline: { color: 'bg-gray-500', label: 'Offline' },
+const STATUS_LABEL: Record<string, string> = {
+  online: 'Online', idle: 'Idle', dnd: 'Do Not Disturb', offline: 'Offline',
 };
 
 export default function DiscordWidget() {
   const { data, connected } = useLanyard();
-  const [profile, setProfile] = useState<{ avatarUrl: string; username: string; globalName?: string } | null>(null);
+  const [profile, setProfile] = useState<{ avatarUrl: string; username?: string; globalName?: string } | null>(null);
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
-    fetch('/api/discord')
-      .then((r) => r.ok ? r.json() : null)
-      .then((d) => {
-        if (d) setProfile(d);
-      })
-      .catch(() => {});
+    fetch('/api/discord').then(r => r.ok && r.json()).then(d => { if (d) setProfile(d); }).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -31,115 +24,71 @@ export default function DiscordWidget() {
   }, []);
 
   const status = data?.discord_status ?? 'offline';
-  const statusInfo = STATUS_MAP[status] ?? STATUS_MAP.offline;
   const spotify = data?.spotify ?? null;
-  const activeGame = data?.activities?.find((a) => a.type === 0) ?? null;
+  const game = data?.activities?.find(a => a.type === 0) ?? null;
+  const isActive = status !== 'offline';
 
-  const isActive = status === 'online' || status === 'idle' || status === 'dnd';
-
-  let progressPercent = 0;
+  let progress = 0;
   if (spotify) {
     const elapsed = now - spotify.timestamps.start;
     const total = spotify.timestamps.end - spotify.timestamps.start;
-    progressPercent = total > 0 ? Math.min((elapsed / total) * 100, 100) : 0;
+    progress = total > 0 ? Math.min((elapsed / total) * 100, 100) : 0;
   }
 
-  const displayName = profile?.globalName ?? profile?.username ?? 'Reef';
-
   return (
-    <div
-      className={`
-        relative p-5 rounded-none
-        border-4 border-t-[#FFFFFF88] border-l-[#FFFFFF88]
-        border-b-[#00000088] border-r-[#00000088]
-        bg-[rgba(0,0,0,0.75)]
-        ${isActive ? 'animate-[discord-pulse_3s_ease-in-out_infinite]' : ''}
-      `}
-    >
-      {!connected && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-yellow-600 font-mono-alt text-xs text-white">
-          Reconnecting...
-        </div>
-      )}
-
-      <div className="flex items-center gap-4">
-        <div className="relative w-16 h-16 flex-shrink-0">
-          <div
-            className="
-              w-full h-full
-              border-2 border-t-[#FFFFFF88] border-l-[#FFFFFF88]
-              border-b-[#00000088] border-r-[#00000088]
-              bg-[rgba(0,0,0,0.5)] overflow-hidden
-            "
-          >
-            <img
-              src={profile?.avatarUrl ?? '/api/discord'}
-              alt={displayName}
-              className="w-full h-full object-cover"
-              style={{ imageRendering: 'pixelated' }}
-            />
+    <section className="mc-section" style={{maxWidth:500}}>
+      <h2 className="mc-section-title"><McIcon name="mc-discord" size={20} /> Presence</h2>
+      <div className="mc-presence-card" onClick={() => audio.play('click')}>
+        {!connected && (
+          <div style={{background:'#B8860B',padding:'4px 12px',fontFamily:"'VT323',monospace",fontSize:16,color:'#FFF',marginBottom:12,textAlign:'center'}}>
+            Reconnecting...
           </div>
-          <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black ${statusInfo.color}`} />
+        )}
+        <div style={{display:'flex',alignItems:'center',gap:12}}>
+          <div style={{position:'relative',width:64,height:64,flexShrink:0}}>
+            <img src={profile?.avatarUrl || '/api/discord'} alt="" style={{width:64,height:64,imageRendering:'pixelated',border:'2px solid #555'}} />
+            <div className={`mc-status-dot ${status}`} style={{bottom:2,right:2}} />
+          </div>
+          <div>
+            <h3 style={{fontFamily:"'Press Start 2P',monospace",fontSize:11,color:'#FFF'}}>
+              {profile?.globalName ?? profile?.username ?? 'Reef'}
+            </h3>
+            <p style={{fontFamily:"'VT323',monospace",fontSize:18,color:'#AAA'}}>{STATUS_LABEL[status] ?? 'Offline'}</p>
+          </div>
         </div>
 
-        <div className="min-w-0">
-          <h3 className="font-pixel text-sm text-[#FFF] truncate">{displayName}</h3>
-          <p className="font-mono-alt text-xs text-[#AAA]">{statusInfo.label}</p>
-        </div>
-      </div>
-
-      {activeGame && !spotify && (
-        <div className="mt-4 pt-3 border-t border-[#333]">
-          <div className="flex items-start gap-2">
+        {game && !spotify && (
+          <div style={{marginTop:12,paddingTop:12,borderTop:'1px solid #333',display:'flex',gap:8}}>
             <McIcon name="mc-controller" size={16} />
-            <div className="min-w-0">
-              <p className="font-pixel text-[11px] text-[#FFD700] truncate">{activeGame.name}</p>
-              {activeGame.state && (
-                <p className="font-mono-alt text-xs text-[#CCC] truncate">{activeGame.state}</p>
-              )}
-              {activeGame.details && (
-                <p className="font-mono-alt text-[11px] text-[#888] truncate">{activeGame.details}</p>
-              )}
+            <div>
+              <p style={{fontFamily:"'Press Start 2P',monospace",fontSize:10,color:'#FFD700'}}>{game.name}</p>
+              {game.state && <p style={{fontFamily:"'VT323',monospace",fontSize:16,color:'#CCC'}}>{game.state}</p>}
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {spotify && (
-        <div className="mt-4 pt-3 border-t border-[#333]">
-          <div className="flex items-start gap-3">
-            <div className="relative w-14 h-14 flex-shrink-0">
-              <img
-                src={spotify.album_art_url}
-                alt={spotify.album}
-                className="w-full h-full object-cover"
-                style={{ imageRendering: 'pixelated' }}
-              />
-              <div className="absolute -top-1.5 -right-1.5 animate-spin" style={{ animationDuration: '3s' }}>
-                <McIcon name="mc-noteblock" size={12} />
+        {spotify && (
+          <div style={{marginTop:12,paddingTop:12,borderTop:'1px solid #333',display:'flex',gap:12}}>
+            <div style={{position:'relative',width:56,height:56,flexShrink:0}}>
+              <img src={spotify.album_art_url} alt={spotify.album} style={{width:56,height:56,imageRendering:'pixelated'}} />
+              <div style={{position:'absolute',top:-8,right:-8,width:16,height:16,animation:'spin-record 3s linear infinite'}}>
+                <McIcon name="mc-noteblock" size={14} />
               </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="font-pixel text-[11px] text-[#1DB954] truncate">{spotify.song}</p>
-              <p className="font-mono-alt text-xs text-[#CCC] truncate">{spotify.artist}</p>
-              <p className="font-mono-alt text-[10px] text-[#666] truncate">{spotify.album}</p>
-              <div className="mt-2 w-full h-2 border border-[#444] bg-[#222] relative overflow-hidden">
-                <div
-                  className="h-full bg-[#1DB954] transition-none"
-                  style={{ width: `${progressPercent}%` }}
-                />
+            <div style={{flex:1,minWidth:0}}>
+              <p style={{fontFamily:"'Press Start 2P',monospace",fontSize:10,color:'#1DB954'}} className="mc-repo-name">{spotify.song}</p>
+              <p style={{fontFamily:"'VT323',monospace",fontSize:16,color:'#CCC'}}>{spotify.artist}</p>
+              <div className="mc-xp-bar" style={{marginTop:8}}>
+                <div className="mc-xp-fill" style={{width:`${progress}%`}} />
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <style>{`
-        @keyframes discord-pulse {
-          0%, 100% { box-shadow: 0 0 8px rgba(59, 130, 246, 0.15); }
-          50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.35); }
-        }
-      `}</style>
-    </div>
+        {!game && !spotify && status === 'offline' && (
+          <p style={{fontFamily:"'VT323',monospace",fontSize:16,color:'#666',marginTop:12,textAlign:'center'}}>Offline</p>
+        )}
+      </div>
+    </section>
   );
 }

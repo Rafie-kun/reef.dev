@@ -2,81 +2,39 @@
 
 import { useEffect, useState } from 'react';
 import { FriendBadge } from '@/lib/types';
+import { audio } from '@/lib/audio';
 import McIcon from './McIcon';
-import MinecraftButton from './MinecraftButton';
 
 export default function FriendsSection() {
   const [badges, setBadges] = useState<FriendBadge[]>([]);
 
   useEffect(() => {
-    fetch('/api/cms/friends')
-      .then((r) => r.ok ? r.json() : null)
-      .then((d) => {
-        const list = Array.isArray(d) ? d : d?.friends ?? [];
-        setBadges(list);
-      })
-      .catch(() => {});
+    fetch('/api/cms/friends').then(r => r.ok && r.json()).then(d => setBadges(d?.friends ?? [])).catch(() => {});
   }, []);
 
   return (
-    <section id="friends" className="relative px-4 py-20 max-w-4xl mx-auto text-center">
-      <h2 className="font-pixel text-xl text-[#FFD700] mb-8">
-        [ Friends &amp; Allies ]
+    <section id="friends" className="mc-section" style={{textAlign:'center'}}>
+      <h2 className="mc-section-title" style={{justifyContent:'center'}}>
+        <McIcon name="mc-globe" size={20} /> [ Friends &amp; Allies ]
       </h2>
-
-      <div className="flex flex-wrap justify-center gap-3 mb-8">
-        {badges.length === 0 && (
-          <>
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="
-                  w-[88px] h-[31px]
-                  border-2 border-t-[#00000088] border-l-[#00000088]
-                  border-b-[#FFFFFF44] border-r-[#FFFFFF44]
-                  bg-[#8B8B8B] flex items-center justify-center
-                "
-              >
-                <McIcon name="mc-unknown" size={14} />
-              </div>
-            ))}
-          </>
-        )}
-        {badges.map((badge) => (
-          <a
-            key={badge.id}
-            href={badge.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="
-              w-[88px] h-[31px]
-              border-2 border-t-[#00000088] border-l-[#00000088]
-              border-b-[#FFFFFF44] border-r-[#FFFFFF44]
-              bg-[#8B8B8B] overflow-hidden
-              hover:bg-[#9B9B9B] transition-colors duration-75
-              block
-            "
-          >
+      <div className="mc-friends-grid" style={{justifyContent:'center'}}>
+        {(badges.length === 0 ? Array.from({length:6}, (_,i) => ({id:`p-${i}`,name:'???',url:'#',imageUrl:''})) : badges).map(badge => (
+          <a key={badge.id} href={badge.url} target="_blank" rel="noopener noreferrer" className="mc-badge"
+            onClick={() => audio.play('click')} onMouseEnter={() => audio.play('badge-hover')}>
             {badge.imageUrl && !badge.imageUrl.includes('placeholder') ? (
-              <img
-                src={badge.imageUrl}
-                alt={badge.name}
-                className="w-full h-full object-cover"
-                style={{ imageRendering: 'pixelated' }}
-              />
+              <img src={badge.imageUrl} alt={badge.name} width={88} height={31} style={{imageRendering:'pixelated',display:'block'}} />
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <McIcon name="mc-unknown" size={14} />
+              <div className="mc-badge-placeholder">
+                <McIcon name="mc-unknown" size={12} />
               </div>
             )}
           </a>
         ))}
       </div>
-
-      <MinecraftButton href="https://discord.com/users/744808879036170272">
-        <McIcon name="mc-chat" size={14} />
-        <span className="ml-1">Say hi!</span>
-      </MinecraftButton>
+      <a href="https://discord.com/users/744808879036170272" target="_blank" rel="noopener noreferrer" className="mc-btn" style={{marginTop:20}}
+        onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
+        <McIcon name="mc-chat" size={14} /> Say hi!
+      </a>
     </section>
   );
 }

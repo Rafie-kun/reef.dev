@@ -10,17 +10,15 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="relative">
+    <main>
       <NavHotbar />
       <HeroSection />
-      <div className="max-w-5xl mx-auto px-4 py-8 space-y-24">
-        <AboutSection />
-        <DiscordWidget />
-        <GitHubSection />
-        <LibrarySection />
-        <FriendsSection />
-        <ContactSection />
-      </div>
+      <AboutSection />
+      <DiscordWidget />
+      <GitHubSection />
+      <LibrarySection />
+      <FriendsSection />
+      <ContactSection />
       <Footer />
     </main>
   );
