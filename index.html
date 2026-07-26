@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REEF — Personal Site</title>
+<meta name="description" content="Hey, I'm Reef. I build things, break things, and occasionally sleep.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   ROOT VARIABLES
+   ============================================= */
+:root {
+  --stone:       #8B8B8B;
+  --stone-light: #C6C6C6;
+  --stone-dark:  #555555;
+  --dirt:        #866043;
+  --grass:       #5D8A2B;
+  --wood:        #A0722A;
+  --gold:        #FFD700;
+  --diamond:     #4AF2FF;
+  --xp:          #7EFF15;
+  --obs:         #150025;
+  --text:        #E0E0E0;
+  --yellow:      #FFFF55;
+  --panel:       rgba(0,0,0,0.82);
+  --tooltip-bg:  #100010;
+  --tooltip-bdr: #5500AA;
+}
+
+/* =============================================
+   RESET & BASE
+   ============================================= */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body {
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  color: var(--text);
+  background: #0a0a12;
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Crect x='9' y='1' width='2' height='18' fill='%23fff'/%3E%3Crect x='1' y='9' width='18' height='2' fill='%23fff'/%3E%3Crect x='9' y='2' width='2' height='16' fill='%23333' opacity='.5'/%3E%3Crect x='2' y='9' width='16' height='2' fill='%23333' opacity='.5'/%3E%3C/svg%3E") 10 10, crosshair;
+}
+
+::selection { background: var(--xp); color: #000; }
+
+::-webkit-scrollbar { width: 14px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb {
+  background: var(--stone);
+  border: 3px solid #000;
+  image-rendering: pixelated;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--stone-light); }
+
+/* =============================================
+   MINECRAFT PANORAMA BACKGROUND
+   ============================================= */
+#panorama {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  overflow: hidden;
+}
+
+#panorama-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    #1a1a5e 0%,
+    #2a2a8e 15%,
+    #5a3aae 28%,
+    #8B4513 29%,
+    #cc5500 35%,
+    #FF8800 42%,
+    #FFB347 47%,
+    #FFD080 50%,
+    #87CEEB 55%,
+    #5599CC 70%,
+    #2255AA 85%,
+    #112244 100%
+  );
+  animation: sky-breathe 12s ease-in-out infinite alternate;
+}
+
+@keyframes sky-breathe {
+  0%   { filter: brightness(0.75) saturate(1.2); }
+  50%  { filter: brightness(1.05) saturate(1.4); }
+  100% { filter: brightness(0.85) saturate(1.1); }
+}
+
+#panorama-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 8%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 15%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 5%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 12%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 7%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 18%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 25%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 22%, #fff 0%, transparent 100%);
+  opacity: 0.6;
+}
+
+#panorama-terrain {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background:
+    linear-gradient(to bottom,
+      #5D8A2B 0px, #5D8A2B 8px,
+      #866043 8px, #866043 100%
+    );
+  clip-path: polygon(
+    0% 30%,
+    2% 30%, 2% 20%, 4% 20%, 4% 30%,
+    6% 30%, 6% 15%, 8% 15%, 8% 10%, 10% 10%, 10% 30%,
+    12% 30%, 12% 25%, 14% 25%, 14% 30%,
+    16% 30%, 16% 8%, 18% 8%, 18% 20%, 20% 20%, 20% 30%,
+    22% 30%, 22% 22%, 24% 22%, 24% 30%,
+    30% 30%, 30% 18%, 32% 18%, 32% 25%, 34% 25%, 34% 30%,
+    36% 30%, 36% 5%, 38% 5%, 38% 12%, 40% 12%, 40% 30%,
+    45% 30%, 45% 20%, 47% 20%, 47% 15%, 49% 15%, 49% 30%,
+    52% 30%, 52% 25%, 54% 25%, 54% 30%,
+    56% 30%, 56% 10%, 58% 10%, 58% 18%, 60% 18%, 60% 30%,
+    65% 30%, 65% 22%, 67% 22%, 67% 30%,
+    70% 30%, 70% 12%, 72% 12%, 72% 8%, 74% 8%, 74% 28%, 76% 28%, 76% 30%,
+    80% 30%, 80% 20%, 82% 20%, 82% 30%,
+    85% 30%, 85% 15%, 87% 15%, 87% 22%, 89% 22%, 89% 30%,
+    92% 30%, 92% 18%, 94% 18%, 94% 30%,
+    96% 30%, 96% 25%, 98% 25%, 98% 30%,
+    100% 30%,
+    100% 100%, 0% 100%
+  );
+}
+
+#panorama::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.52);
+  z-index: 1;
+}
+
+#panorama-custom {
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image, none);
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 2;
+}
+#panorama-custom.loaded { opacity: 0.35; }
+
+/* =============================================
+   FLOATING PIXEL PARTICLES
+   ============================================= */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  image-rendering: pixelated;
+  animation: particle-rise linear infinite;
+}
+
+@keyframes particle-rise {
+  0%   { transform: translateY(105vh) rotate(0deg);   opacity: 0; }
+  8%   { opacity: 0.8; }
+  92%  { opacity: 0.7; }
+  100% { transform: translateY(-20px)  rotate(360deg); opacity: 0; }
+}
+
+/* =============================================
+   HOTBAR NAV
+   ============================================= */
+#hotbar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  gap: 3px;
+  padding: 6px 10px 0;
+  background: rgba(0,0,0,0.78);
+  border-bottom: 3px solid var(--stone-dark);
+  border-left: 3px solid var(--stone-dark);
+  border-right: 3px solid var(--stone-dark);
+  border-radius: 0 0 4px 4px;
+}
+
+.hotbar-slot {
+  width: 58px;
+  height: 58px;
+  background: #373737;
+  border: 3px solid transparent;
+  border-color: #555 #DBDBDB #DBDBDB #555;
+  box-shadow: inset 1px 1px 0 #666, inset -1px -1px 0 #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5.5px;
+  transition: background 0.05s steps(1), border-color 0.05s steps(1);
+  position: relative;
+  user-select: none;
+}
+
+.hotbar-slot .slot-icon {
+  font-size: 22px;
+  image-rendering: pixelated;
+  line-height: 1;
+}
+
+.hotbar-slot:hover,
+.hotbar-slot.active {
+  background: #4a4a4a;
+  border-color: #888 #fff #fff #888;
+  color: var(--yellow);
+}
+
+.hotbar-slot.active::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 4px;
+  background: #fff;
+  box-shadow: 0 0 6px #fff, 0 0 12px rgba(255,255,255,0.5);
+}
+
+/* =============================================
+   MC BUTTON
+   ============================================= */
+.mc-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #E0E0E0;
+  background: var(--stone);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  image-rendering: pixelated;
+  box-shadow:
+    inset -3px -5px 0 var(--stone-dark),
+    inset  3px  3px 0 var(--stone-light),
+    0 4px 0 #1a1a1a;
+  transition: filter 0.05s steps(1), transform 0.05s steps(1), box-shadow 0.05s steps(1);
+}
+.mc-btn:hover {
+  filter: brightness(1.3);
+  color: var(--yellow);
+  box-shadow:
+    inset -3px -5px 0 var(--stone-dark),
+    inset  3px  3px 0 var(--stone-light),
+    0 4px 0 #1a1a1a,
+    0 0 12px rgba(255,255,85,0.25);
+}
+.mc-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 3px 5px 0 var(--stone-dark),
+    inset -3px -3px 0 var(--stone-light),
+    0 1px 0 #1a1a1a;
+}
+
+/* =============================================
+   PANELS & SECTIONS
+   ============================================= */
+.mc-panel {
+  background: var(--panel);
+  border: 3px solid var(--stone-dark);
+  box-shadow:
+    inset 1px 1px 0 rgba(255,255,255,0.08),
+    inset -1px -1px 0 rgba(0,0,0,0.4),
+    3px 3px 0 rgba(0,0,0,0.5);
+}
+
+section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 90px 24px 60px;
+}
+
+.section-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(9px, 2vw, 15px);
+  color: var(--yellow);
+  text-shadow: 2px 2px 0 #3F3F00, 3px 3px 0 rgba(0,0,0,0.5);
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+}
+.section-title::before { content: '[ '; color: var(--stone); }
+.section-title::after  { content: ' ]'; color: var(--stone); }
+
+/* =============================================
+   HERO
+   ============================================= */
+#home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+  padding-top: 100px;
+}
+
+#reef-logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(40px, 12vw, 100px);
+  color: #fff;
+  letter-spacing: 6px;
+  text-shadow:
+    5px  5px 0 #3F3F3F,
+    10px 10px 0 rgba(0,0,0,0.35);
+  animation: logo-shimmer 3s ease-in-out infinite;
+  user-select: none;
+}
+@keyframes logo-shimmer {
+  0%,100% { text-shadow: 5px 5px 0 #3F3F3F, 10px 10px 0 rgba(0,0,0,0.35); }
+  50%      { text-shadow: 5px 5px 0 #3F3F3F, 10px 10px 0 rgba(0,0,0,0.35), 0 0 40px rgba(255,255,255,0.15); }
+}
+
+.hero-sub {
+  font-family: 'VT323', monospace;
+  font-size: 26px;
+  color: #aaa;
+  letter-spacing: 3px;
+}
+
+.also-try {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--yellow);
+  text-shadow: 2px 2px 0 #3F3F00;
+  min-height: 22px;
+  animation: also-blink 1s steps(1) infinite;
+}
+@keyframes also-blink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.65; }
+}
+
+.avatar-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+.avatar-wrap img, .avatar-wrap .avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  border: 4px solid var(--stone);
+  box-shadow:
+    0 0 0 3px #000,
+    inset 2px 2px 0 rgba(255,255,255,0.2),
+    inset -2px -2px 0 rgba(0,0,0,0.4);
+  animation: avatar-float 3s ease-in-out infinite;
+  display: block;
+  background: #555;
+}
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+@keyframes avatar-float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.status-dot {
+  position: absolute;
+  bottom: 2px; right: 2px;
+  width: 18px; height: 18px;
+  border: 3px solid #000;
+  image-rendering: pixelated;
+}
+.status-dot.online  { background: #43B581; box-shadow: 0 0 6px #43B581; }
+.status-dot.idle    { background: #FAA61A; box-shadow: 0 0 6px #FAA61A; }
+.status-dot.dnd     { background: #F04747; box-shadow: 0 0 6px #F04747; }
+.status-dot.offline { background: #747F8D; }
+
+.hero-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.hero-activity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0,0,0,0.7);
+  border: 2px solid var(--stone-dark);
+  padding: 10px 16px;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  max-width: 360px;
+  margin: 0 auto;
+  min-height: 48px;
+}
+.hero-activity .act-icon { font-size: 26px; }
+.hero-activity .act-text { text-align: left; line-height: 1.3; }
+.hero-activity .act-name { color: var(--xp); display: block; }
+.hero-activity .act-detail{ color: #aaa; font-size: 15px; display: block; }
+
+/* =============================================
+   ABOUT — BOOK & QUILL
+   ============================================= */
+.book-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #8B6914;
+  border: 5px solid #5C3A1E;
+  box-shadow: 5px 5px 0 #2A1A00, inset 2px 2px 0 rgba(255,255,255,0.1);
+  max-width: 820px;
+  margin: 0 auto 40px;
+}
+.book-page {
+  background: #F5E6C8;
+  padding: 28px;
+  color: #2A1800;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  line-height: 1.7;
+  min-height: 320px;
+  position: relative;
+  overflow: hidden;
+}
+.book-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    transparent, transparent 28px,
+    rgba(139,90,43,0.25) 28px, rgba(139,90,43,0.25) 29px
+  );
+  pointer-events: none;
+}
+.book-page:first-child { border-right: 3px solid #A0845C; }
+.book-page h3 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #5C3A1E;
+  margin-bottom: 14px;
+}
+.book-page p { position: relative; z-index: 1; }
+
+.book-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+}
+.book-social-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(92,58,30,0.15);
+  border: 1px solid rgba(92,58,30,0.3);
+  color: #3A1A00;
+  text-decoration: none;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  transition: background 0.1s;
+}
+.book-social-link:hover { background: rgba(92,58,30,0.3); }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 6px;
+  margin-top: 10px;
+}
+.stat-card {
+  background: rgba(0,0,0,0.7);
+  border: 2px solid var(--stone-dark);
+  padding: 14px;
+  text-align: center;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.05);
+}
+.stat-val {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 18px;
+  color: var(--xp);
+  text-shadow: 0 0 10px var(--xp);
+  display: block;
+  margin-bottom: 6px;
+}
+.stat-lbl {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: #888;
+  display: block;
+  line-height: 1.6;
+}
+
+/* =============================================
+   DISCORD / SPOTIFY PRESENCE CARD
+   ============================================= */
+.presence-card {
+  background: rgba(5,0,20,0.92);
+  border: 3px solid #3300AA;
+  box-shadow:
+    0 0 0 2px #000,
+    0 0 24px rgba(85,0,200,0.4),
+    inset 1px 1px 0 rgba(255,255,255,0.05);
+  padding: 22px;
+  max-width: 400px;
+  animation: enchant-pulse 2.5s ease-in-out infinite alternate;
+}
+@keyframes enchant-pulse {
+  from { box-shadow: 0 0 0 2px #000, 0 0 20px rgba(85,0,200,0.35); }
+  to   { box-shadow: 0 0 0 2px #000, 0 0 40px rgba(85,0,200,0.65), 0 0 80px rgba(85,0,200,0.1); }
+}
+.presence-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.presence-avatar {
+  width: 64px; height: 64px;
+  image-rendering: pixelated;
+  border: 3px solid var(--stone-dark);
+  flex-shrink: 0;
+  background: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.presence-avatar img {
+  width: 100%; height: 100%;
+  image-rendering: pixelated;
+  display: block;
+}
+.presence-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.presence-status {
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.presence-dot {
+  width: 10px; height: 10px;
+  display: inline-block;
+  image-rendering: pixelated;
+}
+.presence-dot.online { background: #43B581; }
+.presence-dot.idle   { background: #FAA61A; }
+.presence-dot.dnd    { background: #F04747; }
+.presence-dot.offline{ background: #747F8D; }
+
+.xp-bar-wrap {
+  margin: 10px 0 4px;
+}
+.xp-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: #888;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+.xp-bar {
+  height: 9px;
+  background: #111;
+  border: 2px solid #000;
+  position: relative;
+  overflow: hidden;
+}
+.xp-fill {
+  height: 100%;
+  background: var(--xp);
+  box-shadow: 0 0 6px var(--xp);
+  transition: width 1s linear;
+  position: relative;
+}
+.xp-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.3);
+}
+
+.spotify-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: rgba(29,185,84,0.08);
+  border: 2px solid rgba(29,185,84,0.25);
+  padding: 12px;
+  margin-top: 12px;
+}
+.spotify-art {
+  width: 52px; height: 52px;
+  image-rendering: pixelated;
+  border: 2px solid #000;
+  flex-shrink: 0;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  animation: vinyl-spin 4s linear infinite;
+}
+@keyframes vinyl-spin {
+  from { filter: hue-rotate(0deg); }
+  to   { filter: hue-rotate(360deg); }
+}
+.spotify-info { flex: 1; overflow: hidden; }
+.spotify-song {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #1DB954;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+.spotify-artist {
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  color: #aaa;
+}
+
+/* =============================================
+   GITHUB CHEST GRID
+   ============================================= */
+.chest-outer {
+  background: var(--stone-dark);
+  border: 4px solid var(--stone);
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.1),
+    inset -2px -2px 0 rgba(0,0,0,0.3);
+  padding: 4px;
+}
+.chest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 4px;
+}
+.repo-slot {
+  background: #373737;
+  border: 3px solid;
+  border-color: #555 #DBDBDB #DBDBDB #555;
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.05s steps(1), border-color 0.05s steps(1);
+}
+.repo-slot:hover {
+  background: #4a4a4a;
+  border-color: var(--gold) #eee #eee var(--gold);
+}
+.repo-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--yellow);
+  text-shadow: 1px 1px 0 #3F3F00;
+  word-break: break-all;
+}
+.repo-desc {
+  font-family: 'VT323', monospace;
+  font-size: 17px;
+  color: #bbb;
+  line-height: 1.3;
+  flex: 1;
+}
+.repo-meta {
+  display: flex;
+  gap: 14px;
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  color: var(--text);
+  align-items: center;
+}
+.lang-dot {
+  width: 10px; height: 10px;
+  display: inline-block;
+  image-rendering: pixelated;
+  margin-right: 3px;
+  vertical-align: middle;
+}
+
+.gh-stats {
+  display: flex;
+  gap: 4px;
+  margin-top: 20px;
+}
+.gh-stat {
+  flex: 1;
+  background: rgba(0,0,0,0.6);
+  border: 2px solid var(--stone-dark);
+  padding: 12px;
+  text-align: center;
+}
+.gh-stat-val {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 16px;
+  color: var(--diamond);
+  text-shadow: 0 0 8px var(--diamond);
+  display: block;
+  margin-bottom: 5px;
+}
+.gh-stat-lbl {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: #666;
+  display: block;
+}
+
+/* =============================================
+   LIBRARY — CREATIVE INVENTORY
+   ============================================= */
+.inv-outer {
+  background: #C6C6C6;
+  border: 4px solid #555;
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #555;
+}
+.inv-tabs {
+  display: flex;
+  border-bottom: 3px solid #555;
+}
+.inv-tab {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6.5px;
+  padding: 9px 14px;
+  background: #8B8B8B;
+  border-right: 2px solid #555;
+  border-top: 2px solid #DBDBDB;
+  border-left: 2px solid #DBDBDB;
+  color: #222;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.05s steps(1);
+  user-select: none;
+}
+.inv-tab:hover  { background: #9B9B9B; }
+.inv-tab.active {
+  background: #C6C6C6;
+  border-bottom: 3px solid #C6C6C6;
+  color: #000;
+  margin-bottom: -3px;
+}
+.inv-tab .tab-icon { font-size: 18px; }
+.inv-body { padding: 8px; background: #C6C6C6; }
+.inv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 3px;
+  background: #555;
+  border: 3px inset #444;
+  padding: 3px;
+}
+.inv-item {
+  width: 90px; height: 90px;
+  background: #8B8B8B;
+  border: 3px solid;
+  border-color: #555 #DBDBDB #DBDBDB #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.05s steps(1);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+.inv-item:hover { background: #9B9B9B; border-color: #666 #eee #eee #666; }
+.inv-item .item-icon { font-size: 34px; image-rendering: pixelated; }
+.inv-item .item-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.72);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: #fff;
+  padding: 3px 2px;
+  text-align: center;
+  line-height: 1.3;
+}
+.inv-empty {
+  padding: 30px;
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #888;
+  background: #555;
+  border: 3px inset #444;
+}
+
+/* =============================================
+   FRIENDS / 88x31
+   ============================================= */
+.friends-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 20px;
+  background: rgba(0,0,0,0.65);
+  border: 3px solid var(--stone-dark);
+}
+.badge-link {
+  display: block;
+  image-rendering: pixelated;
+  border: 2px solid #555;
+  transition: border-color 0.05s steps(1), filter 0.05s steps(1);
+}
+.badge-link:hover {
+  border-color: var(--gold);
+  filter: brightness(1.25);
+}
+.badge-placeholder {
+  width: 88px; height: 31px;
+  background: repeating-conic-gradient(#100020 0% 25%, #200040 0% 50%) 0 0 / 10px 10px;
+  border: 2px solid #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: #666;
+  cursor: pointer;
+}
+.badge-placeholder:hover { border-color: var(--gold); color: var(--yellow); }
+
+/* =============================================
+   CONTACT
+   ============================================= */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+footer {
+  border-top: 3px solid var(--stone-dark);
+  background: rgba(0,0,0,0.7);
+  padding: 32px 20px;
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #555;
+}
+footer .copy { color: #777; margin-bottom: 12px; }
+footer .also { color: var(--yellow); font-size: 6px; margin-bottom: 20px; }
+
+#back-to-top {
+  display: inline-block;
+  margin-top: 12px;
+  cursor: pointer;
+  font-size: 28px;
+  filter: drop-shadow(0 0 4px rgba(100,200,255,0.4));
+  transition: filter 0.1s, transform 0.1s steps(1);
+  user-select: none;
+}
+#back-to-top:hover {
+  filter: drop-shadow(0 0 10px rgba(100,200,255,0.8));
+  transform: translateY(-3px);
+}
+
+/* =============================================
+   SOUND TOGGLE
+   ============================================= */
+#sound-toggle {
+  position: fixed;
+  bottom: 18px; right: 18px;
+  z-index: 1000;
+  width: 46px; height: 46px;
+  background: var(--stone);
+  border: 3px solid;
+  border-color: var(--stone-light) var(--stone-dark) var(--stone-dark) var(--stone-light);
+  box-shadow: 3px 3px 0 #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: filter 0.05s steps(1);
+  user-select: none;
+}
+#sound-toggle:hover { filter: brightness(1.3); }
+
+/* =============================================
+   TOOLTIP
+   ============================================= */
+#mc-tooltip {
+  position: fixed;
+  background: var(--tooltip-bg);
+  border: 2px solid var(--tooltip-bdr);
+  box-shadow: 2px 2px 0 #000, inset 1px 1px 0 rgba(255,255,255,0.04);
+  padding: 8px 14px;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  color: var(--yellow);
+  pointer-events: none;
+  z-index: 9999;
+  display: none;
+  white-space: nowrap;
+  image-rendering: pixelated;
+}
+
+/* =============================================
+   ADMIN HINT
+   ============================================= */
+#admin-link {
+  position: fixed;
+  bottom: 18px; left: 18px;
+  z-index: 1000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.1s;
+}
+#admin-link:hover { color: var(--stone); }
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 720px) {
+  #hotbar { width: 100%; left: 0; transform: none; border-radius: 0; justify-content: center; flex-wrap: wrap; padding: 4px 4px 0; }
+  .hotbar-slot { width: 48px; height: 48px; font-size: 5px; }
+  .hotbar-slot .slot-icon { font-size: 18px; }
+  .book-wrap { grid-template-columns: 1fr; }
+  .book-page:first-child { border-right: none; border-bottom: 3px solid #A0845C; }
+  #reef-logo { font-size: clamp(32px, 14vw, 60px); }
+  .chest-grid { grid-template-columns: 1fr; }
+  .gh-stats { flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+  .hotbar-slot { width: 42px; height: 42px; }
+  .inv-item { width: 70px; height: 70px; }
+  .inv-item .item-icon { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- PANORAMA BACKGROUND -->
+<div id="panorama">
+  <div id="panorama-sky"></div>
+  <div id="panorama-stars"></div>
+  <div id="panorama-terrain"></div>
+  <div id="panorama-custom"></div>
+</div>
+
+<!-- PARTICLES -->
+<div id="particles"></div>
+
+<!-- TOOLTIP -->
+<div id="mc-tooltip"></div>
+
+<!-- SOUND TOGGLE -->
+<div id="sound-toggle" title="Toggle sound">🔊</div>
+
+<!-- ADMIN LINK -->
+<a href="/admin" id="admin-link">⚙ admin</a>
+
+<!-- HOTBAR NAV -->
+<nav id="hotbar">
+  <a class="hotbar-slot active" href="#home"     data-tip="Home"     onclick="snd('nav')"><span class="slot-icon">🏠</span>Home</a>
+  <a class="hotbar-slot"        href="#about"    data-tip="About"    onclick="snd('nav')"><span class="slot-icon">📖</span>About</a>
+  <a class="hotbar-slot"        href="#projects" data-tip="Projects" onclick="snd('nav')"><span class="slot-icon">⚔️</span>Projects</a>
+  <a class="hotbar-slot"        href="#library"  data-tip="Library"  onclick="snd('nav')"><span class="slot-icon">📦</span>Library</a>
+  <a class="hotbar-slot"        href="#friends"  data-tip="Friends"  onclick="snd('nav')"><span class="slot-icon">👾</span>Friends</a>
+  <a class="hotbar-slot"        href="#contact"  data-tip="Contact"  onclick="snd('nav')"><span class="slot-icon">✉️</span>Contact</a>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="avatar-wrap">
+    <div class="avatar-placeholder" id="avatar-box">🎮</div>
+    <div class="status-dot offline" id="status-dot"></div>
+  </div>
+
+  <h1 id="reef-logo">REEF</h1>
+  <p class="hero-sub">// personal site &amp; portfolio</p>
+  <p class="also-try" id="also-try">Also try touching grass!</p>
+
+  <div class="hero-activity" id="hero-activity" style="display:none">
+    <span class="act-icon" id="act-icon">🎵</span>
+    <span class="act-text">
+      <span class="act-name" id="act-name">...</span>
+      <span class="act-detail" id="act-detail">...</span>
+    </span>
+  </div>
+
+  <div class="hero-btns">
+    <a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" onclick="snd('click')">💬 Discord</a>
+    <a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" onclick="snd('click')">🐙 GitHub</a>
+    <a class="mc-btn" href="#about" onclick="snd('click')">📖 About Me</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-title">About</h2>
+
+  <div class="book-wrap">
+    <div class="book-page">
+      <div class="book-page-lines"></div>
+      <h3>// REEF</h3>
+      <p id="bio-text">Hey, I'm Reef. I build things, break things, and occasionally sleep. Welcome to my little corner of the internet.</p>
+      <div class="book-socials" style="margin-top:20px">
+        <a class="book-social-link" href="https://discord.com/users/744808879036170272" target="_blank" onclick="snd('click')">💬 Discord</a>
+        <a class="book-social-link" href="https://github.com/Rafie-kun" target="_blank" onclick="snd('click')">🐙 GitHub</a>
+        <a class="book-social-link" href="#" id="social-spotify" target="_blank" onclick="snd('click')">🎵 Spotify</a>
+        <a class="book-social-link" href="#" id="social-instagram" target="_blank" onclick="snd('click')">📷 Instagram</a>
+        <a class="book-social-link" href="#" id="social-twitter" target="_blank" onclick="snd('click')">🐦 Twitter / X</a>
+      </div>
+    </div>
+    <div class="book-page">
+      <div class="book-page-lines"></div>
+      <h3>// DISCORD STATUS</h3>
+      <div class="presence-card" style="max-width:100%;box-sizing:border-box">
+        <div class="presence-header">
+          <div class="presence-avatar" id="presence-avatar">🎮</div>
+          <div>
+            <div class="presence-name" id="presence-name">Reef</div>
+            <div class="presence-status">
+              <span class="presence-dot offline" id="presence-dot"></span>
+              <span id="presence-status-text">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <div id="presence-activity" style="font-family:'VT323';font-size:17px;color:#aaa;margin-bottom:8px;display:none"></div>
+        <div id="spotify-block" style="display:none">
+          <div class="spotify-card">
+            <div class="spotify-art" id="spotify-art">🎵</div>
+            <div class="spotify-info">
+              <div class="spotify-song" id="spotify-song">...</div>
+              <div class="spotify-artist" id="spotify-artist">...</div>
+            </div>
+          </div>
+          <div class="xp-bar-wrap" style="margin-top:10px">
+            <div class="xp-label">
+              <span id="spotify-elapsed">0:00</span>
+              <span id="spotify-duration">0:00</span>
+            </div>
+            <div class="xp-bar"><div class="xp-fill" id="spotify-bar" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card"><span class="stat-val" id="stat-repos">—</span><span class="stat-lbl">PUBLIC REPOS</span></div>
+    <div class="stat-card"><span class="stat-val" id="stat-followers">—</span><span class="stat-lbl">FOLLOWERS</span></div>
+    <div class="stat-card"><span class="stat-val" id="stat-stars">—</span><span class="stat-lbl">TOTAL STARS</span></div>
+    <div class="stat-card"><span class="stat-val" id="stat-status">—</span><span class="stat-lbl">DISCORD STATUS</span></div>
+  </div>
+</section>
+
+<!-- PROJECTS / GITHUB -->
+<section id="projects">
+  <h2 class="section-title">Projects &amp; Code</h2>
+  <div class="chest-outer">
+    <div class="chest-grid" id="repo-grid">
+      <div class="repo-slot" style="cursor:default;opacity:0.5">
+        <div class="repo-name">Loading...</div>
+        <div class="repo-desc">Fetching from GitHub...</div>
+      </div>
+    </div>
+  </div>
+  <div class="gh-stats" style="margin-top:8px">
+    <div class="gh-stat"><span class="gh-stat-val" id="gh-repos">—</span><span class="gh-stat-lbl">REPOS</span></div>
+    <div class="gh-stat"><span class="gh-stat-val" id="gh-followers">—</span><span class="gh-stat-lbl">FOLLOWERS</span></div>
+    <div class="gh-stat"><span class="gh-stat-val" id="gh-stars">—</span><span class="gh-stat-lbl">STARS</span></div>
+  </div>
+</section>
+
+<!-- LIBRARY -->
+<section id="library">
+  <h2 class="section-title">Library</h2>
+  <div class="inv-outer">
+    <div class="inv-tabs">
+      <div class="inv-tab active" data-tab="games"    onclick="switchTab(this,'games')"><span class="tab-icon">🎮</span>Games</div>
+      <div class="inv-tab"        data-tab="music"    onclick="switchTab(this,'music')"><span class="tab-icon">🎵</span>Music</div>
+      <div class="inv-tab"        data-tab="projects" onclick="switchTab(this,'proj')"><span class="tab-icon">⚔️</span>Projects</div>
+      <div class="inv-tab"        data-tab="reading"  onclick="switchTab(this,'read')"><span class="tab-icon">📚</span>Reading</div>
+    </div>
+    <div class="inv-body">
+      <div id="tab-games"  class="inv-grid">
+        <a class="inv-item" href="https://minecraft.net" target="_blank" onclick="snd('tab-item')"><span class="item-icon">⛏️</span><span class="item-label">Minecraft</span></a>
+        <div class="inv-item" onclick="snd('tab-item')"><span class="item-icon">❓</span><span class="item-label">???</span></div>
+        <div class="inv-item" onclick="snd('tab-item')"><span class="item-icon">❓</span><span class="item-label">???</span></div>
+      </div>
+      <div id="tab-music"  class="inv-grid" style="display:none">
+        <div class="inv-item" onclick="snd('tab-item')"><span class="item-icon">🎧</span><span class="item-label">Playlist 1</span></div>
+        <div class="inv-item" onclick="snd('tab-item')"><span class="item-icon">🎸</span><span class="item-label">Playlist 2</span></div>
+      </div>
+      <div id="tab-proj"   class="inv-grid" style="display:none">
+        <a class="inv-item" href="https://github.com/Rafie-kun" target="_blank" onclick="snd('tab-item')"><span class="item-icon">💻</span><span class="item-label">GitHub</span></a>
+      </div>
+      <div id="tab-read"   class="inv-grid" style="display:none">
+        <div class="inv-item" onclick="snd('tab-item')"><span class="item-icon">📖</span><span class="item-label">Reading...</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FRIENDS -->
+<section id="friends">
+  <h2 class="section-title">Friends &amp; Allies</h2>
+  <div class="friends-grid" id="friends-grid">
+    <div class="badge-placeholder" onclick="snd('badge')" data-tip="Add a friend!">???</div>
+    <div class="badge-placeholder" onclick="snd('badge')" data-tip="Add a friend!">???</div>
+    <div class="badge-placeholder" onclick="snd('badge')" data-tip="Add a friend!">???</div>
+    <div class="badge-placeholder" onclick="snd('badge')" data-tip="Add a friend!">???</div>
+    <div class="badge-placeholder" onclick="snd('badge')" data-tip="Add a friend!">???</div>
+    <div class="badge-placeholder" onclick="snd('badge')" data-tip="Add a friend!">???</div>
+  </div>
+  <div style="margin-top:20px">
+    <a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" onclick="snd('click')">💬 Say Hi!</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="section-title">Contact / Connect</h2>
+  <div class="mc-panel" style="padding:28px;max-width:600px">
+    <div class="contact-grid">
+      <a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" onclick="snd('click')">💬 Discord</a>
+      <a class="mc-btn" href="mailto:reef@example.com" onclick="snd('click')">✉️ Email</a>
+      <a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" onclick="snd('click')">🐙 GitHub</a>
+      <a class="mc-btn" href="#" id="contact-twitter" target="_blank" onclick="snd('click')">🐦 Twitter</a>
+      <a class="mc-btn" href="#" id="contact-instagram" target="_blank" onclick="snd('click')">📷 Instagram</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="copy">© REEF 2026. DO NOT DISTRIBUTE!</div>
+  <div class="also" id="footer-also">Also try Limbo!</div>
+  <div id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'});snd('nav')" title="Back to top">🟢</div>
+</footer>
+
+<script>
+// =========================================
+// AUDIO ENGINE — Web Audio API
+// =========================================
+let AudioCtx = null;
+let muted = localStorage.getItem('mc-muted') === 'true';
+let audioReady = false;
+
+document.getElementById('sound-toggle').textContent = muted ? '🔇' : '🔊';
+
+function getCtx() {
+  if (!AudioCtx) AudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (AudioCtx.state === 'suspended') AudioCtx.resume();
+  audioReady = true;
+  return AudioCtx;
+}
+
+function playTone(freq, type, dur, vol, freqEnd) {
+  if (muted) return;
+  try {
+    const c = getCtx(), t = c.currentTime;
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    if (freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd, t + dur);
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(c.destination);
+    o.start(t); o.stop(t + dur + 0.01);
+  } catch(e){}
+}
+
+function playChime(freqs) {
+  freqs.forEach((f,i) => setTimeout(() => playTone(f,'sine',0.25,0.1), i*100));
+}
+
+function snd(type) {
+  if (!audioReady) { document.addEventListener('click', () => getCtx(), {once:true}); }
+  switch(type) {
+    case 'click':    playTone(220, 'square', 0.07, 0.18); break;
+    case 'nav':      playTone(400, 'square', 0.09, 0.15, 200); break;
+    case 'hover':    playTone(1100,'sine',   0.04, 0.05); break;
+    case 'tab':      playTone(330, 'square', 0.08, 0.12); break;
+    case 'tab-item': playTone(550, 'sine',   0.06, 0.08); break;
+    case 'badge':    playTone(750, 'square', 0.05, 0.07); break;
+    case 'save':     playChime([523,659,784]); break;
+    case 'error':    playTone(160, 'sawtooth',0.2, 0.1); break;
+    case 'btp':      playChime([784,659,523]); break;
+  }
+}
+
+document.addEventListener('click', () => getCtx(), {once: true});
+document.addEventListener('keydown', () => getCtx(), {once: true});
+
+document.getElementById('sound-toggle').addEventListener('click', () => {
+  muted = !muted;
+  localStorage.setItem('mc-muted', muted);
+  document.getElementById('sound-toggle').textContent = muted ? '🔇' : '🔊';
+  if (!muted) { snd('click'); }
+});
+
+document.querySelectorAll('.mc-btn,.hotbar-slot,.repo-slot,.inv-item,.inv-tab,.badge-link,.badge-placeholder,.book-social-link').forEach(el => {
+  el.addEventListener('mouseenter', () => snd('hover'));
+});
+
+// =========================================
+// PARTICLES
+// =========================================
+const colors = ['#7EFF15','#4AF2FF','#FFD700','#FFFF55','#FF8800'];
+const particleEl = document.getElementById('particles');
+for(let i = 0; i < 22; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const sz = [4,4,4,6,6,8][Math.floor(Math.random()*6)];
+  p.style.cssText = `
+    left:${Math.random()*100}%;
+    width:${sz}px; height:${sz}px;
+    background:${colors[Math.floor(Math.random()*colors.length)]};
+    animation-duration:${9+Math.random()*16}s;
+    animation-delay:${Math.random()*14}s;
+  `;
+  particleEl.appendChild(p);
+}
+
+// =========================================
+// ALSO TRY ROTATION
+// =========================================
+const alsoTries = [
+  'Also try touching grass!',
+  'Also try sleeping!',
+  'Also try GitHub!',
+  'Also try talking to Reef!',
+  'Also try Limbo!',
+  'Also try not mining at night!',
+  'Also try clicking things!',
+  'Also try F3!',
+  'Also try eating something!',
+];
+let alsoIdx = 0;
+const alsoEl = document.getElementById('also-try');
+const footerAlso = document.getElementById('footer-also');
+setInterval(() => {
+  alsoIdx = (alsoIdx + 1) % alsoTries.length;
+  alsoEl.textContent = alsoTries[alsoIdx];
+  footerAlso.textContent = alsoTries[(alsoIdx+2) % alsoTries.length];
+}, 3000);
+
+// =========================================
+// TOOLTIP
+// =========================================
+const tipEl = document.getElementById('mc-tooltip');
+document.querySelectorAll('[data-tip]').forEach(el => {
+  el.addEventListener('mouseenter', e => {
+    tipEl.textContent = el.dataset.tip;
+    tipEl.style.display = 'block';
+  });
+  el.addEventListener('mousemove', e => {
+    tipEl.style.left = (e.clientX + 14) + 'px';
+    tipEl.style.top  = (e.clientY + 14) + 'px';
+  });
+  el.addEventListener('mouseleave', () => { tipEl.style.display = 'none'; });
+});
+
+// =========================================
+// SCROLL SPY — HOTBAR
+// =========================================
+const sections = ['home','about','projects','library','friends','contact'];
+const slots = document.querySelectorAll('.hotbar-slot');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      slots.forEach(s => s.classList.toggle('active', s.getAttribute('href') === '#'+id));
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(id => { const el = document.getElementById(id); if(el) observer.observe(el); });
+
+// =========================================
+// LANYARD — DISCORD + SPOTIFY (WebSocket)
+// =========================================
+const DISCORD_ID = '744808879036170272';
+
+function fmtMs(ms) {
+  const s = Math.floor(ms/1000), m = Math.floor(s/60);
+  return `${m}:${String(s%60).padStart(2,'0')}`;
+}
+
+function applyLanyard(d) {
+  const dotEls = [document.getElementById('status-dot'), document.getElementById('presence-dot')];
+  dotEls.forEach(el => {
+    if(!el) return;
+    el.className = 'status-dot ' + (d.discord_status||'offline');
+  });
+  const pdot = document.getElementById('presence-dot');
+  if(pdot) { pdot.className = 'presence-dot ' + (d.discord_status||'offline'); }
+
+  document.getElementById('presence-status-text').textContent = { online:'🟢 Online', idle:'🟡 Idle', dnd:'🔴 Do Not Disturb', offline:'⚫ Offline' }[d.discord_status] || 'Unknown';
+  document.getElementById('stat-status').textContent = (d.discord_status||'offline').toUpperCase();
+
+  if(d.discord_user) {
+    const u = d.discord_user;
+    document.getElementById('presence-name').textContent = u.global_name || u.username || 'Reef';
+    if(u.avatar) {
+      const avatarUrl = `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.webp?size=128`;
+      const box = document.getElementById('avatar-box');
+      box.innerHTML = `<img src="${avatarUrl}" alt="Reef" style="width:100%;height:100%;image-rendering:pixelated;display:block;">`;
+      box.style.padding = '0';
+      const pavatar = document.getElementById('presence-avatar');
+      pavatar.innerHTML = `<img src="${avatarUrl}" alt="Reef">`;
+    }
+  }
+
+  const spotify = d.spotify;
+  if(spotify && spotify.song) {
+    document.getElementById('spotify-block').style.display = 'block';
+    document.getElementById('spotify-song').textContent = spotify.song;
+    document.getElementById('spotify-artist').textContent = `by ${spotify.artist}`;
+    if(spotify.album_art_url) {
+      document.getElementById('spotify-art').innerHTML = `<img src="${spotify.album_art_url}" style="width:100%;height:100%;image-rendering:pixelated;object-fit:cover;">`;
+    }
+    const now = Date.now();
+    const elapsed = now - spotify.timestamps.start;
+    const total = spotify.timestamps.end - spotify.timestamps.start;
+    const pct = Math.min(100, (elapsed/total)*100);
+    document.getElementById('spotify-bar').style.width = pct+'%';
+    document.getElementById('spotify-elapsed').textContent = fmtMs(elapsed);
+    document.getElementById('spotify-duration').textContent = fmtMs(total);
+    document.getElementById('hero-activity').style.display = 'flex';
+    document.getElementById('act-icon').textContent = '🎵';
+    document.getElementById('act-name').textContent = spotify.song;
+    document.getElementById('act-detail').textContent = `by ${spotify.artist}`;
+  } else {
+    document.getElementById('spotify-block').style.display = 'none';
+    const acts = d.activities || [];
+    const game = acts.find(a => a.type === 0);
+    if(game) {
+      document.getElementById('hero-activity').style.display = 'flex';
+      document.getElementById('act-icon').textContent = '🎮';
+      document.getElementById('act-name').textContent = game.name;
+      document.getElementById('act-detail').textContent = game.details || 'Playing...';
+      document.getElementById('presence-activity').style.display = 'block';
+      document.getElementById('presence-activity').textContent = '🎮 Playing: ' + game.name;
+    } else {
+      document.getElementById('hero-activity').style.display = 'none';
+      document.getElementById('presence-activity').style.display = 'none';
+    }
+  }
+}
+
+function connectLanyard() {
+  const ws = new WebSocket('wss://api.lanyard.rest/socket');
+  let hb;
+  ws.onmessage = e => {
+    const msg = JSON.parse(e.data);
+    if(msg.op === 1) {
+      hb = setInterval(() => ws.readyState === 1 && ws.send(JSON.stringify({op:3})), msg.d.heartbeat_interval);
+      ws.send(JSON.stringify({op:2, d:{subscribe_to_id: DISCORD_ID}}));
+    }
+    if(msg.op === 0) applyLanyard(msg.d);
+  };
+  ws.onclose = () => { clearInterval(hb); setTimeout(connectLanyard, 4000); };
+  ws.onerror = () => ws.close();
+}
+connectLanyard();
+
+// =========================================
+// GITHUB API
+// =========================================
+async function loadGitHub() {
+  try {
+    const [userRes, repoRes] = await Promise.all([
+      fetch('https://api.github.com/users/Rafie-kun'),
+      fetch('https://api.github.com/users/Rafie-kun/repos?sort=stars&per_page=9')
+    ]);
+    const user = await userRes.json();
+    const repos = await repoRes.json();
+
+    document.getElementById('stat-repos').textContent = user.public_repos ?? '—';
+    document.getElementById('stat-followers').textContent = user.followers ?? '—';
+    document.getElementById('gh-repos').textContent = user.public_repos ?? '—';
+    document.getElementById('gh-followers').textContent = user.followers ?? '—';
+
+    const totalStars = Array.isArray(repos) ? repos.reduce((a,r) => a + (r.stargazers_count||0), 0) : 0;
+    document.getElementById('gh-stars').textContent = totalStars;
+    document.getElementById('stat-stars').textContent = totalStars;
+
+    const langColors = {
+      JavaScript:'#F7DF1E', TypeScript:'#3178C6', Python:'#3572A5',
+      HTML:'#E44B23', CSS:'#563D7C', Rust:'#DEA584', Go:'#00ADD8',
+      Java:'#B07219', 'C++':'#F34B7D', Ruby:'#CC342D', PHP:'#777BB4',
+      Shell:'#89E051', Lua:'#000080',
+    };
+    const grid = document.getElementById('repo-grid');
+    if(!Array.isArray(repos) || repos.length === 0) {
+      grid.innerHTML = '<div class="repo-slot" style="cursor:default"><div class="repo-name">No public repos yet!</div></div>';
+      return;
+    }
+    grid.innerHTML = repos.map(r => `
+      <a class="repo-slot" href="${r.html_url}" target="_blank" onclick="snd('click')" data-tip="${r.name}">
+        <div class="repo-name">${r.name}</div>
+        <div class="repo-desc">${r.description || 'No description'}</div>
+        <div class="repo-meta">
+          ${r.language ? `<span style="background:${langColors[r.language]||'#aaa'}" class="lang-dot"></span>${r.language}` : ''}
+          <span>⭐ ${r.stargazers_count}</span>
+          <span>🍴 ${r.forks_count}</span>
+        </div>
+      </a>
+    `).join('');
+
+    document.querySelectorAll('.repo-slot').forEach(el => {
+      el.addEventListener('mouseenter', () => snd('hover'));
+      if(el.dataset.tip) {
+        el.addEventListener('mouseenter', () => { tipEl.textContent = el.dataset.tip; tipEl.style.display='block'; });
+        el.addEventListener('mousemove', e => { tipEl.style.left=(e.clientX+14)+'px'; tipEl.style.top=(e.clientY+14)+'px'; });
+        el.addEventListener('mouseleave', () => tipEl.style.display='none');
+      }
+    });
+  } catch(e) {
+    document.getElementById('repo-grid').innerHTML = '<div class="repo-slot" style="cursor:default;opacity:0.5"><div class="repo-name">Failed to load</div><div class="repo-desc">Check back later</div></div>';
+  }
+}
+loadGitHub();
+
+// =========================================
+// LIBRARY TABS
+// =========================================
+const tabMap = { games:'tab-games', music:'tab-music', proj:'tab-proj', read:'tab-read' };
+function switchTab(el, id) {
+  snd('tab');
+  document.querySelectorAll('.inv-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  Object.values(tabMap).forEach(tid => {
+    document.getElementById(tid).style.display = 'none';
+  });
+  document.getElementById('tab-'+id).style.display = 'grid';
+}
+
+// =========================================
+// BACKGROUND IMAGE SLOT
+// =========================================
+function setBg(url) {
+  const el = document.getElementById('panorama-custom');
+  el.style.backgroundImage = `url('${url}')`;
+  el.classList.add('loaded');
+}
+const savedBg = localStorage.getItem('reef-bg');
+if(savedBg) setBg(savedBg);
+
+// =========================================
+// SCROLL ANIMATIONS
+// =========================================
+const fadeEls = document.querySelectorAll('section');
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+  });
+}, {threshold:0.08});
+fadeEls.forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+  fadeObs.observe(el);
+});
+document.getElementById('home').style.opacity = '1';
+document.getElementById('home').style.transform = 'translateY(0)';
+</script>
+</body>
+</html>

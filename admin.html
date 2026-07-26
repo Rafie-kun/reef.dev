@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REEF — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root {
+  --stone:#8B8B8B; --stone-light:#C6C6C6; --stone-dark:#555;
+  --xp:#7EFF15; --yellow:#FFFF55; --gold:#FFD700;
+  --panel:rgba(0,0,0,0.85); --text:#E0E0E0;
+  --red:#FF5555; --green:#55FF55;
+  --input-bg:#1a1a1a; --sidebar:#1e1e1e; --bg:#111;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'VT323',monospace;font-size:18px;color:var(--text);background:var(--bg);display:flex;flex-direction:column;}
+::selection{background:var(--xp);color:#000}
+
+#login-screen {
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;gap:20px;
+  background: linear-gradient(180deg,#0a0a1a 0%,#1a0a2e 100%);
+}
+.login-box {
+  background:rgba(0,0,0,0.88);
+  border:3px solid var(--stone-dark);
+  box-shadow:4px 4px 0 #000, inset 1px 1px 0 rgba(255,255,255,0.05);
+  padding:36px 40px;
+  width:100%;max-width:380px;
+  display:flex;flex-direction:column;gap:18px;
+  text-align:center;
+}
+.login-title{
+  font-family:'Press Start 2P',monospace;font-size:11px;color:var(--yellow);
+  text-shadow:2px 2px 0 #3F3F00;margin-bottom:6px;
+}
+.login-sub{font-family:'VT323',monospace;font-size:18px;color:#888;margin-bottom:4px;}
+.mc-input{
+  background:var(--input-bg);border:2px solid var(--stone-dark);
+  color:var(--text);font-family:'VT323',monospace;font-size:20px;
+  padding:10px 14px;width:100%;outline:none;
+  transition:border-color 0.1s;
+}
+.mc-input:focus{border-color:var(--xp);box-shadow:0 0 8px rgba(126,255,21,0.2);}
+.mc-btn{
+  font-family:'Press Start 2P',monospace;font-size:9px;color:#E0E0E0;
+  background:var(--stone);border:none;outline:none;cursor:pointer;
+  padding:11px 22px;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  text-decoration:none;width:100%;
+  box-shadow:inset -3px -5px 0 var(--stone-dark),inset 3px 3px 0 var(--stone-light),0 4px 0 #111;
+  transition:filter 0.05s steps(1),transform 0.05s steps(1);
+}
+.mc-btn:hover{filter:brightness(1.3);color:var(--yellow);}
+.mc-btn:active{transform:translateY(3px);box-shadow:inset 3px 5px 0 var(--stone-dark),inset -3px -3px 0 var(--stone-light);}
+.mc-btn.green{background:#2a6b2a;box-shadow:inset -3px -5px 0 #1a3a1a,inset 3px 3px 0 #4a9b4a,0 4px 0 #111;}
+.mc-btn.red{background:#6b2a2a;box-shadow:inset -3px -5px 0 #3a1a1a,inset 3px 3px 0 #9b4a4a,0 4px 0 #111;}
+#login-error{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--red);display:none;padding:8px;}
+
+#dashboard{display:none;flex:1;flex-direction:row;height:100vh;overflow:hidden;}
+
+#sidebar{
+  width:210px;min-width:210px;background:var(--sidebar);
+  border-right:3px solid var(--stone-dark);
+  display:flex;flex-direction:column;overflow-y:auto;
+}
+.sidebar-logo{
+  font-family:'Press Start 2P',monospace;font-size:8px;color:var(--yellow);
+  text-shadow:1px 1px 0 #3F3F00;padding:18px 16px 14px;
+  border-bottom:2px solid var(--stone-dark);
+}
+.sidebar-logo span{color:#888;font-size:6px;display:block;margin-top:6px;}
+.nav-item{
+  display:block;padding:13px 18px;font-family:'Press Start 2P',monospace;font-size:6px;
+  color:#999;text-decoration:none;border-left:4px solid transparent;
+  cursor:pointer;transition:all 0.05s steps(1);user-select:none;
+}
+.nav-item:hover{background:#2a2a2a;color:var(--yellow);}
+.nav-item.active{background:#252525;border-left-color:var(--xp);color:var(--yellow);}
+.nav-item .ni{margin-right:8px;font-size:14px;}
+.sidebar-logout{
+  margin-top:auto;padding:14px 18px;border-top:2px solid var(--stone-dark);
+  font-family:'Press Start 2P',monospace;font-size:6px;color:var(--red);
+  cursor:pointer;display:flex;align-items:center;gap:8px;
+}
+.sidebar-logout:hover{background:#2a1a1a;}
+
+#main{flex:1;overflow-y:auto;padding:28px 32px;background:#141414;}
+
+.panel-title{
+  font-family:'Press Start 2P',monospace;font-size:10px;color:var(--yellow);
+  text-shadow:1px 1px 0 #3F3F00;margin-bottom:22px;padding-bottom:12px;
+  border-bottom:2px solid var(--stone-dark);
+  display:flex;align-items:center;gap:10px;
+}
+
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:18px;}
+.field label{font-family:'Press Start 2P',monospace;font-size:6px;color:#888;}
+.mc-input{
+  background:var(--input-bg);border:2px solid var(--stone-dark);
+  color:var(--text);font-family:'VT323',monospace;font-size:20px;
+  padding:9px 12px;width:100%;outline:none;
+  transition:border-color 0.1s;
+}
+.mc-input:focus{border-color:var(--xp);box-shadow:0 0 6px rgba(126,255,21,0.15);}
+textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
+
+.save-bar{display:flex;align-items:center;gap:14px;margin-top:24px;}
+.save-msg{font-family:'Press Start 2P',monospace;font-size:7px;display:none;padding:6px 12px;}
+.save-msg.ok{color:var(--green);}
+.save-msg.err{color:var(--red);}
+
+.card-list{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.card-item{
+  background:#1e1e1e;border:2px solid var(--stone-dark);padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.card-item .card-drag{cursor:grab;color:#555;font-size:18px;user-select:none;}
+.card-item .card-content{flex:1;display:flex;flex-direction:column;gap:6px;}
+.card-item .card-name{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text);}
+.card-item .card-url{font-size:16px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.card-item .card-actions{display:flex;gap:6px;flex-shrink:0;}
+.btn-sm{
+  font-family:'Press Start 2P',monospace;font-size:6px;padding:6px 10px;
+  cursor:pointer;border:none;outline:none;
+}
+.btn-sm.edit{background:#2a4a2a;color:var(--green);}
+.btn-sm.edit:hover{background:#3a6a3a;}
+.btn-sm.del{background:#4a1a1a;color:var(--red);}
+.btn-sm.del:hover{background:#6a2a2a;}
+
+.badge-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+.badge-slot{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:10px;background:#1e1e1e;border:2px solid var(--stone-dark);
+}
+.badge-slot img{width:88px;height:31px;image-rendering:pixelated;border:1px solid #555;}
+.badge-placeholder-box{
+  width:88px;height:31px;background:repeating-conic-gradient(#100020 0% 25%,#200040 0% 50%) 0 0/10px 10px;
+  border:1px solid #555;display:flex;align-items:center;justify-content:center;
+  font-family:'Press Start 2P',monospace;font-size:5px;color:#666;
+}
+.badge-slot .badge-name{font-family:'Press Start 2P',monospace;font-size:5px;color:#888;}
+
+.tab-bar{display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--stone-dark);}
+.tab-btn{
+  font-family:'Press Start 2P',monospace;font-size:6px;padding:9px 14px;
+  background:#1e1e1e;border-right:1px solid var(--stone-dark);color:#666;cursor:pointer;
+}
+.tab-btn.active{background:#252525;color:var(--yellow);border-bottom:2px solid #252525;margin-bottom:-2px;}
+.tab-content{display:none;padding-top:20px;}
+.tab-content.active{display:block;}
+
+#toast{
+  position:fixed;top:20px;right:20px;z-index:9999;
+  font-family:'Press Start 2P',monospace;font-size:7px;padding:12px 18px;
+  background:#000;border:2px solid var(--stone-dark);
+  display:none;
+}
+#toast.ok{border-color:var(--green);color:var(--green);}
+#toast.err{border-color:var(--red);color:var(--red);}
+
+.phrase-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.phrase-pill{
+  background:#1e1e1e;border:2px solid var(--stone-dark);padding:7px 12px;
+  font-family:'VT323',monospace;font-size:18px;color:var(--text);
+  display:flex;align-items:center;gap:8px;
+}
+.phrase-pill .rm{cursor:pointer;color:var(--red);font-size:16px;}
+.phrase-pill .rm:hover{color:#ff8888;}
+
+.toggle-wrap{display:flex;align-items:center;gap:14px;}
+.toggle{
+  width:54px;height:26px;background:#2a2a2a;border:2px solid var(--stone-dark);
+  cursor:pointer;position:relative;transition:background 0.1s;
+}
+.toggle.on{background:#1a4a1a;border-color:var(--xp);}
+.toggle::after{
+  content:'';position:absolute;top:3px;left:3px;
+  width:16px;height:16px;background:#555;
+  transition:transform 0.1s steps(1),background 0.1s;
+}
+.toggle.on::after{transform:translateX(28px);background:var(--xp);}
+
+.preview-bar{
+  background:#1a2a1a;border:2px solid #2a4a2a;padding:12px 18px;
+  margin-bottom:22px;display:flex;align-items:center;gap:14px;
+  font-family:'Press Start 2P',monospace;font-size:7px;color:#4a8a4a;
+}
+
+@media(max-width:680px){
+  #sidebar{display:none;}
+  #main{padding:16px;}
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-title">⚙ REEF ADMIN</div>
+    <div class="login-sub">Authorized personnel only.</div>
+    <input class="mc-input" type="password" id="pw-input" placeholder="Password..." autocomplete="current-password">
+    <div id="login-error">❌ Wrong password. Try again.</div>
+    <button class="mc-btn" onclick="doLogin()">▶ Enter</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+  <nav id="sidebar">
+    <div class="sidebar-logo">⚙ REEF ADMIN<span>CMS Dashboard</span></div>
+    <div class="nav-item active" onclick="showPanel('bio')"><span class="ni">📖</span>Bio &amp; About</div>
+    <div class="nav-item" onclick="showPanel('socials')"><span class="ni">🔗</span>Social Links</div>
+    <div class="nav-item" onclick="showPanel('library')"><span class="ni">📦</span>Library</div>
+    <div class="nav-item" onclick="showPanel('friends')"><span class="ni">👾</span>Friends / Badges</div>
+    <div class="nav-item" onclick="showPanel('projects')"><span class="ni">⚔️</span>Projects</div>
+    <div class="nav-item" onclick="showPanel('phrases')"><span class="ni">💬</span>Easter Eggs</div>
+    <div class="nav-item" onclick="showPanel('appearance')"><span class="ni">🎨</span>Appearance</div>
+    <div class="nav-item" onclick="showPanel('settings')"><span class="ni">⚙</span>Settings</div>
+    <div class="sidebar-logout" onclick="doLogout()">🚪 Logout</div>
+  </nav>
+
+  <main id="main">
+
+    <div class="preview-bar">
+      ✅ Changes save to localStorage instantly.
+      <a href="/" target="_blank" class="mc-btn" style="margin-left:auto;width:auto;padding:7px 14px;font-size:6px;">👁 Preview Site</a>
+    </div>
+
+    <!-- BIO -->
+    <div id="panel-bio" class="panel">
+      <div class="panel-title">📖 Bio &amp; About</div>
+      <div class="field">
+        <label>Display Name</label>
+        <input class="mc-input" id="cfg-name" type="text" placeholder="Reef">
+      </div>
+      <div class="field">
+        <label>Bio Text (shown in the book)</label>
+        <textarea class="mc-input" id="cfg-bio" rows="5" placeholder="Hey, I'm Reef..."></textarea>
+      </div>
+      <div class="field">
+        <label>Email Address</label>
+        <input class="mc-input" id="cfg-email" type="email" placeholder="reef@example.com">
+      </div>
+      <div class="save-bar">
+        <button class="mc-btn green" onclick="saveBio()">💾 Save Bio</button>
+        <span class="save-msg" id="bio-msg"></span>
+      </div>
+    </div>
+
+    <!-- SOCIALS -->
+    <div id="panel-socials" class="panel" style="display:none">
+      <div class="panel-title">🔗 Social Links</div>
+      <div class="field"><label>Discord User ID (for link)</label><input class="mc-input" id="cfg-discord" value="744808879036170272"></div>
+      <div class="field"><label>GitHub Username</label><input class="mc-input" id="cfg-github" placeholder="Rafie-kun"></div>
+      <div class="field"><label>Twitter / X URL</label><input class="mc-input" id="cfg-twitter" placeholder="https://twitter.com/..."></div>
+      <div class="field"><label>Instagram URL</label><input class="mc-input" id="cfg-instagram" placeholder="https://instagram.com/..."></div>
+      <div class="field"><label>Spotify Profile URL</label><input class="mc-input" id="cfg-spotify" placeholder="https://open.spotify.com/user/..."></div>
+      <div style="margin-bottom:14px">
+        <div class="panel-title" style="font-size:7px;margin-top:10px">Extra Socials</div>
+        <div class="card-list" id="extra-socials-list"></div>
+        <button class="mc-btn" onclick="addExtraSocial()" style="width:auto;padding:8px 16px">+ Add Social</button>
+      </div>
+      <div class="save-bar">
+        <button class="mc-btn green" onclick="saveSocials()">💾 Save Socials</button>
+        <span class="save-msg" id="socials-msg"></span>
+      </div>
+    </div>
+
+    <!-- LIBRARY -->
+    <div id="panel-library" class="panel" style="display:none">
+      <div class="panel-title">📦 Library Items</div>
+      <div class="tab-bar">
+        <div class="tab-btn active" onclick="libTab(this,'lib-games')">🎮 Games</div>
+        <div class="tab-btn" onclick="libTab(this,'lib-music')">🎵 Music</div>
+        <div class="tab-btn" onclick="libTab(this,'lib-proj')">⚔️ Projects</div>
+        <div class="tab-btn" onclick="libTab(this,'lib-read')">📚 Reading</div>
+      </div>
+      <div id="lib-games" class="tab-content active"><div class="card-list" id="lib-games-list"></div><button class="mc-btn" onclick="addLibItem('games')" style="width:auto;padding:8px 14px">+ Add Game</button></div>
+      <div id="lib-music" class="tab-content"><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
+      <div id="lib-proj"  class="tab-content"><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
+      <div id="lib-read"  class="tab-content"><div class="card-list" id="lib-read-list"></div><button class="mc-btn" onclick="addLibItem('read')" style="width:auto;padding:8px 14px">+ Add Item</button></div>
+      <div class="save-bar" style="margin-top:20px">
+        <button class="mc-btn green" onclick="saveLibrary()">💾 Save Library</button>
+        <span class="save-msg" id="lib-msg"></span>
+      </div>
+    </div>
+
+    <!-- FRIENDS -->
+    <div id="panel-friends" class="panel" style="display:none">
+      <div class="panel-title">👾 Friends &amp; 88x31 Badges</div>
+      <p style="font-family:'VT323';font-size:18px;color:#888;margin-bottom:18px;">
+        88x31 badges are 88px wide × 31px tall PNG images. Enter your friend's site URL and the image URL of their badge.
+        If they don't have one, use a placeholder or make one at <a href="https://88x31.netlify.app" target="_blank" style="color:var(--diamond)">88x31.netlify.app</a>.
+      </p>
+      <div class="badge-grid" id="badge-grid"></div>
+      <button class="mc-btn" onclick="addBadge()" style="width:auto;padding:8px 16px">+ Add Badge</button>
+      <div class="save-bar" style="margin-top:20px">
+        <button class="mc-btn green" onclick="saveFriends()">💾 Save Badges</button>
+        <span class="save-msg" id="friends-msg"></span>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div id="panel-projects" class="panel" style="display:none">
+      <div class="panel-title">⚔️ Projects</div>
+      <div class="card-list" id="projects-list"></div>
+      <button class="mc-btn" onclick="addProject()" style="width:auto;padding:8px 14px">+ Add Project</button>
+      <div class="save-bar" style="margin-top:18px">
+        <button class="mc-btn green" onclick="saveProjects()">💾 Save Projects</button>
+        <span class="save-msg" id="proj-msg"></span>
+      </div>
+    </div>
+
+    <!-- PHRASES -->
+    <div id="panel-phrases" class="panel" style="display:none">
+      <div class="panel-title">💬 "Also try..." Easter Egg Phrases</div>
+      <div class="phrase-list" id="phrase-list"></div>
+      <div class="field" style="margin-top:10px">
+        <label>Add new phrase</label>
+        <div style="display:flex;gap:10px">
+          <input class="mc-input" id="new-phrase" placeholder="Also try ...">
+          <button class="mc-btn" onclick="addPhrase()" style="width:auto;padding:8px 14px">Add</button>
+        </div>
+      </div>
+      <div class="save-bar">
+        <button class="mc-btn green" onclick="savePhrases()">💾 Save Phrases</button>
+        <span class="save-msg" id="phrases-msg"></span>
+      </div>
+    </div>
+
+    <!-- APPEARANCE -->
+    <div id="panel-appearance" class="panel" style="display:none">
+      <div class="panel-title">🎨 Appearance</div>
+      <div class="field">
+        <label>Background Image URL (overlays panorama at 35% opacity)</label>
+        <input class="mc-input" id="cfg-bg" placeholder="https://... (leave blank for default panorama)">
+        <small style="color:#666;font-family:'VT323';font-size:16px;">Tip: Use a Minecraft screenshot. Paste any direct image URL.</small>
+      </div>
+      <div class="save-bar">
+        <button class="mc-btn green" onclick="saveAppearance()">💾 Apply Background</button>
+        <span class="save-msg" id="appearance-msg"></span>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="panel-settings" class="panel" style="display:none">
+      <div class="panel-title">⚙ Settings</div>
+      <div class="field">
+        <label>Default Sound On/Off for visitors</label>
+        <div class="toggle-wrap">
+          <div class="toggle on" id="snd-toggle" onclick="toggleSnd()"></div>
+          <span id="snd-label" style="font-family:'Press Start 2P';font-size:7px;color:var(--xp)">Sound ON</span>
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Change Admin Password</label>
+        <input class="mc-input" id="new-pw" type="password" placeholder="New password...">
+        <input class="mc-input" id="new-pw2" type="password" placeholder="Confirm..." style="margin-top:6px">
+      </div>
+      <div class="save-bar">
+        <button class="mc-btn green" onclick="saveSettings()">💾 Save Settings</button>
+        <span class="save-msg" id="settings-msg"></span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ============================================
+// STORAGE — localStorage based CMS
+// ============================================
+const ADMIN_PW_KEY = 'reef-admin-pw';
+const DATA_KEY = 'reef-cms';
+const SESSION_KEY = 'reef-admin-session';
+
+const DEFAULT_DATA = {
+  name: 'Reef',
+  bio: "Hey, I'm Reef. I build things, break things, and occasionally sleep. Welcome to my little corner of the internet.",
+  email: 'reef@example.com',
+  socials: {
+    discord: '744808879036170272',
+    github: 'Rafie-kun',
+    twitter: '',
+    instagram: '',
+    spotify: '',
+    extra: [],
+  },
+  library: { games:[], music:[], proj:[], read:[] },
+  friends: [],
+  projects: [],
+  phrases: [
+    'Also try touching grass!',
+    'Also try sleeping!',
+    'Also try GitHub!',
+    'Also try talking to Reef!',
+    'Also try Limbo!',
+    'Also try not mining at night!',
+    'Also try clicking things!',
+    'Also try eating something!',
+  ],
+  bg: '',
+  soundDefault: true,
+};
+
+function loadData() {
+  try { return JSON.parse(localStorage.getItem(DATA_KEY)) || {...DEFAULT_DATA}; }
+  catch { return {...DEFAULT_DATA}; }
+}
+function saveData(d) { localStorage.setItem(DATA_KEY, JSON.stringify(d)); }
+
+// ============================================
+// AUTH
+// ============================================
+const DEFAULT_PW = 'reef2026';
+
+function getAdminPw() {
+  return localStorage.getItem(ADMIN_PW_KEY) || DEFAULT_PW;
+}
+
+function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  if (pw === getAdminPw()) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'flex';
+    loadAllPanels();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  location.reload();
+}
+
+document.getElementById('pw-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+if (sessionStorage.getItem(SESSION_KEY)) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'flex';
+  setTimeout(loadAllPanels, 0);
+}
+
+// ============================================
+// PANEL SWITCHING
+// ============================================
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).style.display = 'block';
+  event.currentTarget.classList.add('active');
+}
+
+// ============================================
+// TOAST
+// ============================================
+let toastTimer;
+function toast(msg, ok=true) {
+  const t = document.getElementById('toast');
+  t.textContent = (ok ? '✅ ' : '❌ ') + msg;
+  t.className = ok ? 'ok' : 'err';
+  t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.style.display='none', 2500);
+}
+
+// ============================================
+// LOAD ALL PANELS
+// ============================================
+function loadAllPanels() {
+  const d = loadData();
+  document.getElementById('cfg-name').value = d.name || '';
+  document.getElementById('cfg-bio').value = d.bio || '';
+  document.getElementById('cfg-email').value = d.email || '';
+  document.getElementById('cfg-discord').value = d.socials?.discord || '';
+  document.getElementById('cfg-github').value = d.socials?.github || '';
+  document.getElementById('cfg-twitter').value = d.socials?.twitter || '';
+  document.getElementById('cfg-instagram').value = d.socials?.instagram || '';
+  document.getElementById('cfg-spotify').value = d.socials?.spotify || '';
+  renderExtraSocials(d.socials?.extra || []);
+  ['games','music','proj','read'].forEach(tab => renderLibList(tab, d.library?.[tab] || []));
+  renderBadges(d.friends || []);
+  renderProjects(d.projects || []);
+  renderPhrases(d.phrases || DEFAULT_DATA.phrases);
+  document.getElementById('cfg-bg').value = d.bg || '';
+  const soundOn = d.soundDefault !== false;
+  const tog = document.getElementById('snd-toggle');
+  tog.className = 'toggle' + (soundOn ? ' on' : '');
+  document.getElementById('snd-label').textContent = soundOn ? 'Sound ON' : 'Sound OFF';
+  document.getElementById('snd-label').style.color = soundOn ? 'var(--xp)' : '#888';
+}
+
+// ============================================
+// BIO
+// ============================================
+function saveBio() {
+  const d = loadData();
+  d.name = document.getElementById('cfg-name').value;
+  d.bio = document.getElementById('cfg-bio').value;
+  d.email = document.getElementById('cfg-email').value;
+  saveData(d);
+  localStorage.setItem('reef-bio', d.bio);
+  localStorage.setItem('reef-name', d.name);
+  localStorage.setItem('reef-email', d.email);
+  toast('Bio saved!');
+}
+
+// ============================================
+// SOCIALS
+// ============================================
+let extraSocials = [];
+function renderExtraSocials(list) {
+  extraSocials = list;
+  const el = document.getElementById('extra-socials-list');
+  el.innerHTML = list.map((s,i) => `
+    <div class="card-item">
+      <div class="card-content">
+        <div class="card-name">${s.icon||'🔗'} ${s.name||'Social'}</div>
+        <input class="mc-input" value="${s.url||''}" oninput="extraSocials[${i}].url=this.value" placeholder="URL">
+      </div>
+      <div class="card-actions">
+        <button class="btn-sm del" onclick="rmExtraSocial(${i})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+function addExtraSocial() {
+  const name = prompt('Social name (e.g. TikTok):'); if(!name) return;
+  const icon = prompt('Emoji icon (e.g. 🎵):') || '🔗';
+  const url = prompt('URL:') || '';
+  extraSocials.push({name, icon, url});
+  renderExtraSocials(extraSocials);
+}
+function rmExtraSocial(i) { extraSocials.splice(i,1); renderExtraSocials(extraSocials); }
+function saveSocials() {
+  const d = loadData();
+  d.socials = {
+    discord: document.getElementById('cfg-discord').value,
+    github: document.getElementById('cfg-github').value,
+    twitter: document.getElementById('cfg-twitter').value,
+    instagram: document.getElementById('cfg-instagram').value,
+    spotify: document.getElementById('cfg-spotify').value,
+    extra: extraSocials,
+  };
+  saveData(d);
+  localStorage.setItem('reef-socials', JSON.stringify(d.socials));
+  toast('Socials saved!');
+}
+
+// ============================================
+// LIBRARY
+// ============================================
+let libData = {games:[],music:[],proj:[],read:[]};
+function renderLibList(tab, list) {
+  libData[tab] = list;
+  const el = document.getElementById('lib-'+tab+'-list');
+  if(!el) return;
+  el.innerHTML = list.map((item,i) => `
+    <div class="card-item">
+      <div class="card-content">
+        <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Emoji icon" style="width:60px">
+        <input class="mc-input" value="${item.name||''}" oninput="libData['${tab}'][${i}].name=this.value" placeholder="Name">
+        <input class="mc-input" value="${item.url||''}" oninput="libData['${tab}'][${i}].url=this.value" placeholder="URL (optional)">
+      </div>
+      <div class="card-actions">
+        <button class="btn-sm del" onclick="rmLibItem('${tab}',${i})">✕</button>
+      </div>
+    </div>
+  `).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">Nothing here yet.</div>';
+}
+function addLibItem(tab) {
+  libData[tab].push({icon:'❓',name:'New Item',url:''});
+  renderLibList(tab, libData[tab]);
+}
+function rmLibItem(tab, i) { libData[tab].splice(i,1); renderLibList(tab, libData[tab]); }
+function libTab(el, id) {
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+function saveLibrary() {
+  const d = loadData();
+  d.library = {...libData};
+  saveData(d);
+  localStorage.setItem('reef-library', JSON.stringify(d.library));
+  toast('Library saved!');
+}
+
+// ============================================
+// FRIENDS / BADGES
+// ============================================
+let friendsData = [];
+function renderBadges(list) {
+  friendsData = list;
+  const el = document.getElementById('badge-grid');
+  el.innerHTML = list.map((b,i) => `
+    <div class="badge-slot">
+      ${b.img
+        ? `<img src="${b.img}" alt="${b.name||''}" onerror="this.style.display='none'">`
+        : '<div class="badge-placeholder-box">???</div>'
+      }
+      <div class="badge-name">${b.name||'Friend'}</div>
+      <input class="mc-input" value="${b.name||''}" oninput="friendsData[${i}].name=this.value" placeholder="Name" style="width:110px;font-size:14px;padding:4px 6px">
+      <input class="mc-input" value="${b.img||''}" oninput="friendsData[${i}].img=this.value" placeholder="Badge image URL" style="width:110px;font-size:13px;padding:4px 6px">
+      <input class="mc-input" value="${b.url||''}" oninput="friendsData[${i}].url=this.value" placeholder="Site URL" style="width:110px;font-size:13px;padding:4px 6px">
+      <button class="btn-sm del" onclick="rmBadge(${i})">✕ Remove</button>
+    </div>
+  `).join('');
+}
+function addBadge() {
+  friendsData.push({name:'',img:'',url:''});
+  renderBadges(friendsData);
+}
+function rmBadge(i) { friendsData.splice(i,1); renderBadges(friendsData); }
+function saveFriends() {
+  const d = loadData();
+  d.friends = friendsData;
+  saveData(d);
+  localStorage.setItem('reef-friends', JSON.stringify(d.friends));
+  toast('Badges saved!');
+}
+
+// ============================================
+// PROJECTS
+// ============================================
+let projectsData = [];
+function renderProjects(list) {
+  projectsData = list;
+  const el = document.getElementById('projects-list');
+  el.innerHTML = list.map((p,i) => `
+    <div class="card-item">
+      <div class="card-content">
+        <input class="mc-input" value="${p.name||''}" oninput="projectsData[${i}].name=this.value" placeholder="Project name">
+        <input class="mc-input" value="${p.desc||''}" oninput="projectsData[${i}].desc=this.value" placeholder="Description">
+        <input class="mc-input" value="${p.url||''}" oninput="projectsData[${i}].url=this.value" placeholder="Live URL">
+        <input class="mc-input" value="${p.repo||''}" oninput="projectsData[${i}].repo=this.value" placeholder="Repo URL">
+        <input class="mc-input" value="${p.tags||''}" oninput="projectsData[${i}].tags=this.value" placeholder="Tags (comma separated)">
+      </div>
+      <div class="card-actions">
+        <button class="btn-sm del" onclick="rmProject(${i})">✕</button>
+      </div>
+    </div>
+  `).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">No projects yet.</div>';
+}
+function addProject() { projectsData.push({name:'',desc:'',url:'',repo:'',tags:''}); renderProjects(projectsData); }
+function rmProject(i) { projectsData.splice(i,1); renderProjects(projectsData); }
+function saveProjects() {
+  const d = loadData();
+  d.projects = projectsData;
+  saveData(d);
+  localStorage.setItem('reef-projects', JSON.stringify(d.projects));
+  toast('Projects saved!');
+}
+
+// ============================================
+// PHRASES
+// ============================================
+let phrasesData = [];
+function renderPhrases(list) {
+  phrasesData = list;
+  document.getElementById('phrase-list').innerHTML = list.map((p,i) => `
+    <div class="phrase-pill">${p}<span class="rm" onclick="rmPhrase(${i})">✕</span></div>
+  `).join('');
+}
+function addPhrase() {
+  const v = document.getElementById('new-phrase').value.trim();
+  if(!v) return;
+  phrasesData.push(v);
+  renderPhrases(phrasesData);
+  document.getElementById('new-phrase').value = '';
+}
+function rmPhrase(i) { phrasesData.splice(i,1); renderPhrases(phrasesData); }
+function savePhrases() {
+  const d = loadData();
+  d.phrases = phrasesData;
+  saveData(d);
+  localStorage.setItem('reef-phrases', JSON.stringify(d.phrases));
+  toast('Phrases saved!');
+}
+document.getElementById('new-phrase').addEventListener('keydown', e => { if(e.key==='Enter') addPhrase(); });
+
+// ============================================
+// APPEARANCE
+// ============================================
+function saveAppearance() {
+  const d = loadData();
+  d.bg = document.getElementById('cfg-bg').value.trim();
+  saveData(d);
+  localStorage.setItem('reef-bg', d.bg);
+  toast('Background saved! Reload the site to see it.');
+}
+
+// ============================================
+// SETTINGS
+// ============================================
+function toggleSnd() {
+  const tog = document.getElementById('snd-toggle');
+  const on = !tog.classList.contains('on');
+  tog.className = 'toggle' + (on ? ' on' : '');
+  document.getElementById('snd-label').textContent = on ? 'Sound ON' : 'Sound OFF';
+  document.getElementById('snd-label').style.color = on ? 'var(--xp)' : '#888';
+}
+function saveSettings() {
+  const d = loadData();
+  d.soundDefault = document.getElementById('snd-toggle').classList.contains('on');
+  const newPw = document.getElementById('new-pw').value;
+  const newPw2 = document.getElementById('new-pw2').value;
+  if(newPw) {
+    if(newPw !== newPw2) { toast('Passwords do not match!', false); return; }
+    if(newPw.length < 6) { toast('Password too short (min 6 chars)', false); return; }
+    localStorage.setItem(ADMIN_PW_KEY, newPw);
+    document.getElementById('new-pw').value = '';
+    document.getElementById('new-pw2').value = '';
+  }
+  saveData(d);
+  localStorage.setItem('mc-muted', d.soundDefault ? 'false' : 'true');
+  toast('Settings saved!');
+}
+</script>
+</body>
+</html>
