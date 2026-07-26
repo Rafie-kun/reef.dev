@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useLanyard } from '@/lib/lanyard';
 import McIcon from './McIcon';
+import { audio } from '@/lib/audio';
 
 const STATUS_LABEL: Record<string, string> = { online:'Online', idle:'Idle', dnd:'Do Not Disturb', offline:'Offline' };
 
@@ -32,21 +33,18 @@ export default function DiscordWidget() {
   return (
     <section className="mc-section" style={{ maxWidth: 500 }}>
       <h2 className="mc-section-title"><McIcon name="mc-discord" size={18} /> Presence</h2>
-      <div className="mc-panel">
+      <div className="mc-presence-card">
         {!connected && (
           <div style={{ background: '#B8860B', padding: '4px 12px', fontFamily: "'VT323', monospace", fontSize: 16, color: '#FFF', marginBottom: 12, textAlign: 'center' }}>
             Reconnecting...
           </div>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}
+          onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
           <div style={{ width: 64, height: 64, position: 'relative' }}>
-            <img src={profile.avatarUrl || '/api/discord'} alt="" className="mc-avatar" style={{ width: 64, height: 64 }} />
-            <div style={{
-              position: 'absolute', bottom: 2, right: 2, width: 14, height: 14,
-              border: '2px solid #000', imageRendering: 'pixelated',
-              background: status === 'online' ? '#43B581' : status === 'idle' ? '#FAA61A' : status === 'dnd' ? '#F04747' : '#747F8D',
-            }} />
+            <img src={profile.avatarUrl || '/api/discord'} alt="" style={{ width: 64, height: 64, imageRendering: 'pixelated', border: '4px solid var(--mc-stone)' }} />
+            <div className={`mc-status-dot ${status}`} />
           </div>
           <div>
             <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 11, color: '#FFF' }}>{name}</div>

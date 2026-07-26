@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import McIcon from './McIcon';
+import { audio } from '@/lib/audio';
 
 export default function ContactSection() {
   const [email, setEmail] = useState('reef@example.com');
@@ -15,13 +16,16 @@ export default function ContactSection() {
       <h2 className="mc-section-title" style={{justifyContent:'center'}}><McIcon name="mc-email" size={18} /> Contact / Connect</h2>
       <div className="mc-panel" style={{padding:32}}>
         <div style={{display:'flex',flexDirection:'column',gap:12,alignItems:'center'}}>
-          <a href="https://discord.com/users/744808879036170272" target="_blank" rel="noopener noreferrer" className="mc-btn">
+          <a href="https://discord.com/users/744808879036170272" target="_blank" rel="noopener noreferrer" className="mc-btn"
+            onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
             DM on Discord
           </a>
-          <a href={`mailto:${email}`} className="mc-btn">
+          <a href={`mailto:${email}`} className="mc-btn"
+            onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
             Email me
           </a>
-          <a href="https://github.com/Rafie-kun" target="_blank" rel="noopener noreferrer" className="mc-btn">
+          <a href="https://github.com/Rafie-kun" target="_blank" rel="noopener noreferrer" className="mc-btn"
+            onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
             Follow on GitHub
           </a>
         </div>

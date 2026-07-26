@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import McIcon from './McIcon';
+import { audio } from '@/lib/audio';
 
 export default function AboutSection() {
   const [bio, setBio] = useState('');
@@ -28,7 +29,7 @@ export default function AboutSection() {
       <div className="mc-panel">
         <div style={{ textAlign: 'center' }}>
           {profile.avatarUrl && (
-            <img src={profile.avatarUrl} alt="" className="mc-avatar" style={{ width: 80, height: 80 }} />
+            <img src={profile.avatarUrl} alt="" className="mc-avatar-frame" style={{ width: 80, height: 80, margin: '0 auto' }} />
           )}
           <h3 style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 14, color: '#FFD700', marginTop: 12 }}>
             {profile.globalName || profile.username || 'Reef'}
@@ -42,7 +43,8 @@ export default function AboutSection() {
         {socials.length > 0 && (
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16, justifyContent: 'center' }}>
             {socials.filter((s: any) => s.url).map((s: any) => (
-              <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" className="mc-social-btn">
+              <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" className="mc-social-btn"
+                onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
                 {s.name}
               </a>
             ))}
@@ -50,11 +52,23 @@ export default function AboutSection() {
         )}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginTop: 16 }}>
-        <div className="mc-stat-box"><span className="mc-stat-value">{stats.public_repos}</span><span className="mc-stat-label">GitHub Repos</span></div>
-        <div className="mc-stat-box"><span className="mc-stat-value">{stats.followers}</span><span className="mc-stat-label">Followers</span></div>
-        <div className="mc-stat-box"><span className="mc-stat-value">{stats.commits}</span><span className="mc-stat-label">Commits</span></div>
-        <div className="mc-stat-box"><span className="mc-stat-value">{stats.joined || '...'}</span><span className="mc-stat-label">Discord Joined</span></div>
+      <div className="mc-stats-grid" style={{ marginTop: 16 }}>
+        <div className="mc-stat-card" onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
+          <span className="mc-stat-value">{stats.public_repos}</span>
+          <span className="mc-stat-label">GitHub Repos</span>
+        </div>
+        <div className="mc-stat-card" onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
+          <span className="mc-stat-value">{stats.followers}</span>
+          <span className="mc-stat-label">Followers</span>
+        </div>
+        <div className="mc-stat-card" onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
+          <span className="mc-stat-value">{stats.commits}</span>
+          <span className="mc-stat-label">Commits</span>
+        </div>
+        <div className="mc-stat-card" onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
+          <span className="mc-stat-value">{stats.joined || '...'}</span>
+          <span className="mc-stat-label">Discord Joined</span>
+        </div>
       </div>
     </section>
   );

@@ -1,14 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { audio } from '@/lib/audio';
 
 const SLOTS = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'library', label: 'Library' },
-  { id: 'friends', label: 'Friends' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'home', label: 'Home', icon: '🏠' },
+  { id: 'about', label: 'About', icon: '📖' },
+  { id: 'projects', label: 'Projects', icon: '⚔️' },
+  { id: 'library', label: 'Library', icon: '📦' },
+  { id: 'friends', label: 'Friends', icon: '👥' },
+  { id: 'contact', label: 'Contact', icon: '✉️' },
 ];
 
 export default function NavHotbar() {
@@ -37,10 +38,13 @@ export default function NavHotbar() {
           className={`mc-hotbar-slot ${active === slot.id ? 'active' : ''}`}
           onClick={(e) => {
             e.preventDefault();
+            audio.play('click');
             document.getElementById(slot.id)?.scrollIntoView({ behavior: 'smooth' });
           }}
+          onMouseEnter={() => audio.play('hover')}
         >
-          {slot.label}
+          <span style={{fontSize: '20px', imageRendering: 'pixelated'}}>{slot.icon}</span>
+          <span>{slot.label}</span>
         </a>
       ))}
     </nav>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { audio } from '@/lib/audio';
 
 const EASTER_EGGS = [
   'Also try touching grass!',
@@ -24,17 +25,18 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section id="home" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '80px 20px 40px', gap: 24 }}>
+    <section id="home" className="mc-hero">
       <h1 className="mc-logo">REEF</h1>
       <p className="mc-subtitle">// personal site &amp; portfolio</p>
 
-      <div style={{ width: 96, height: 96, position: 'relative' }}>
-        <a href="https://discord.com/users/744808879036170272" target="_blank" rel="noopener noreferrer">
+      <div className="mc-avatar-frame">
+        <a href="https://discord.com/users/744808879036170272" target="_blank" rel="noopener noreferrer"
+          onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
           <img
             src={avatarUrl || '/api/discord'}
             alt="Reef"
-            className="mc-avatar"
-            style={{ width: 96, height: 96 }}
+            width={96}
+            height={96}
           />
         </a>
       </div>

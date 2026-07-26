@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import McIcon from './McIcon';
+import { audio } from '@/lib/audio';
 
 export default function FriendsSection() {
   const [badges, setBadges] = useState<any[]>([]);
@@ -17,9 +18,10 @@ export default function FriendsSection() {
   return (
     <section id="friends" className="mc-section" style={{textAlign:'center'}}>
       <h2 className="mc-section-title" style={{justifyContent:'center'}}><McIcon name="mc-globe" size={18} /> Friends &amp; Allies</h2>
-      <div className="mc-badge-grid" style={{justifyContent:'center'}}>
+      <div className="mc-friends-grid" style={{justifyContent:'center'}}>
         {list.map((badge: any) => (
-          <a key={badge.id} href={badge.url} target="_blank" rel="noopener noreferrer" className="mc-badge">
+          <a key={badge.id} href={badge.url} target="_blank" rel="noopener noreferrer" className="mc-badge"
+            onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
             {badge.imageUrl && !badge.imageUrl.includes('placeholder') ? (
               <img src={badge.imageUrl} alt={badge.name} width={88} height={31} style={{display:'block'}} />
             ) : (
@@ -28,7 +30,8 @@ export default function FriendsSection() {
           </a>
         ))}
       </div>
-      <a href="https://discord.com/users/744808879036170272" target="_blank" rel="noopener noreferrer" className="mc-btn" style={{marginTop:20}}>Say hi!</a>
+      <a href="https://discord.com/users/744808879036170272" target="_blank" rel="noopener noreferrer" className="mc-btn" style={{marginTop:20}}
+        onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>Say hi!</a>
     </section>
   );
 }

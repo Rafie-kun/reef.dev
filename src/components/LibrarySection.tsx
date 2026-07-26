@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import McIcon from './McIcon';
+import { audio } from '@/lib/audio';
 
 const TABS = ['games', 'music', 'projects', 'reading'] as const;
 
@@ -19,9 +20,11 @@ export default function LibrarySection() {
     <section id="library" className="mc-section">
       <h2 className="mc-section-title"><McIcon name="mc-chest" size={18} /> Library</h2>
       <div className="mc-inventory">
-        <div style={{display:'flex',gap:0}}>
+        <div className="mc-inv-tabs">
           {TABS.map(tab => (
-            <button key={tab} className={`mc-inv-tab ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>
+            <button key={tab} className={`mc-inv-tab ${activeTab === tab ? 'active' : ''}`}
+              onClick={() => { audio.play('click'); setActiveTab(tab); }}
+              onMouseEnter={() => audio.play('hover')}>
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
           ))}
@@ -31,7 +34,8 @@ export default function LibrarySection() {
         ) : (
           <div className="mc-inv-grid">
             {filtered.map((item: any) => (
-              <a key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="mc-inv-item">
+              <a key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="mc-inv-item"
+                onClick={() => audio.play('click')} onMouseEnter={() => audio.play('hover')}>
                 {item.title}
               </a>
             ))}

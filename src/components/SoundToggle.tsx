@@ -21,10 +21,7 @@ export default function SoundToggle() {
   return (
     <button
       onClick={handleToggle}
-      className="
-        mc-btn p-2 leading-none cursor-pointer
-        transition-all duration-75 active:scale-[0.95]
-      "
+      className="mc-sound-toggle"
       aria-label={muted ? 'Unmute sounds' : 'Mute sounds'}
       title={muted ? 'Unmute' : 'Mute'}
     >
