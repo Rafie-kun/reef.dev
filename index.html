@@ -69,7 +69,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .online{background:#43b581}.idle{background:#faa61a}.dnd{background:#f04747}.offline{background:#747f8d}
 .xp-label{display:flex;justify-content:space-between;max-width:490px;margin:18px 0 6px;font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa}
 .xp-bar{height:10px;max-width:490px;background:#111;border:2px solid #000;overflow:hidden}.xp-fill{height:100%;width:78%;background:var(--xp);box-shadow:0 0 8px var(--xp);transition:width .5s}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}#hero-activity{margin-top:18px;max-width:460px}.act-card{margin-top:10px;background:var(--panel);border:3px solid var(--stone-dark);padding:12px}.act-row1{display:flex;align-items:center;gap:10px;margin-bottom:6px}.act-icon{width:48px;height:48px;border-radius:4px;object-fit:cover;image-rendering:pixelated}.act-icon-fallback{display:flex;align-items:center;justify-content:center;width:48px;height:48px;background:#111;border:2px solid var(--stone-dark);border-radius:4px;font-size:20px}.act-name{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--cyan)}.act-line1{font-family:VT323;font-size:20px;color:#ddd;margin-bottom:4px}.act-line2{font-family:VT323;font-size:16px;color:#999;margin-top:2px}.act-bar-wrap{height:6px;background:#111;border:2px solid #000;overflow:hidden;margin-bottom:4px}.act-bar{height:100%;width:0%;background:#1db954;transition:width .5s}.act-time{font-family:VT323;font-size:16px;color:#aaa;margin-bottom:2px}.act-empty{color:#666;font-family:VT323;font-size:18px;text-align:center;padding:14px;border:3px solid var(--stone-dark);background:var(--panel);margin-top:10px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}#hero-activity{margin-top:18px;max-width:460px}.act-card{margin-top:10px;background:var(--panel);border:3px solid var(--stone-dark);padding:12px}.act-row1{display:flex;align-items:center;gap:10px;margin-bottom:6px}.act-icon{width:48px;height:48px;border-radius:4px;object-fit:cover;image-rendering:pixelated}.act-icon-fallback{display:flex;align-items:center;justify-content:center;width:48px;height:48px;background:#111;border:2px solid var(--stone-dark);border-radius:4px;font-size:20px}.act-name{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--cyan)}.act-line1{font-family:VT323;font-size:20px;color:#ddd;margin-bottom:4px}.act-line2{font-family:VT323;font-size:16px;color:#999;margin-top:2px}.act-bar-wrap{height:6px;background:#111;border:2px solid #000;overflow:hidden;margin-bottom:4px}.act-bar{height:100%;width:0%;background:#1db954;transition:width .5s}.act-time{font-family:VT323;font-size:16px;color:#aaa;margin-bottom:2px}.act-controls{display:flex;gap:10px;margin-top:4px;margin-bottom:4px}.ac-btn{font-size:12px;color:#666;cursor:default;user-select:none}.ac-btn.ac-play{font-size:16px;color:#1db954}.act-card-link{display:block;text-decoration:none;cursor:pointer}.act-card-link:hover{box-shadow:0 0 12px rgba(83,215,255,.3)}.act-empty{color:#666;font-family:VT323;font-size:18px;text-align:center;padding:14px;border:3px solid var(--stone-dark);background:var(--panel);margin-top:10px}
 .stat{background:var(--panel);border:3px solid var(--stone-dark);padding:14px;text-align:center}.stat b{display:block;font-family:'Press Start 2P',monospace;font-size:16px;color:var(--cyan)}.stat span{display:block;margin-top:7px;font-family:'Press Start 2P',monospace;font-size:6px;color:#999}
 .title{font-family:'Press Start 2P',monospace;font-size:16px;color:var(--gold);text-shadow:2px 2px 0 #3f3f00;margin-bottom:28px}.title:before{content:"[ ";color:#aaa}.title:after{content:" ]";color:#aaa}
 .book{background:#c2a46f;border:4px solid #623c1b;box-shadow:5px 5px 0 #2b1907}.book-pages{display:grid;grid-template-columns:1fr 1fr}.page{position:relative;min-height:320px;padding:26px 22px;background:#f5e7c9;color:#2c1b08}.page:first-child{border-right:2px solid #a88458}.page:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 27px,rgba(101,63,29,.18) 27px 28px);pointer-events:none}.page h3{font-family:'Press Start 2P',monospace;font-size:9px;margin-bottom:14px;position:relative;z-index:1}.page p,.page li{position:relative;z-index:1;font-size:22px;line-height:1.35}.page ul{padding-left:18px;display:grid;gap:8px}
@@ -444,12 +444,16 @@ function applyDiscord(d){
   document.getElementById('act-primary').textContent=name+' '+lbl;
   const acts=[];
   if(d.spotify&&d.spotify.song) acts.push({
-    icon:d.spotify.album_art_url,title:'Spotify',line1:d.spotify.song,line2:d.spotify.artist,start:d.spotify.timestamps?.start,end:d.spotify.timestamps?.end
+    icon:d.spotify.album_art_url,title:'Spotify',line1:d.spotify.song,line2:d.spotify.artist,
+    start:d.spotify.timestamps?.start,end:d.spotify.timestamps?.end,
+    url:d.spotify.track_id?'https://open.spotify.com/track/'+d.spotify.track_id:null,controls:true
   });
   (d.activities||[]).forEach(a=>{
     if(a.type===2||a.type===4) return;
+    const iconUrl=a.assets?.large_image&&a.application_id?'https://cdn.discordapp.com/app-assets/'+a.application_id+'/'+a.assets.large_image+'.png?size=128':null;
     acts.push({
-      icon:null,title:a.name||'Activity',line1:a.details||'',line2:a.state||'',start:a.timestamps?.start,end:a.timestamps?.end
+      icon:iconUrl,title:a.name||'Activity',line1:a.details||'',line2:a.state||'',
+      start:a.timestamps?.start,end:a.timestamps?.end,controls:false
     });
   });
   const c=document.getElementById('act-cards');
@@ -460,7 +464,10 @@ function applyDiscord(d){
     const pct=a.start&&a.end?Math.min(100,(now-a.start)/(a.end-a.start)*100):-1;
     const bar=pct>=0?`<div class="act-bar-wrap"><div class="act-bar" style="width:${pct}%"></div></div>`:'';
     const time=a.start?`<div class="act-time">${fmtElapsed(a.start,a.end)}</div>`:'';
-    return `<div class="act-card"><div class="act-row1">${icon}<div class="act-name">${esc(a.title)}</div></div>${a.line1?'<div class="act-line1">'+esc(a.line1)+'</div>':''}${bar}${time}${a.line2?'<div class="act-line2">'+esc(a.line2)+'</div>':''}</div>`;
+    const sc=a.controls?'<div class="act-controls"><span class="ac-btn">⏮</span><span class="ac-btn ac-play">⏸</span><span class="ac-btn">⏭</span></div>':'';
+    const inner=`<div class="act-row1">${icon}<div class="act-name">${esc(a.title)}</div></div>${a.line1?'<div class="act-line1">'+esc(a.line1)+'</div>':''}${bar}${time}${sc}${a.line2?'<div class="act-line2">'+esc(a.line2)+'</div>':''}`;
+    const tag=a.url?'a':'div';
+    return `<${tag} class="act-card${a.url?' act-card-link':''}"${a.url?` href="${a.url}" target="_blank" rel="noreferrer"`:''}>${inner}</${tag}>`;
   }).join('');
   lastDiscordData=d;
 }
