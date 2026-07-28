@@ -317,9 +317,25 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
     <!-- FRIENDS -->
     <div id="panel-friends" class="panel" style="display:none">
       <div class="panel-title">👾 Friends &amp; 88x31 Badges</div>
-      <p style="font-family:'VT323';font-size:18px;color:#888;margin-bottom:18px;">
-        88x31 badges are 88px wide × 31px tall PNG images. Enter your friend's site URL and the image URL of their badge.
-        If they don't have one, use a placeholder or make one at <a href="https://88x31.netlify.app" target="_blank" style="color:var(--cyan)">88x31.netlify.app</a>.
+
+      <div style="background:#1a1a2a;border:2px solid #2a2a4a;padding:16px;margin-bottom:20px;border-radius:0">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div>
+            <div style="font-family:'Press Start 2P';font-size:7px;color:var(--yellow);margin-bottom:10px">YOUR CARD BUTTON</div>
+            <button id="admin-card-preview" class="badge-link" type="button" style="width:88px;height:31px;padding:0;border:1px solid var(--gold);cursor:pointer">
+              <img id="admin-card-img" src="assets/button-88x31.webp" alt="My Card" style="width:100%;height:100%;object-fit:cover;image-rendering:pixelated">
+            </button>
+          </div>
+          <div style="flex:1;min-width:200px">
+            <div style="font-family:'Press Start 2P';font-size:6px;color:#888;margin-bottom:6px">Embed code (click card to copy)</div>
+            <textarea id="admin-card-code" readonly class="mc-input" style="min-height:70px;font-size:14px;line-height:1.4;background:#0a0a0a"></textarea>
+          </div>
+        </div>
+        <div style="font-family:'Press Start 2P';font-size:5px;color:#666;margin-top:10px">To change the card image, go to <a href="#" onclick="showPanel('appearance',document.querySelectorAll('.nav-item')[8]);return false" style="color:var(--cyan)">Appearance</a> panel.</div>
+      </div>
+
+      <p style="font-family:'VT323';font-size:18px;color:#888;margin-bottom:14px">
+        Add your friends' 88x31 web badges below. You can paste image URL, site URL, or raw embed HTML code.
       </p>
       <div class="badge-grid" id="badge-grid"></div>
       <button class="mc-btn" onclick="addBadge()" style="width:auto;padding:8px 16px">+ Add Badge</button>
@@ -386,11 +402,9 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <small style="color:#666;font-family:'VT323';font-size:16px;">Tip: Use a Minecraft screenshot. Paste any direct image URL.</small>
       </div>
       <div class="field">
-        <label>My Card Image URL (shown on homepage as your 88x31 button)</label>
-        <input class="mc-input" id="cfg-card-img" placeholder="https://... (leave blank for default)">
-        <label>Card Image URL</label>
-        <input class="mc-input" id="cfg-card-img" placeholder="https://... or /assets/button-88x31.webp">
-        <small style="color:#666;font-family:'VT323';font-size:16px;">Use an 88x31 button image or a larger card image.</small>
+        <label>My Card Image URL (88x31 button image)</label>
+        <input class="mc-input" id="cfg-card-img" placeholder="/assets/button-88x31.webp">
+        <small style="color:#666;font-family:'VT323';font-size:16px;">This image appears as your 88x31 button on the Friends section.</small>
       </div>
       <div class="save-bar">
         <button class="mc-btn green" onclick="saveAppearance()">💾 Apply Background</button>
@@ -445,9 +459,6 @@ const DEFAULT_DATA = {
   library: { games:[], music:[], proj:[], read:[] },
   friends: [],
   projects: [],
-  blog: [],
-  album: [],
-  cardImg: '/assets/button-88x31.webp',
   blog: [],
   album: [],
   phrases: [
@@ -548,12 +559,12 @@ function loadAllPanels() {
   renderExtraSocials(d.socials?.extra || []);
   ['games','music','proj','read'].forEach(tab => renderLibList(tab, d.library?.[tab] || []));
   renderBadges(d.friends || []);
+  loadAdminCardPreview(d);
   renderProjects(d.projects || []);
   renderBlog(d.blog || []);
   renderAlbum(d.album || []);
   renderPhrases(d.phrases || DEFAULT_DATA.phrases);
   document.getElementById('cfg-bg').value = d.bg || '';
-  document.getElementById('cfg-card-img').value = d.cardImg || '/assets/button-88x31.webp';
   document.getElementById('cfg-card-img').value = d.cardImg || '/assets/button-88x31.webp';
   const soundOn = d.soundDefault !== false;
   const tog = document.getElementById('snd-toggle');
@@ -747,9 +758,6 @@ function renderBlog(list){
         <textarea class="mc-input" oninput="blogData[${i}].body=this.value" placeholder="Blog post body">${p.body||''}</textarea>
       </div>
       <div class="card-actions"><button class="btn-sm del" onclick="rmBlog(${i})">✕</button></div>
-        <textarea class="mc-input" oninput="blogData[${i}].body=this.value" placeholder="Blog post">${p.body||''}</textarea>
-      </div>
-      <div class="card-actions"><button class="btn-sm del" onclick="rmBlog(${i})">X</button></div>
     </div>
   `).join('');
 }
@@ -817,12 +825,7 @@ function saveAppearance() {
   saveData(d);
   localStorage.setItem('reef-bg', d.bg);
   localStorage.setItem('reef-card-img', d.cardImg);
-  toast('Background saved! Reload the site to see it.');
-  d.cardImg = document.getElementById('cfg-card-img').value.trim() || '/assets/button-88x31.webp';
-  saveData(d);
-  localStorage.setItem('reef-bg', d.bg);
-  localStorage.setItem('reef-card-img', d.cardImg);
-  toast('Background saved! Reload the site to see it.');
+  toast('Appearance saved! Reload the site to see it.');
 }
 
 // ============================================
@@ -850,6 +853,24 @@ function saveSettings() {
   saveData(d);
   localStorage.setItem('reef-muted', d.soundDefault ? 'false' : 'true');
   toast('Settings saved!');
+}
+
+// Admin card preview in Friends panel
+function loadAdminCardPreview(d){
+  const cardImgUrl = d.cardImg || '/assets/button-88x31.webp';
+  const name = d.name || 'Reef';
+  const img = document.getElementById('admin-card-img');
+  if(img) img.src = cardImgUrl;
+  const code = `<a href="https://reef-dev.vercel.app/" target="_blank" rel="noopener noreferrer"><img src="${cardImgUrl}" width="88" height="31" alt="${name}" /></a>`;
+  const area = document.getElementById('admin-card-code');
+  const card = document.getElementById('admin-card-preview');
+  if(area) area.value = code;
+  if(card){
+    card.onclick = function(){
+      navigator.clipboard.writeText(code).catch(()=>{});
+      toast('Card embed code copied!');
+    };
+  }
 }
 
 // Mobile nav toggle
