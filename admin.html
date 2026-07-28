@@ -223,14 +223,14 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 
   <nav id="sidebar">
     <div class="sidebar-logo">⚙ REEF ADMIN<span>CMS Dashboard</span></div>
-    <div class="nav-item active" onclick="showPanel('bio')"><span class="ni">📖</span>Bio &amp; About</div>
-    <div class="nav-item" onclick="showPanel('socials')"><span class="ni">🔗</span>Social Links</div>
-    <div class="nav-item" onclick="showPanel('library')"><span class="ni">📦</span>Library</div>
-    <div class="nav-item" onclick="showPanel('friends')"><span class="ni">👾</span>Friends / Badges</div>
-    <div class="nav-item" onclick="showPanel('projects')"><span class="ni">⚔️</span>Projects</div>
-    <div class="nav-item" onclick="showPanel('phrases')"><span class="ni">💬</span>Easter Eggs</div>
-    <div class="nav-item" onclick="showPanel('appearance')"><span class="ni">🎨</span>Appearance</div>
-    <div class="nav-item" onclick="showPanel('settings')"><span class="ni">⚙</span>Settings</div>
+    <div class="nav-item active" onclick="showPanel('bio',this)"><span class="ni">📖</span>Bio &amp; About</div>
+    <div class="nav-item" onclick="showPanel('socials',this)"><span class="ni">🔗</span>Social Links</div>
+    <div class="nav-item" onclick="showPanel('library',this)"><span class="ni">📦</span>Library</div>
+    <div class="nav-item" onclick="showPanel('friends',this)"><span class="ni">👾</span>Friends / Badges</div>
+    <div class="nav-item" onclick="showPanel('projects',this)"><span class="ni">⚔️</span>Projects</div>
+    <div class="nav-item" onclick="showPanel('phrases',this)"><span class="ni">💬</span>Easter Eggs</div>
+    <div class="nav-item" onclick="showPanel('appearance',this)"><span class="ni">🎨</span>Appearance</div>
+    <div class="nav-item" onclick="showPanel('settings',this)"><span class="ni">⚙</span>Settings</div>
     <div class="sidebar-logout" onclick="doLogout()">🚪 Logout</div>
   </nav>
 
@@ -465,11 +465,11 @@ if (sessionStorage.getItem(SESSION_KEY)) {
 // ============================================
 // PANEL SWITCHING
 // ============================================
-function showPanel(id) {
+function showPanel(id, el) {
   document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('panel-' + id).style.display = 'block';
-  document.querySelector(`.nav-item[onclick*="showPanel('${id}')"]`)?.classList.add('active');
+  if(el) el.classList.add('active');
 }
 
 // ============================================
