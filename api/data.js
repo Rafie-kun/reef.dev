@@ -6,31 +6,59 @@ export default async function handler(req, res) {
   };
   if (req.method === 'OPTIONS') { res.status(200).setHeader(CORS).end(); return; }
 
+  const BLOB_KEY = 'reef-cms.json';
+
   try {
-    let kv;
-    try {
-      const mod = await import('@vercel/kv');
-      kv = mod.kv;
-    } catch (e) { kv = null; }
+    let kv = null, blob = null;
+    try { const m = await import('@vercel/kv'); if (process.env.KV_URL) kv = m.kv; } catch (e) {}
+    try { const m = await import('@vercel/blob'); if (process.env.BLOB_READ_WRITE_TOKEN) blob = m; } catch (e) {}
 
     if (req.method === 'POST') {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-      if (kv) {
-        await kv.set('reef-cms', JSON.stringify(body));
-      }
-      res.status(200).setHeader(CORS).json({ ok: true, stored: !!kv, msg: kv ? 'Saved to KV' : 'KV not configured — data only returned in response' });
+      const payload = JSON.stringify(body);
+
+      if (kv) await kv.set('reef-cms', payload);
+      if (blob) await blob.put(BLOB_KEY, payload, { contentType: 'application/json', access: 'public' });
+
+      const storage = [];
+      if (kv) storage.push('KV');
+      if (blob) storage.push('Blob');
+      res.status(200).setHeader(CORS).json({
+        ok: true, stored: storage.length > 0,
+        storage: storage.length ? storage : 'none',
+        msg: storage.length
+          ? `Saved to ${storage.join(' + ')}`
+          : 'No storage configured — set KV_URL or BLOB_READ_WRITE_TOKEN env vars',
+      });
       return;
     }
 
     if (req.method === 'GET') {
+      let data = null;
+
       if (kv) {
-        const data = await kv.get('reef-cms');
-        if (data) {
-          res.status(200).setHeader(CORS).json(typeof data === 'string' ? JSON.parse(data) : data);
-          return;
+        const v = await kv.get('reef-cms');
+        if (v) {
+          try { data = typeof v === 'string' ? JSON.parse(v) : v; } catch (e) { data = v; }
         }
       }
-      res.status(200).setHeader(CORS).json({ msg: 'No data in KV' });
+
+      if (!data && blob) {
+        try {
+          const { url } = await blob.head(BLOB_KEY);
+          if (url) {
+            const resp = await fetch(url);
+            if (resp.ok) data = await resp.json();
+          }
+        } catch (e) {}
+      }
+
+      if (data) {
+        res.status(200).setHeader(CORS).json(data);
+        return;
+      }
+
+      res.status(200).setHeader(CORS).json({ msg: 'No data stored yet' });
       return;
     }
 
