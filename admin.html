@@ -328,7 +328,6 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
       </div>
     </div>
 
-    <!-- BLOG -->
     <div id="panel-blog" class="panel" style="display:none">
       <div class="panel-title">📝 Blog / Reading</div>
       <div class="card-list" id="blog-list"></div>
@@ -339,7 +338,6 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
       </div>
     </div>
 
-    <!-- ALBUM -->
     <div id="panel-album" class="panel" style="display:none">
       <div class="panel-title">🖼️ Album</div>
       <div class="card-list" id="album-list"></div>
@@ -378,6 +376,9 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
       <div class="field">
         <label>My Card Image URL (shown on homepage as your 88x31 button)</label>
         <input class="mc-input" id="cfg-card-img" placeholder="https://... (leave blank for default)">
+        <label>Card Image URL</label>
+        <input class="mc-input" id="cfg-card-img" placeholder="https://... or /assets/button-88x31.webp">
+        <small style="color:#666;font-family:'VT323';font-size:16px;">Use an 88x31 button image or a larger card image.</small>
       </div>
       <div class="save-bar">
         <button class="mc-btn green" onclick="saveAppearance()">💾 Apply Background</button>
@@ -434,6 +435,9 @@ const DEFAULT_DATA = {
   projects: [],
   blog: [],
   album: [],
+  cardImg: '/assets/button-88x31.webp',
+  blog: [],
+  album: [],
   phrases: [
     'Also try touching grass!',
     'Also try sleeping!',
@@ -445,7 +449,7 @@ const DEFAULT_DATA = {
     'Also try eating something!',
   ],
   bg: '',
-  cardImg: 'https://reef-dev.vercel.app/assets/reef-card.webp',
+  cardImg: '/assets/button-88x31.webp',
   soundDefault: true,
 };
 
@@ -537,7 +541,8 @@ function loadAllPanels() {
   renderAlbum(d.album || []);
   renderPhrases(d.phrases || DEFAULT_DATA.phrases);
   document.getElementById('cfg-bg').value = d.bg || '';
-  document.getElementById('cfg-card-img').value = d.cardImg || 'https://reef-dev.vercel.app/assets/reef-card.webp';
+  document.getElementById('cfg-card-img').value = d.cardImg || '/assets/button-88x31.webp';
+  document.getElementById('cfg-card-img').value = d.cardImg || '/assets/button-88x31.webp';
   const soundOn = d.soundDefault !== false;
   const tog = document.getElementById('snd-toggle');
   tog.className = 'toggle' + (soundOn ? ' on' : '');
@@ -730,6 +735,9 @@ function renderBlog(list){
         <textarea class="mc-input" oninput="blogData[${i}].body=this.value" placeholder="Blog post body">${p.body||''}</textarea>
       </div>
       <div class="card-actions"><button class="btn-sm del" onclick="rmBlog(${i})">✕</button></div>
+        <textarea class="mc-input" oninput="blogData[${i}].body=this.value" placeholder="Blog post">${p.body||''}</textarea>
+      </div>
+      <div class="card-actions"><button class="btn-sm del" onclick="rmBlog(${i})">X</button></div>
     </div>
   `).join('');
 }
@@ -752,6 +760,7 @@ function renderAlbum(list){
         <input class="mc-input" value="${p.link||''}" oninput="albumData[${i}].link=this.value" placeholder="Optional link">
       </div>
       <div class="card-actions"><button class="btn-sm del" onclick="rmAlbum(${i})">✕</button></div>
+      <div class="card-actions"><button class="btn-sm del" onclick="rmAlbum(${i})">X</button></div>
     </div>
   `).join('');
 }
@@ -792,11 +801,16 @@ document.getElementById('new-phrase').addEventListener('keydown', e => { if(e.ke
 function saveAppearance() {
   const d = loadData();
   d.bg = document.getElementById('cfg-bg').value.trim();
-  d.cardImg = document.getElementById('cfg-card-img').value.trim() || 'https://reef-dev.vercel.app/assets/reef-card.webp';
+  d.cardImg = document.getElementById('cfg-card-img').value.trim() || '/assets/button-88x31.webp';
   saveData(d);
   localStorage.setItem('reef-bg', d.bg);
   localStorage.setItem('reef-card-img', d.cardImg);
-  toast('Appearance saved! Reload the site to see it.');
+  toast('Background saved! Reload the site to see it.');
+  d.cardImg = document.getElementById('cfg-card-img').value.trim() || '/assets/button-88x31.webp';
+  saveData(d);
+  localStorage.setItem('reef-bg', d.bg);
+  localStorage.setItem('reef-card-img', d.cardImg);
+  toast('Background saved! Reload the site to see it.');
 }
 
 // ============================================
@@ -850,3 +864,4 @@ document.addEventListener('pointerenter', e=>{ if(e.target.closest('button,a,.na
 </script>
 </body>
 </html>
+
