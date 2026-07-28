@@ -695,7 +695,7 @@ function renderBadges(list) {
         ? `<div class="badge-placeholder-box" style="font-size:4px">Embed</div>`
         : b.img
           ? `<img src="${b.img}" alt="${b.name||''}" onerror="this.style.display='none'">`
-          : `<div class="badge-placeholder-box">${(b.name||'???').slice(0,5)}</div>`
+          : `<div class="badge-placeholder-box" style="background:#111;color:#ccc;font-size:8px">${(b.name||'No name').slice(0,8)}</div>`
       }
       <div class="badge-name">${b.name||'Friend'}</div>
       <input class="mc-input" value="${b.name||''}" oninput="friendsData[${i}].name=this.value" placeholder="Name" style="width:110px;font-size:14px;padding:4px 6px">
