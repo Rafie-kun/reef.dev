@@ -640,6 +640,26 @@ function saveSocials() {
 // LIBRARY
 // ============================================
 let libData = {games:[],music:[],proj:[],read:[]};
+async function fetchSteamGame(tab,i){
+  const item=libData[tab][i];if(!item) return;
+  const url=item.url||'';const aid=item.appid||'';
+  const appId=aid.match(/\d+/)?.[0]||url.match(/store\.steampowered\.com\/app\/(\d+)/i)?.[1]||url.match(/steamdb\.info\/app\/(\d+)/i)?.[1]||url.match(/app\/(\d+)/i)?.[1];
+  if(!appId){toast('No Steam App ID found in URL or App ID field',false);return}
+  toast('Fetching Steam data...',true);
+  try{
+    const proxy='https://api.allorigins.win/raw?url=';
+    const res=await fetch(proxy+encodeURIComponent(`https://store.steampowered.com/api/appdetails?appids=${appId}&l=en&cc=us`));
+    const json=await res.json();const data=json?.[appId]?.data;
+    if(!data){toast('Steam data not found',false);return}
+    libData[tab][i].name=data.name||item.name;
+    libData[tab][i].icon='i-star';
+    libData[tab][i].type='steam';
+    libData[tab][i].appid=appId;
+    libData[tab][i].url=data.steam_appid?`https://store.steampowered.com/app/${data.steam_appid}`:(url||'');
+    renderLibList(tab,libData[tab]);
+    toast('Imported: '+data.name);
+  }catch(e){toast('Steam fetch failed: '+e.message,false)}
+}
 function renderLibList(tab, list) {
   libData[tab] = list;
   const el = document.getElementById('lib-'+tab+'-list');
@@ -651,6 +671,7 @@ function renderLibList(tab, list) {
           <span onclick="toggleLibHidden('${tab}',${i})" style="cursor:pointer;font-size:16px;color:${item.hidden?'#555':'var(--xp)'}" title="${item.hidden?'Hidden - click to show':'Visible - click to hide'}">${item.hidden?'⬜':'👁'}</span>
           <input class="mc-input" value="${item.type||'basic'}" oninput="libData['${tab}'][${i}].type=this.value" placeholder="Type basic or steam" style="width:120px">
           <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Icon" style="width:100px">
+          <button class="btn-sm" onclick="fetchSteamGame('${tab}',${i})" title="Auto-fetch from Steam" style="font-size:10px;padding:2px 6px">🔄 Steam</button>
         </div>
         <input class="mc-input" value="${item.name||''}" oninput="libData['${tab}'][${i}].name=this.value" placeholder="Name">
         <input class="mc-input" value="${item.url||''}" oninput="libData['${tab}'][${i}].url=this.value" placeholder="URL or Steam link">
@@ -767,13 +788,22 @@ function renderBlog(list){
       <div class="card-content">
         <input class="mc-input" value="${p.title||''}" oninput="blogData[${i}].title=this.value" placeholder="Post title">
         <input class="mc-input" value="${p.date||''}" oninput="blogData[${i}].date=this.value" placeholder="Date">
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+          <input class="mc-input" value="${p.img||''}" oninput="blogData[${i}].img=this.value" placeholder="Image URL (optional)" style="flex:1">
+          <input type="file" accept="image/*" onchange="uploadBlogImg(${i},this)" style="font-size:12px;font-family:VT323;max-width:130px">
+        </div>
+        ${p.img?`<img src="${p.img}" style="max-width:160px;height:auto;margin-bottom:6px;border:2px solid var(--stone-dark)">`:''}
         <textarea class="mc-input" oninput="blogData[${i}].body=this.value" placeholder="Blog post body">${p.body||''}</textarea>
       </div>
       <div class="card-actions"><button class="btn-sm del" onclick="rmBlog(${i})">✕</button></div>
     </div>
   `).join('');
 }
-function addBlogPost(){ blogData.push({title:'New Post',date:'',body:''}); renderBlog(blogData); }
+function uploadBlogImg(i,input){
+  const file=input.files[0];if(!file) return;
+  const r=new FileReader();r.onload=e=>{blogData[i].img=e.target.result;renderBlog(blogData);};r.readAsDataURL(file);
+}
+function addBlogPost(){ blogData.push({title:'New Post',date:'',body:'',img:''}); renderBlog(blogData); }
 function rmBlog(i){ blogData.splice(i,1); renderBlog(blogData); }
 function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); localStorage.setItem('reef-blog', JSON.stringify(blogData)); toast('Blog saved!'); }
 
@@ -792,7 +822,6 @@ function renderAlbum(list){
         <input class="mc-input" value="${p.link||''}" oninput="albumData[${i}].link=this.value" placeholder="Optional link">
       </div>
       <div class="card-actions"><button class="btn-sm del" onclick="rmAlbum(${i})">✕</button></div>
-      <div class="card-actions"><button class="btn-sm del" onclick="rmAlbum(${i})">X</button></div>
     </div>
   `).join('');
 }
