@@ -228,6 +228,8 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
     <div class="nav-item" onclick="showPanel('library',this)"><span class="ni">📦</span>Library</div>
     <div class="nav-item" onclick="showPanel('friends',this)"><span class="ni">👾</span>Friends / Badges</div>
     <div class="nav-item" onclick="showPanel('projects',this)"><span class="ni">⚔️</span>Projects</div>
+    <div class="nav-item" onclick="showPanel('blog',this)"><span class="ni">📝</span>Blog</div>
+    <div class="nav-item" onclick="showPanel('album',this)"><span class="ni">🖼️</span>Album</div>
     <div class="nav-item" onclick="showPanel('phrases',this)"><span class="ni">💬</span>Easter Eggs</div>
     <div class="nav-item" onclick="showPanel('appearance',this)"><span class="ni">🎨</span>Appearance</div>
     <div class="nav-item" onclick="showPanel('settings',this)"><span class="ni">⚙</span>Settings</div>
@@ -326,6 +328,28 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
       </div>
     </div>
 
+    <!-- BLOG -->
+    <div id="panel-blog" class="panel" style="display:none">
+      <div class="panel-title">📝 Blog / Reading</div>
+      <div class="card-list" id="blog-list"></div>
+      <button class="mc-btn" onclick="addBlogPost()" style="width:auto;padding:8px 14px">+ Add Post</button>
+      <div class="save-bar" style="margin-top:18px">
+        <button class="mc-btn green" onclick="saveBlog()">💾 Save Blog</button>
+        <span class="save-msg" id="blog-msg"></span>
+      </div>
+    </div>
+
+    <!-- ALBUM -->
+    <div id="panel-album" class="panel" style="display:none">
+      <div class="panel-title">🖼️ Album</div>
+      <div class="card-list" id="album-list"></div>
+      <button class="mc-btn" onclick="addAlbumItem()" style="width:auto;padding:8px 14px">+ Add Image</button>
+      <div class="save-bar" style="margin-top:18px">
+        <button class="mc-btn green" onclick="saveAlbum()">💾 Save Album</button>
+        <span class="save-msg" id="album-msg"></span>
+      </div>
+    </div>
+
     <!-- PHRASES -->
     <div id="panel-phrases" class="panel" style="display:none">
       <div class="panel-title">💬 "Also try..." Easter Egg Phrases</div>
@@ -404,6 +428,8 @@ const DEFAULT_DATA = {
   library: { games:[], music:[], proj:[], read:[] },
   friends: [],
   projects: [],
+  blog: [],
+  album: [],
   phrases: [
     'Also try touching grass!',
     'Also try sleeping!',
@@ -502,6 +528,8 @@ function loadAllPanels() {
   ['games','music','proj','read'].forEach(tab => renderLibList(tab, d.library?.[tab] || []));
   renderBadges(d.friends || []);
   renderProjects(d.projects || []);
+  renderBlog(d.blog || []);
+  renderAlbum(d.album || []);
   renderPhrases(d.phrases || DEFAULT_DATA.phrases);
   document.getElementById('cfg-bg').value = d.bg || '';
   const soundOn = d.soundDefault !== false;
@@ -680,6 +708,50 @@ function saveProjects() {
   localStorage.setItem('reef-projects', JSON.stringify(d.projects));
   toast('Projects saved!');
 }
+
+// ============================================
+// BLOG
+// ============================================
+let blogData = [];
+function renderBlog(list){
+  blogData = list;
+  const el = document.getElementById('blog-list');
+  el.innerHTML = list.map((p,i)=>`
+    <div class="card-item">
+      <div class="card-content">
+        <input class="mc-input" value="${p.title||''}" oninput="blogData[${i}].title=this.value" placeholder="Post title">
+        <input class="mc-input" value="${p.date||''}" oninput="blogData[${i}].date=this.value" placeholder="Date">
+        <textarea class="mc-input" oninput="blogData[${i}].body=this.value" placeholder="Blog post body">${p.body||''}</textarea>
+      </div>
+      <div class="card-actions"><button class="btn-sm del" onclick="rmBlog(${i})">✕</button></div>
+    </div>
+  `).join('');
+}
+function addBlogPost(){ blogData.push({title:'New Post',date:'',body:''}); renderBlog(blogData); }
+function rmBlog(i){ blogData.splice(i,1); renderBlog(blogData); }
+function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); toast('Blog saved!'); }
+
+// ============================================
+// ALBUM
+// ============================================
+let albumData = [];
+function renderAlbum(list){
+  albumData = list;
+  const el = document.getElementById('album-list');
+  el.innerHTML = list.map((p,i)=>`
+    <div class="card-item">
+      <div class="card-content">
+        <input class="mc-input" value="${p.caption||''}" oninput="albumData[${i}].caption=this.value" placeholder="Caption">
+        <input class="mc-input" value="${p.img||''}" oninput="albumData[${i}].img=this.value" placeholder="Image URL">
+        <input class="mc-input" value="${p.link||''}" oninput="albumData[${i}].link=this.value" placeholder="Optional link">
+      </div>
+      <div class="card-actions"><button class="btn-sm del" onclick="rmAlbum(${i})">✕</button></div>
+    </div>
+  `).join('');
+}
+function addAlbumItem(){ albumData.push({caption:'New Image',img:'',link:''}); renderAlbum(albumData); }
+function rmAlbum(i){ albumData.splice(i,1); renderAlbum(albumData); }
+function saveAlbum(){ const d=loadData(); d.album=albumData; saveData(d); toast('Album saved!'); }
 
 // ============================================
 // PHRASES

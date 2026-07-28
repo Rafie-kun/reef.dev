@@ -78,7 +78,9 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px;background:#4d4d4d;padding:6px;border:4px solid #8b8b8b}.project{background:#3a3a3a;border:2px solid;border-color:#555 #e4e4e4 #e4e4e4 #555;padding:16px;display:flex;flex-direction:column;gap:8px}.project h3{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold)}.project p{font-size:18px;color:#d3d0c6}.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto}
 .inventory{background:#c6c6c6;border:4px solid #555;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #555}.tabs{display:flex;flex-wrap:wrap;border-bottom:3px solid #555}.tab{padding:10px 14px;background:#8b8b8b;color:#222;border-right:2px solid #555;font-family:'Press Start 2P',monospace;font-size:6px;cursor:pointer;user-select:none}.tab.active{background:#c6c6c6;color:#000;margin-bottom:-3px;border-bottom:3px solid #c6c6c6}.inv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:3px;background:#555;padding:8px}.inv-item{min-height:92px;background:#8b8b8b;border:2px solid;border-color:#555 #dbdbdb #dbdbdb #555;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:#111;text-align:center;overflow:hidden}.inv-item .label{font-family:'Press Start 2P',monospace;font-size:6px;line-height:1.5}
 .badge-wall{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:rgba(0,0,0,.55);border:2px solid #777}.badge-link{width:88px;height:31px;display:block;border:1px solid #555;overflow:hidden;background:repeating-conic-gradient(#17102f 0 25%,#2c165b 0 50%) 0 0/8px 8px;image-rendering:pixelated;transition:transform .08s steps(1),filter .08s steps(1),border-color .08s steps(1)}.badge-link:hover{transform:translateY(-1px);filter:brightness(1.2);border-color:var(--gold)}.badge-link img,.badge-fallback{width:100%;height:100%;display:grid;place-items:center}.badge-link img{object-fit:cover;image-rendering:pixelated}.badge-fallback{font-family:'Press Start 2P',monospace;font-size:5px;color:#bbb}
-.presence{margin-top:22px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:rgba(0,0,0,.84);border:3px solid #33208a;padding:16px;max-width:560px;box-shadow:0 0 20px rgba(50,0,150,.3)}.presence-avatar{width:70px;height:70px;border:3px solid #000;background:#333;display:grid;place-items:center;overflow:hidden}.presence-avatar img{width:100%;height:100%;object-fit:cover}.presence h3{font-family:'Press Start 2P',monospace;font-size:8px;margin-bottom:6px}.presence p{font-size:19px;color:#c8c0b4}.footer{text-align:center;padding:34px 24px 48px;background:rgba(0,0,0,.55);border-top:2px solid #333;font-family:'Press Start 2P',monospace;font-size:7px;color:#888}.footer .note{margin-top:10px;color:var(--gold)}
+.presence{margin-top:22px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:rgba(0,0,0,.84);border:3px solid #33208a;padding:16px;max-width:560px;box-shadow:0 0 20px rgba(50,0,150,.3)}.presence-avatar{width:70px;height:70px;border:3px solid #000;background:#333;display:grid;place-items:center;overflow:hidden}.presence-avatar img{width:100%;height:100%;object-fit:cover}.presence h3{font-family:'Press Start 2P',monospace;font-size:8px;margin-bottom:6px}.presence p{font-size:19px;color:#c8c0b4}.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}.blog-post{background:rgba(0,0,0,.75);border:2px solid #555;padding:18px}.blog-post h3{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);margin-bottom:8px}.blog-post .date{font-family:'Press Start 2P',monospace;font-size:5px;color:#999;margin-bottom:10px}.blog-post p{font-size:20px;line-height:1.5}
+.album-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.album-item{background:rgba(0,0,0,.75);border:2px solid #555;padding:8px;display:block;text-decoration:none}.album-item img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid #333}.album-item .cap{font-family:'Press Start 2P',monospace;font-size:5px;color:#bbb;margin-top:6px;text-align:center}
+.footer{text-align:center;padding:34px 24px 48px;background:rgba(0,0,0,.55);border-top:2px solid #333;font-family:'Press Start 2P',monospace;font-size:7px;color:#888}.footer .note{margin-top:10px;color:var(--gold)}
 .tooltip{position:fixed;z-index:30;display:none;pointer-events:none;background:#100010;border:2px solid #2d0096;color:var(--gold);padding:8px 10px;font-size:18px;box-shadow:2px 2px 0 #000}
 @media(max-width:900px){.hotbar{left:0;right:0;transform:none;justify-content:center;flex-wrap:wrap}.hero-grid,.book-pages{grid-template-columns:1fr}.hero{padding-top:150px}.logo{font-size:48px}.stats{grid-template-columns:1fr}.page:first-child{border-right:0;border-bottom:2px solid #a88458}}
 </style>
@@ -93,6 +95,9 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 <nav class="hotbar">
   <a class="active" href="#home" data-tip="Spawn"><span class="mc-item i-grass"></span><span>Home</span></a>
   <a href="#about" data-tip="Book and quill"><span class="mc-item i-book"></span><span>About</span></a>
+  <a href="#projects" data-tip="Crafting table"><span class="mc-item i-pick"></span><span>Projects</span></a>
+  <a href="#blog" data-tip="Written book"><span class="mc-item i-book"></span><span>Blog</span></a>
+  <a href="#album" data-tip="Map room"><span class="mc-item i-map"></span><span>Album</span></a>
   <a href="#library" data-tip="Inventory"><span class="mc-item i-chest"></span><span>Library</span></a>
   <a href="#friends" data-tip="Badge wall"><span class="mc-item i-players"></span><span>Friends</span></a>
   <a href="#contact" data-tip="Notice board"><span class="mc-item i-sign"></span><span>Contact</span></a>
@@ -118,6 +123,9 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
     <div class="book"><div class="book-pages"><div class="page"><h3>WHO IS REEF?</h3><p id="bio-copy">Hey, I'm Reef. I build things, break things, and occasionally sleep. This version is built around custom pixel items, a menu-style panorama, and Minecraft-like UI pieces.</p></div><div class="page"><h3>WORLD NOTES</h3><ul><li>Custom CSS item icons — no emoji dependency.</li><li>Blurred block panorama behind every section.</li><li>Live GitHub and Discord data via API.</li><li>The homepage keeps admin hidden.</li></ul><div class="book-socials" id="book-socials"><a class="book-sl" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">💬 Discord</a><a class="book-sl" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">🐙 GitHub</a></div></div></div></div>
     <div class="presence"><div class="presence-avatar" id="presence-avatar">R</div><div><h3 id="presence-name">REEF</h3><p id="presence-status-text">Offline</p><p id="presence-activity">No activity yet.</p></div></div>
   </section>
+  <section id="projects"><h2 class="title">Projects / Crafting Bench</h2><div class="panel"><div class="project-grid" id="repo-grid"><div class="project"><h3>Loading...</h3><p>Fetching projects.</p></div></div></div></section>
+  <section id="blog"><h2 class="title">Blog / Reading</h2><div class="panel"><div class="blog-grid" id="blog-grid"></div></div></section>
+  <section id="album"><h2 class="title">Album / Gallery</h2><div class="panel"><div class="album-grid" id="album-grid"></div></div></section>
   <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div></div><div class="inv-grid tab-panel" id="tab-all"></div><div class="inv-grid tab-panel" id="tab-games" hidden></div><div class="inv-grid tab-panel" id="tab-music" hidden></div><div class="inv-grid tab-panel" id="tab-reading" hidden></div></div></section>
   <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall" id="friends-grid"></div><div class="panel" style="margin-top:18px"><h3 style="font-family:'Press Start 2P';font-size:8px;margin-bottom:12px">My Card</h3><div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start"><button id="my-card-preview" class="badge-link" type="button" style="width:176px;height:62px;padding:0;border:0"><img src="assets/reef-card.webp" alt="REEF card"></button><textarea id="my-card-code" readonly class="mc-input" style="min-height:110px;font-size:16px;line-height:1.4;display:none"></textarea><div style="font-family:'Press Start 2P';font-size:6px;color:#bbb;line-height:1.7">Click the card to copy the embed code. It uses the proper 88x31 button format.</div></div></div></section>
   <section id="contact"><h2 class="title">Contact / Sign</h2><div class="panel"><p style="font-size:22px;margin-bottom:16px">Reach Reef through these portals.</p><div class="actions" id="contact-actions"><a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">Discord</a><a class="mc-btn" href="mailto:reef@example.com">Email</a><a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">GitHub</a></div></div></section>
@@ -164,6 +172,8 @@ function loadSiteData(){
   bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('');
 
   renderInventory(siteData.library||JSON.parse(localStorage.getItem('reef-library')||'{}'));
+  renderBlogPosts(siteData.blog||JSON.parse(localStorage.getItem('reef-blog')||'[]'));
+  renderAlbumItems(siteData.album||JSON.parse(localStorage.getItem('reef-album')||'[]'));
   setupCardCopy(name);
   return {name,bio,email,socials,bg,phrases:phrasesList};
 }
@@ -308,6 +318,24 @@ function queueSteamRender(slotId,item,appId,name){
       steamPending.delete(slotId);
     }
   })();
+}
+
+function renderBlogPosts(posts){
+  const el=document.getElementById('blog-grid');
+  if(!el) return;
+  const list=Array.isArray(posts)&&posts.length?posts:[{title:'No posts yet',date:'',body:'Add blog posts from the admin panel.'}];
+  el.innerHTML=list.map(p=>`<article class="blog-post"><h3>${String(p.title||'Untitled').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</h3><div class="date">${String(p.date||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div><p>${String(p.body||'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</p></article>`).join('');
+}
+
+function renderAlbumItems(items){
+  const el=document.getElementById('album-grid');
+  if(!el) return;
+  const list=Array.isArray(items)&&items.length?items:[{caption:'Add images from the admin panel.',img:'',link:''}];
+  el.innerHTML=list.map(item=>{
+    const caption=String(item.caption||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const inner=item.img?`<img src="${item.img}" alt="${caption}" onerror="this.style.display='none'"><div class="cap">${caption}</div>`:`<div class="cap">${caption||'No image yet'}</div>`;
+    return item.link?`<a class="album-item" href="${item.link}" target="_blank" rel="noreferrer">${inner}</a>`:`<div class="album-item">${inner}</div>`;
+  }).join('');
 }
 
 function renderProjectsFromCMS(){
