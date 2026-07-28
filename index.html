@@ -69,7 +69,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .online{background:#43b581}.idle{background:#faa61a}.dnd{background:#f04747}.offline{background:#747f8d}
 .xp-label{display:flex;justify-content:space-between;max-width:490px;margin:18px 0 6px;font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa}
 .xp-bar{height:10px;max-width:490px;background:#111;border:2px solid #000;overflow:hidden}.xp-fill{height:100%;width:78%;background:var(--xp);box-shadow:0 0 8px var(--xp);transition:width .5s}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px;max-width:460px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}#hero-activity{margin-top:18px;max-width:460px}.act-card{margin-top:10px;background:var(--panel);border:3px solid var(--stone-dark);padding:12px}.act-row1{display:flex;align-items:center;gap:10px;margin-bottom:6px}.act-icon{width:48px;height:48px;border-radius:4px;object-fit:cover;image-rendering:pixelated}.act-icon-fallback{display:flex;align-items:center;justify-content:center;width:48px;height:48px;background:#111;border:2px solid var(--stone-dark);border-radius:4px;font-size:20px}.act-name{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--cyan)}.act-line1{font-family:VT323;font-size:20px;color:#ddd;margin-bottom:4px}.act-line2{font-family:VT323;font-size:16px;color:#999;margin-top:2px}.act-bar-wrap{height:6px;background:#111;border:2px solid #000;overflow:hidden;margin-bottom:4px}.act-bar{height:100%;width:0%;background:#1db954;transition:width .5s}.act-time{font-family:VT323;font-size:16px;color:#aaa;margin-bottom:2px}
 .stat{background:var(--panel);border:3px solid var(--stone-dark);padding:14px;text-align:center}.stat b{display:block;font-family:'Press Start 2P',monospace;font-size:16px;color:var(--cyan)}.stat span{display:block;margin-top:7px;font-family:'Press Start 2P',monospace;font-size:6px;color:#999}
 .title{font-family:'Press Start 2P',monospace;font-size:16px;color:var(--gold);text-shadow:2px 2px 0 #3f3f00;margin-bottom:28px}.title:before{content:"[ ";color:#aaa}.title:after{content:" ]";color:#aaa}
 .book{background:#c2a46f;border:4px solid #623c1b;box-shadow:5px 5px 0 #2b1907}.book-pages{display:grid;grid-template-columns:1fr 1fr}.page{position:relative;min-height:320px;padding:26px 22px;background:#f5e7c9;color:#2c1b08}.page:first-child{border-right:2px solid #a88458}.page:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 27px,rgba(101,63,29,.18) 27px 28px);pointer-events:none}.page h3{font-family:'Press Start 2P',monospace;font-size:9px;margin-bottom:14px;position:relative;z-index:1}.page p,.page li{position:relative;z-index:1;font-size:22px;line-height:1.35}.page ul{padding-left:18px;display:grid;gap:8px}
@@ -82,7 +82,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .album-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.album-item{background:rgba(0,0,0,.75);border:2px solid #555;padding:8px;display:block;text-decoration:none}.album-item img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid #333}.album-item .cap{font-family:'Press Start 2P',monospace;font-size:5px;color:#bbb;margin-top:6px;text-align:center}
 .footer{text-align:center;padding:34px 24px 48px;background:rgba(0,0,0,.55);border-top:2px solid #333;font-family:'Press Start 2P',monospace;font-size:7px;color:#888}.footer .note{margin-top:10px;color:var(--gold)}
 .tooltip{position:fixed;z-index:30;display:none;pointer-events:none;background:#100010;border:2px solid #2d0096;color:var(--gold);padding:8px 10px;font-size:18px;box-shadow:2px 2px 0 #000}
-@media(max-width:900px){.hotbar{left:0;right:0;transform:none;justify-content:center;flex-wrap:wrap}.hero-grid,.book-pages{grid-template-columns:1fr}.hero{padding-top:150px}.logo{font-size:48px}.stats{grid-template-columns:1fr}.page:first-child{border-right:0;border-bottom:2px solid #a88458}}
+@media(max-width:900px){.hotbar{left:0;right:0;transform:none;justify-content:center;flex-wrap:wrap}.hero-grid,.book-pages{grid-template-columns:1fr}.hero{padding-top:150px}.logo{font-size:48px}.page:first-child{border-right:0;border-bottom:2px solid #a88458}.act-icon,.act-icon-fallback{width:32px;height:32px}.act-icon-fallback{font-size:14px}}
 </style>
 </head>
 <body>
@@ -114,7 +114,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
         <div class="xp-label"><span>LEVEL 42</span><span id="presence-text">LOADING</span></div>
         <div class="xp-bar"><div class="xp-fill" id="xp-fill-bar" style="width:78%"></div></div>
         <div class="actions" id="social-actions"><a class="mc-btn" href="#library">View Builds</a><a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">GitHub</a><a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">Discord</a></div>
-        <div class="stats" id="hero-activity"><div class="stat"><b id="act-primary">Idle</b><span>ACTIVITY</span></div><div class="stat"><b id="act-detail">—</b><span>TIME / DETAIL</span></div></div>
+        <div id="hero-activity"><div class="stat" id="act-user"><b id="act-primary">—</b><span>STATUS</span></div><div id="act-cards"></div></div>
       </div>
     </div>
   </section>
@@ -365,28 +365,37 @@ function loadProjects(){
 
 function fmtTime(ms){const s=Math.floor(ms/1000);if(s>=3600){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h+'h '+m+'m'}return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function fmtElapsed(start,end){const now=Date.now(),el=now-start;if(end){const t=end-start;return fmtTime(el)+' / '+fmtTime(t)}return fmtTime(el)}
+function esc(s){return(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
 function applyDiscord(d){
   const st=d.discord_status||'offline';
   document.getElementById('status-dot').className='status '+st;
   document.getElementById('presence-text').textContent=st.toUpperCase();
-  const prim=document.getElementById('act-primary'),det=document.getElementById('act-detail');
   if(d.discord_user&&d.discord_user.avatar){
     const u=d.discord_user,url='https://cdn.discordapp.com/avatars/'+u.id+'/'+u.avatar+'.webp?size=256',img=document.getElementById('avatar');
     img.src=url;img.hidden=false;document.getElementById('avatar-fallback').style.display='none';
   }
   const name=siteData.name||'Reef';
-  const s=d.spotify,game=(d.activities||[]).find(a=>a.type===0);
-  if(s&&s.song){
-    prim.textContent=name+' 🎵 '+s.song;
-    det.textContent=(s.artist||'')+(s.timestamps?.start?' · '+fmtElapsed(s.timestamps.start,s.timestamps.end):'');
-  }else if(game){
-    prim.textContent=name+' 🎮 '+game.name;
-    det.textContent=(game.details?game.details:'')+(game.timestamps?.start?' · '+fmtElapsed(game.timestamps.start):'')+(game.state?' — '+game.state:'');
-    if(!game.details&&!game.timestamps&&game.state) det.textContent=game.state;
-  }else{
-    const lbl={online:'🟢 Online',idle:'🌙 Idle',offline:'🔴 Offline'}[st]||'🔴 Offline';
-    prim.textContent=name+' '+lbl;det.textContent='—';
-  }
+  const lbl={online:'🟢 Online',idle:'🌙 Idle',dnd:'⛔ DND',offline:'🔴 Offline'}[st]||'🔴 Offline';
+  document.getElementById('act-primary').textContent=name+' '+lbl;
+  const acts=[];
+  if(d.spotify&&d.spotify.song) acts.push({
+    icon:d.spotify.album_art_url,title:'Spotify',line1:d.spotify.song,line2:d.spotify.artist,start:d.spotify.timestamps?.start,end:d.spotify.timestamps?.end
+  });
+  (d.activities||[]).forEach(a=>{
+    if(a.type===2||a.type===4) return;
+    acts.push({
+      icon:null,title:a.name||'Activity',line1:a.details||'',line2:a.state||'',start:a.timestamps?.start,end:a.timestamps?.end
+    });
+  });
+  const c=document.getElementById('act-cards');
+  if(!acts.length){c.innerHTML='<div style="color:#666;font-family:VT323;font-size:18px;text-align:center;padding:14px;border:3px solid var(--stone-dark);background:var(--panel);margin-top:10px">No activity</div>';return}
+  c.innerHTML=acts.map(a=>{
+    const icon=a.icon?`<img class="act-icon" src="${a.icon}" width="48" height="48">`:'<div class="act-icon-fallback">🎮</div>';
+    const pct=a.start&&a.end?Math.min(100,(Date.now()-a.start)/(a.end-a.start)*100):-1;
+    const bar=pct>=0?`<div class="act-bar-wrap"><div class="act-bar" style="width:${pct}%"></div></div>`:'';
+    const time=a.start?`<div class="act-time">${fmtElapsed(a.start,a.end)}</div>`:'';
+    return `<div class="act-card"><div class="act-row1">${icon}<div class="act-name">${esc(a.title)}</div></div>${a.line1?'<div class="act-line1">'+esc(a.line1)+'</div>':''}${bar}${time}${a.line2?'<div class="act-line2">'+esc(a.line2)+'</div>':''}</div>`;
+  }).join('');
 }
 
 function connectLanyard(){const ws=new WebSocket('wss://api.lanyard.rest/socket');let hb;ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.op===1){hb=setInterval(()=>ws.readyState===1&&ws.send(JSON.stringify({op:3})),m.d.heartbeat_interval);ws.send(JSON.stringify({op:2,d:{subscribe_to_id:DISCORD_ID}}))}if(m.op===0)applyDiscord(m.d)};ws.onclose=()=>{clearInterval(hb);setTimeout(connectLanyard,4000)}}
