@@ -17,11 +17,14 @@
 html,body{height:100%}
 body{font-family:'VT323',monospace;font-size:18px;color:var(--text);background:var(--bg);display:flex;flex-direction:column;}
 ::selection{background:var(--xp);color:#000}
+#bg{
+  position:fixed;inset:0;z-index:-1;background:url('assets/mc-panorama.svg') center/cover no-repeat;filter:blur(6px) saturate(1.05) brightness(.75);transform:scale(1.04);
+}
+#bg:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.65))}
 
 #login-screen {
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   min-height:100vh;gap:20px;
-  background: linear-gradient(180deg,#0a0a1a 0%,#1a0a2e 100%);
 }
 .login-box {
   background:rgba(0,0,0,0.88);
@@ -189,6 +192,9 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
   font-family:'Press Start 2P',monospace;font-size:7px;color:#4a8a4a;
 }
 
+.top-link{
+  position:fixed;top:14px;right:14px;z-index:1000;width:auto;
+}
 @media(max-width:680px){
   #sidebar{display:none;}
   #main{padding:16px;}
@@ -197,7 +203,9 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 </head>
 <body>
 
+<div id="bg"></div>
 <div id="toast"></div>
+<button class="mc-btn top-link" id="adm-snd-toggle" style="padding:7px 14px;font-size:6px;width:auto">Sound On</button>
 
 <!-- LOGIN -->
 <div id="login-screen">
@@ -461,7 +469,7 @@ function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('panel-' + id).style.display = 'block';
-  event.currentTarget.classList.add('active');
+  document.querySelector(`.nav-item[onclick*="showPanel('${id}')"]`)?.classList.add('active');
 }
 
 // ============================================
@@ -727,9 +735,31 @@ function saveSettings() {
     document.getElementById('new-pw2').value = '';
   }
   saveData(d);
-  localStorage.setItem('mc-muted', d.soundDefault ? 'false' : 'true');
+  localStorage.setItem('reef-muted', d.soundDefault ? 'false' : 'true');
   toast('Settings saved!');
 }
+
+// Admin sound toggle
+let admAC=null, admMuted=localStorage.getItem('reef-muted')==='true';
+const admBtn=document.getElementById('adm-snd-toggle');
+admBtn.textContent=admMuted?'Sound Off':'Sound On';
+admBtn.addEventListener('click',()=>{
+  admMuted=!admMuted; localStorage.setItem('reef-muted', String(admMuted));
+  admBtn.textContent=admMuted?'Sound Off':'Sound On';
+  if(!admMuted) admPlay('click');
+});
+function admPlay(kind='click'){
+  if(admMuted) return;
+  try{
+    admAC??=new (window.AudioContext||window.webkitAudioContext)();
+    if(admAC.state==='suspended') admAC.resume();
+    const map={click:[240,0.06,0.16],hover:[760,0.03,0.05],tab:[320,0.06,0.1]};
+    const [freq,dur,vol]=map[kind]||map.click, t=admAC.currentTime, o=admAC.createOscillator(), g=admAC.createGain();
+    o.type='square'; o.frequency.setValueAtTime(freq,t); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur); o.connect(g); g.connect(admAC.destination); o.start(t); o.stop(t+dur+0.01);
+  }catch(e){}
+}
+document.addEventListener('pointerdown', e=>{ if(e.target.closest('button,a,.nav-item,.tab-btn,.badge-slot,.card-item,.phrase-pill,.toggle')) admPlay('click'); }, {passive:true});
+document.addEventListener('pointerenter', e=>{ if(e.target.closest('button,a,.nav-item,.tab-btn,.badge-slot,.card-item,.phrase-pill,.toggle')) admPlay('hover'); }, true);
 </script>
 </body>
 </html>
