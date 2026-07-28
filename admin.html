@@ -195,9 +195,15 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 .top-link{
   position:fixed;top:14px;right:14px;z-index:1000;width:auto;
 }
+.mobile-nav-bar{display:none;align-items:center;gap:10px;margin-bottom:14px}
+.sidebar-overlay{display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,0.6)}
 @media(max-width:680px){
-  #sidebar{display:none;}
-  #main{padding:16px;}
+  #sidebar{display:none;position:fixed;top:0;left:0;bottom:0;z-index:100;width:280px;max-width:80vw;border-right:3px solid var(--stone-dark);}
+  #sidebar.show{display:flex;}
+  #sidebar.show ~ #main .sidebar-overlay{display:block}
+  .mobile-nav-bar{display:flex}
+  .preview-bar a[target]{display:none}
+  #main{padding:16px}
 }
 </style>
 </head>
@@ -237,6 +243,12 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
   </nav>
 
   <main id="main">
+
+    <div class="mobile-nav-bar" id="mobile-nav-bar">
+      <button class="mc-btn" id="mobile-nav-toggle" type="button" style="width:auto;padding:7px 14px;font-size:6px">☰ Panels</button>
+      <a href="/" target="_blank" class="mc-btn" style="margin-left:auto;width:auto;padding:7px 14px;font-size:6px;">👁 Preview</a>
+    </div>
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileNav()"></div>
 
     <div class="preview-bar">
       ✅ Changes save to localStorage instantly.
@@ -307,7 +319,7 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
       <div class="panel-title">👾 Friends &amp; 88x31 Badges</div>
       <p style="font-family:'VT323';font-size:18px;color:#888;margin-bottom:18px;">
         88x31 badges are 88px wide × 31px tall PNG images. Enter your friend's site URL and the image URL of their badge.
-        If they don't have one, use a placeholder or make one at <a href="https://88x31.netlify.app" target="_blank" style="color:var(--diamond)">88x31.netlify.app</a>.
+        If they don't have one, use a placeholder or make one at <a href="https://88x31.netlify.app" target="_blank" style="color:var(--cyan)">88x31.netlify.app</a>.
       </p>
       <div class="badge-grid" id="badge-grid"></div>
       <button class="mc-btn" onclick="addBadge()" style="width:auto;padding:8px 16px">+ Add Badge</button>
@@ -743,7 +755,7 @@ function renderBlog(list){
 }
 function addBlogPost(){ blogData.push({title:'New Post',date:'',body:''}); renderBlog(blogData); }
 function rmBlog(i){ blogData.splice(i,1); renderBlog(blogData); }
-function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); toast('Blog saved!'); }
+function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); localStorage.setItem('reef-blog', JSON.stringify(blogData)); toast('Blog saved!'); }
 
 // ============================================
 // ALBUM
@@ -766,7 +778,7 @@ function renderAlbum(list){
 }
 function addAlbumItem(){ albumData.push({caption:'New Image',img:'',link:''}); renderAlbum(albumData); }
 function rmAlbum(i){ albumData.splice(i,1); renderAlbum(albumData); }
-function saveAlbum(){ const d=loadData(); d.album=albumData; saveData(d); toast('Album saved!'); }
+function saveAlbum(){ const d=loadData(); d.album=albumData; saveData(d); localStorage.setItem('reef-album', JSON.stringify(albumData)); toast('Album saved!'); }
 
 // ============================================
 // PHRASES
@@ -839,6 +851,12 @@ function saveSettings() {
   localStorage.setItem('reef-muted', d.soundDefault ? 'false' : 'true');
   toast('Settings saved!');
 }
+
+// Mobile nav toggle
+function toggleMobileNav(){ document.getElementById('sidebar').classList.toggle('show'); }
+function closeMobileNav(){ document.getElementById('sidebar').classList.remove('show'); }
+document.getElementById('mobile-nav-toggle').addEventListener('click',toggleMobileNav);
+document.querySelectorAll('.nav-item').forEach(el=>el.addEventListener('click',()=>closeMobileNav()));
 
 // Admin sound toggle
 let admAC=null, admMuted=localStorage.getItem('reef-muted')==='true';
