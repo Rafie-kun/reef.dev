@@ -290,7 +290,7 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <div class="tab-btn" onclick="libTab(this,'lib-proj')">⚔️ Projects</div>
         <div class="tab-btn" onclick="libTab(this,'lib-read')">📚 Reading</div>
       </div>
-      <div id="lib-games" class="tab-content active"><div class="card-list" id="lib-games-list"></div><button class="mc-btn" onclick="addLibItem('games')" style="width:auto;padding:8px 14px">+ Add Game</button></div>
+      <div id="lib-games" class="tab-content active"><div class="card-list" id="lib-games-list"></div><button class="mc-btn" onclick="addLibItem('games')" style="width:auto;padding:8px 14px">+ Add Game</button><button class="mc-btn" onclick="addSteamGame()" style="width:auto;padding:8px 14px;margin-left:8px">+ Add Steam Game</button></div>
       <div id="lib-music" class="tab-content"><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
       <div id="lib-proj"  class="tab-content"><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
       <div id="lib-read"  class="tab-content"><div class="card-list" id="lib-read-list"></div><button class="mc-btn" onclick="addLibItem('read')" style="width:auto;padding:8px 14px">+ Add Item</button></div>
@@ -579,9 +579,11 @@ function renderLibList(tab, list) {
   el.innerHTML = list.map((item,i) => `
     <div class="card-item">
       <div class="card-content">
-        <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Emoji icon" style="width:60px">
+        <input class="mc-input" value="${item.type||'basic'}" oninput="libData['${tab}'][${i}].type=this.value" placeholder="Type basic or steam" style="width:120px">
+        <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Icon or CSS class" style="width:140px">
         <input class="mc-input" value="${item.name||''}" oninput="libData['${tab}'][${i}].name=this.value" placeholder="Name">
-        <input class="mc-input" value="${item.url||''}" oninput="libData['${tab}'][${i}].url=this.value" placeholder="URL (optional)">
+        <input class="mc-input" value="${item.url||''}" oninput="libData['${tab}'][${i}].url=this.value" placeholder="URL or Steam store/SteamDB link">
+        <input class="mc-input" value="${item.appid||''}" oninput="libData['${tab}'][${i}].appid=this.value" placeholder="Steam App ID">
       </div>
       <div class="card-actions">
         <button class="btn-sm del" onclick="rmLibItem('${tab}',${i})">✕</button>
@@ -590,8 +592,12 @@ function renderLibList(tab, list) {
   `).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">Nothing here yet.</div>';
 }
 function addLibItem(tab) {
-  libData[tab].push({icon:'❓',name:'New Item',url:''});
+  libData[tab].push({type:'basic',icon:'❓',name:'New Item',url:'',appid:''});
   renderLibList(tab, libData[tab]);
+}
+function addSteamGame() {
+  libData.games.push({type:'steam',icon:'▶',name:'Steam Game',url:'',appid:''});
+  renderLibList('games', libData.games);
 }
 function rmLibItem(tab, i) { libData[tab].splice(i,1); renderLibList(tab, libData[tab]); }
 function libTab(el, id) {

@@ -110,7 +110,6 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 <div class="tooltip" id="tooltip"></div>
 <button class="mc-btn sound-btn" id="sound-toggle" type="button">🔊</button>
 <button class="edit-btn" id="edit-toggle" type="button" title="Quick edit">✎</button>
-<a class="mc-btn admin-link" href="/admin">Admin</a>
 
 <div id="edit-panel">
   <div class="ep-title">✎ QUICK EDIT</div>
@@ -120,12 +119,10 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
   <div class="ep-field"><label>Email</label><input class="ep-input" id="qe-email" type="email" placeholder="reef@example.com"></div>
   <div class="ep-field"><label>Easter Egg Phrases</label><div class="ep-phrases" id="qe-phrases"></div><div class="ep-add-phrase"><input id="qe-new-phrase" placeholder="Add phrase..."><button onclick="qeAddPhrase()">+</button></div></div>
   <button class="ep-save" onclick="qeSaveAll()">💾 Save All</button>
-  <a class="ep-admin-link" href="/admin">→ Full Admin Panel (more options)</a>
 </div>
 <nav class="hotbar">
   <a class="active" href="#home" data-tip="Spawn"><span class="mc-item i-grass"></span><span>Home</span></a>
   <a href="#about" data-tip="Book and quill"><span class="mc-item i-book"></span><span>About</span></a>
-  <a href="#projects" data-tip="Project chest"><span class="mc-item i-sword"></span><span>Code</span></a>
   <a href="#library" data-tip="Inventory"><span class="mc-item i-chest"></span><span>Library</span></a>
   <a href="#friends" data-tip="Badge wall"><span class="mc-item i-players"></span><span>Friends</span></a>
   <a href="#contact" data-tip="Notice board"><span class="mc-item i-sign"></span><span>Contact</span></a>
@@ -141,19 +138,18 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
         <div class="also-try" id="also-try-el">Also try touching grass!</div>
         <div class="xp-label"><span>LEVEL 42</span><span id="presence-text">LOADING</span></div>
         <div class="xp-bar"><div class="xp-fill" id="xp-fill-bar" style="width:78%"></div></div>
-        <div class="actions" id="social-actions"><a class="mc-btn" href="#projects">View Builds</a><a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">GitHub</a><a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">Discord</a></div>
+        <div class="actions" id="social-actions"><a class="mc-btn" href="#library">View Builds</a><a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">GitHub</a><a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">Discord</a></div>
         <div class="stats"><div class="stat"><b id="stat-repos">--</b><span>PUBLIC REPOS</span></div><div class="stat"><b id="stat-followers">--</b><span>FOLLOWERS</span></div><div class="stat"><b id="stat-stars">--</b><span>TOTAL STARS</span></div></div>
       </div>
     </div>
   </section>
   <section id="about">
     <h2 class="title">About / Book</h2>
-    <div class="book"><div class="book-pages"><div class="page"><h3>WHO IS REEF?</h3><p id="bio-copy">Hey, I'm Reef. I build things, break things, and occasionally sleep. This version is built around custom pixel items, a menu-style panorama, and Minecraft-like UI pieces.</p></div><div class="page"><h3>WORLD NOTES</h3><ul><li>Custom CSS item icons — no emoji dependency.</li><li>Blurred block panorama behind every section.</li><li>Live GitHub and Discord data via API.</li><li>Admin route available from the site.</li></ul><div class="book-socials" id="book-socials"><a class="book-sl" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">💬 Discord</a><a class="book-sl" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">🐙 GitHub</a></div></div></div></div>
+    <div class="book"><div class="book-pages"><div class="page"><h3>WHO IS REEF?</h3><p id="bio-copy">Hey, I'm Reef. I build things, break things, and occasionally sleep. This version is built around custom pixel items, a menu-style panorama, and Minecraft-like UI pieces.</p></div><div class="page"><h3>WORLD NOTES</h3><ul><li>Custom CSS item icons — no emoji dependency.</li><li>Blurred block panorama behind every section.</li><li>Live GitHub and Discord data via API.</li><li>The homepage keeps admin hidden.</li></ul><div class="book-socials" id="book-socials"><a class="book-sl" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">💬 Discord</a><a class="book-sl" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">🐙 GitHub</a></div></div></div></div>
     <div class="presence"><div class="presence-avatar" id="presence-avatar">R</div><div><h3 id="presence-name">REEF</h3><p id="presence-status-text">Offline</p><p id="presence-activity">No activity yet.</p></div></div>
   </section>
-  <section id="projects"><h2 class="title">Projects / Chest</h2><div class="panel"><div class="project-grid" id="repo-grid"><div class="project"><h3>Loading...</h3><p>Fetching GitHub builds.</p></div></div></div></section>
-  <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="projects">Projects</div><div class="tab" data-tab="reading">Reading</div></div><div class="inv-grid tab-panel" id="tab-games"><a class="inv-item" href="https://minecraft.net" target="_blank" rel="noreferrer"><span class="mc-item i-pick"></span><span class="label">Minecraft</span></a><div class="inv-item"><span class="mc-item i-grass"></span><span class="label">Survival</span></div><div class="inv-item"><span class="mc-item i-chest"></span><span class="label">Builds</span></div></div><div class="inv-grid tab-panel" id="tab-music" hidden><div class="inv-item"><span class="mc-item i-note"></span><span class="label">Playlists</span></div><div class="inv-item"><span class="mc-item i-note"></span><span class="label">Ambient</span></div></div><div class="inv-grid tab-panel" id="tab-projects" hidden><div class="inv-item"><span class="mc-item i-book"></span><span class="label">Web</span></div><div class="inv-item"><span class="mc-item i-map"></span><span class="label">Portfolio</span></div></div><div class="inv-grid tab-panel" id="tab-reading" hidden><div class="inv-item"><span class="mc-item i-book"></span><span class="label">Docs</span></div><div class="inv-item"><span class="mc-item i-sign"></span><span class="label">Notes</span></div></div></div></section>
-  <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall" id="friends-grid"></div></section>
+  <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div></div><div class="inv-grid tab-panel" id="tab-all"></div><div class="inv-grid tab-panel" id="tab-games" hidden></div><div class="inv-grid tab-panel" id="tab-music" hidden></div><div class="inv-grid tab-panel" id="tab-reading" hidden></div></div></section>
+  <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall" id="friends-grid"></div><div class="panel" style="margin-top:18px"><h3 style="font-family:'Press Start 2P';font-size:8px;margin-bottom:12px">My Card</h3><div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start"><button id="my-card-preview" class="badge-link" type="button" style="width:176px;height:62px;padding:0;border:0"><img src="assets/reef-card.webp" alt="REEF card"></button><div><div style="font-family:'Press Start 2P';font-size:6px;color:#bbb;margin-bottom:8px">Copy code</div><textarea id="my-card-code" readonly class="mc-input" style="min-height:110px;font-size:16px;line-height:1.4"></textarea><div class="actions" style="margin-top:10px"><button class="mc-btn" id="copy-card-btn" type="button">Copy Code</button></div></div></div></div></section>
   <section id="contact"><h2 class="title">Contact / Sign</h2><div class="panel"><p style="font-size:22px;margin-bottom:16px">Reach Reef through these portals.</p><div class="actions" id="contact-actions"><a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">Discord</a><a class="mc-btn" href="mailto:reef@example.com">Email</a><a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">GitHub</a></div></div></section>
   <footer class="footer"><div>(C) REEF 2026</div><div class="note" id="footer-note">Also try mining at sunset.</div></footer>
 </main>
@@ -189,7 +185,7 @@ function loadSiteData(){
   if(socials.instagram) links.push({label:'Instagram',href:socials.instagram});
   if(socials.spotify) links.push({label:'Spotify',href:socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>s?.url&&links.push({label:s.icon||s.name||'Link',href:s.url}));
-  socialActions.innerHTML=['<a class="mc-btn" href="#projects">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`)].join('');
+  socialActions.innerHTML=['<a class="mc-btn" href="#library">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`)].join('');
 
   const contactAct=document.getElementById('contact-actions');
   contactAct.innerHTML=links.slice(0,3).map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('')+`<a class="mc-btn" href="mailto:${email}">Email</a>`;
@@ -198,6 +194,7 @@ function loadSiteData(){
   bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('');
 
   renderInventory(siteData.library||JSON.parse(localStorage.getItem('reef-library')||'{}'));
+  setupCardCopy(name);
   return {name,bio,email,socials,bg,phrases:phrasesList};
 }
 
@@ -231,7 +228,7 @@ for(let i=0;i<28;i++){const p=document.createElement('div');p.className='particl
 
 document.querySelectorAll('[data-tip]').forEach(el=>{el.onmouseenter=()=>{tip.textContent=el.dataset.tip;tip.style.display='block'};el.onmousemove=e=>{tip.style.left=e.clientX+14+'px';tip.style.top=e.clientY+14+'px'};el.onmouseleave=()=>tip.style.display='none'});
 
-document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{playClick('tab');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(p=>p.hidden=true);tab.classList.add('active');document.getElementById('tab-'+tab.dataset.tab).hidden=false});
+document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{playClick('tab');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(p=>p.hidden=true);tab.classList.add('active');document.getElementById('tab-'+tab.dataset.tab).hidden=false; if(tab.dataset.tab==='all') renderLibraryAll();});
 
 function navUpdate(){const current=sections.find(s=>{const r=s.getBoundingClientRect();return r.top<=innerHeight*.35&&r.bottom>=innerHeight*.35});if(current)slots.forEach(a=>a.classList.toggle('active',a.hash==='#'+current.id))}
 addEventListener('scroll',navUpdate,{passive:true});addEventListener('resize',navUpdate);navUpdate();
@@ -254,25 +251,38 @@ function loadBadges(){
 }
 
 function renderInventory(library){
-  const slots={games:document.getElementById('tab-games'),music:document.getElementById('tab-music'),projects:document.getElementById('tab-projects'),reading:document.getElementById('tab-reading')};
-  const fallback={games:[{icon:'i-pick',name:'Minecraft',url:'https://minecraft.net'},{icon:'i-grass',name:'Survival'},{icon:'i-chest',name:'Builds'}],music:[{icon:'i-note',name:'Playlists'},{icon:'i-note',name:'Ambient'}],projects:[{icon:'i-book',name:'Web'},{icon:'i-map',name:'Portfolio'}],reading:[{icon:'i-book',name:'Docs'},{icon:'i-sign',name:'Notes'}]};
+  const slots={all:document.getElementById('tab-all'),games:document.getElementById('tab-games'),music:document.getElementById('tab-music'),reading:document.getElementById('tab-reading')};
+  const fallback={games:[{icon:'i-pick',name:'Minecraft',url:'https://minecraft.net'},{icon:'i-grass',name:'Survival'},{icon:'i-chest',name:'Builds'}],music:[{icon:'i-note',name:'Playlists'},{icon:'i-note',name:'Ambient'}],reading:[{icon:'i-book',name:'Docs'},{icon:'i-sign',name:'Notes'}]};
   const normalize=(key)=>Array.isArray(library?.[key])&&library[key].length?library[key]:fallback[key];
+  const combined=[...normalize('games'),...normalize('music'),...normalize('reading')];
+  slots.all.innerHTML=combined.map((item,idx)=>renderLibraryItem(item,'all',idx)).join('');
   Object.entries(slots).forEach(([key,el])=>{
-    if(!el) return;
+    if(!el || key==='all') return;
     const items=normalize(key);
-    el.innerHTML=items.map((item,idx)=>{
-      const icon=(item.icon||'i-book').replace(/[^a-z-]/g,'');
-      const name=(item.name||'Item').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      const href=item.url||'#';
-      const steamAppId=extractSteamAppId(item);
-      if((item.type||'basic')==='steam' || steamAppId){
-        const slotId=`steam-slot-${key}-${idx}`;
-        queueSteamRender(slotId,item,steamAppId,name);
-        return `<div class="inv-item" id="${slotId}"><span class="mc-item i-star"></span><span class="label">${name}</span><span class="label">Loading Steam...</span></div>`;
-      }
-      return `<a class="inv-item" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><span class="mc-item ${icon}"></span><span class="label">${name}</span></a>`;
-    }).join('');
+    el.innerHTML=items.map((item,idx)=>renderLibraryItem(item,key,idx)).join('');
   });
+}
+
+function renderLibraryItem(item,key,idx){
+  const icon=(item.icon||'i-book').replace(/[^a-z-]/g,'');
+  const name=(item.name||'Item').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const href=item.url||'#';
+  const steamAppId=extractSteamAppId(item);
+  if((item.type||'basic')==='steam' || steamAppId){
+    const slotId=`steam-slot-${key}-${idx}`;
+    queueSteamRender(slotId,item,steamAppId,name);
+    return `<div class="inv-item" id="${slotId}"><span class="mc-item i-star"></span><span class="label">${name}</span><span class="label">Loading Steam...</span></div>`;
+  }
+  return `<a class="inv-item" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><span class="mc-item ${icon}"></span><span class="label">${name}</span></a>`;
+}
+
+function renderLibraryAll(){
+  const el=document.getElementById('tab-all');
+  if(!el) return;
+  const library=siteData.library||JSON.parse(localStorage.getItem('reef-library')||'{}');
+  const buckets=['games','music','reading'];
+  const items=buckets.flatMap(k=>Array.isArray(library?.[k])?library[k].map(it=>({...it,_bucket:k})) : []);
+  el.innerHTML=items.map((item,idx)=>renderLibraryItem(item,'all',idx)).join('');
 }
 
 function extractSteamAppId(item){
@@ -341,9 +351,11 @@ function renderProjectsFromCMS(){
 
 async function loadGitHub(){try{
   if(renderProjectsFromCMS()) return;
+  const repoGrid=document.getElementById('repo-grid');
+  if(!repoGrid) return;
   const[uRes,rRes]=await Promise.all([fetch(`https://api.github.com/users/${GITHUB_USER}`),fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=stars&per_page=9`)]),u=await uRes.json(),repos=await rRes.json();
-  if(!u||!repos){document.getElementById('repo-grid').innerHTML='<div class="project"><h3>Failed to load</h3><p>GitHub is unavailable.</p></div>';return}
-  document.getElementById('stat-repos').textContent=u.public_repos??'--';document.getElementById('stat-followers').textContent=u.followers??'--';const stars=Array.isArray(repos)?repos.reduce((a,r)=>a+(r.stargazers_count||0),0):0;document.getElementById('stat-stars').textContent=stars||'--';const colors={JavaScript:'#f7df1e',TypeScript:'#3178c6',HTML:'#e34f26',CSS:'#663399',Python:'#3572a5'};document.getElementById('repo-grid').innerHTML=(Array.isArray(repos)&&repos.length?repos:[]).map(r=>`<a class="project" href="${r.html_url}" target="_blank" rel="noreferrer"><h3>${r.name}</h3><p>${r.description||'No description provided.'}</p><div class="meta">${r.language?`<span><span style="display:inline-block;width:10px;height:10px;background:${colors[r.language]||'#bbb'}"></span> ${r.language}</span>`:''}<span>⭐ ${r.stargazers_count}</span><span>🍴 ${r.forks_count}</span></div></a>`).join('')||'<div class="project"><h3>No public repos yet.</h3></div>'}catch(e){document.getElementById('repo-grid').innerHTML='<div class="project"><h3>Failed to load</h3><p>GitHub is unavailable right now.</p></div>'}}
+  if(!u||!repos){repoGrid.innerHTML='<div class="project"><h3>Failed to load</h3><p>GitHub is unavailable.</p></div>';return}
+  document.getElementById('stat-repos').textContent=u.public_repos??'--';document.getElementById('stat-followers').textContent=u.followers??'--';const stars=Array.isArray(repos)?repos.reduce((a,r)=>a+(r.stargazers_count||0),0):0;document.getElementById('stat-stars').textContent=stars||'--';const colors={JavaScript:'#f7df1e',TypeScript:'#3178c6',HTML:'#e34f26',CSS:'#663399',Python:'#3572a5'};repoGrid.innerHTML=(Array.isArray(repos)&&repos.length?repos:[]).map(r=>`<a class="project" href="${r.html_url}" target="_blank" rel="noreferrer"><h3>${r.name}</h3><p>${r.description||'No description provided.'}</p><div class="meta">${r.language?`<span><span style="display:inline-block;width:10px;height:10px;background:${colors[r.language]||'#bbb'}"></span> ${r.language}</span>`:''}<span>⭐ ${r.stargazers_count}</span><span>🍴 ${r.forks_count}</span></div></a>`).join('')||'<div class="project"><h3>No public repos yet.</h3></div>'}catch(e){const repoGrid=document.getElementById('repo-grid');if(repoGrid) repoGrid.innerHTML='<div class="project"><h3>Failed to load</h3><p>GitHub is unavailable right now.</p></div>'}}
 
 function applyDiscord(d){
   const st=d.discord_status||'offline';
@@ -361,6 +373,17 @@ function applyDiscord(d){
 }
 
 function connectLanyard(){const ws=new WebSocket('wss://api.lanyard.rest/socket');let hb;ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.op===1){hb=setInterval(()=>ws.readyState===1&&ws.send(JSON.stringify({op:3})),m.d.heartbeat_interval);ws.send(JSON.stringify({op:2,d:{subscribe_to_id:DISCORD_ID}}))}if(m.op===0)applyDiscord(m.d)};ws.onclose=()=>{clearInterval(hb);setTimeout(connectLanyard,4000)}}
+
+function setupCardCopy(name){
+  const code=`<a href="https://reef-dev.vercel.app/" target="_blank" rel="noopener noreferrer"><img src="https://reef-dev.vercel.app/assets/reef-card.webp" width="88" height="31" alt="${name}" /></a>`;
+  const area=document.getElementById('my-card-code');
+  const btn=document.getElementById('copy-card-btn');
+  const card=document.getElementById('my-card-preview');
+  if(area) area.value=code;
+  const copy=async()=>{try{await navigator.clipboard.writeText(code);playClick('click')}catch(e){area?.select();document.execCommand('copy');playClick('click')}};
+  if(btn) btn.onclick=copy;
+  if(card) card.onclick=copy;
+}
 
 loadSiteData();loadBadges();loadGitHub();connectLanyard();
 
@@ -391,9 +414,9 @@ function loadQeData(){
       tagline:document.getElementById('tagline-static').textContent||'Developer. Designer. Student.',
       bio:cms.bio||localStorage.getItem('reef-bio')||"Hey, I'm Reef. I build things, break things, and occasionally sleep.",
       email:cms.email||localStorage.getItem('reef-email')||'reef@example.com',
-      phrases:Array.isArray(cms.phrases)?[...cms.phrases]:(()=>{try{return JSON.parse(localStorage.getItem('reef-phrases')||'[]')}catch{return[...DEFAULT_PHRASES]}})(),
+      phrases:Array.isArray(cms.phrases)?[...cms.phrases]:(()=>{try{return JSON.parse(localStorage.getItem('reef-phrases')||'[]');}catch{return[...DEFAULT_PHRASES];}})(),
     };
-  }catch{return{name:'Reef',tagline:'Developer. Designer. Student.',bio:"Hey, I'm Reef...",email:'reef@example.com',phrases:[...DEFAULT_PHRASES]}}
+  }catch{return{name:'Reef',tagline:'Developer. Designer. Student.',bio:"Hey, I'm Reef...",email:'reef@example.com',phrases:[...DEFAULT_PHRASES]};}
 }
 function qeRenderPhrases(list){
   const el=document.getElementById('qe-phrases');
