@@ -243,7 +243,7 @@ function loadBadges(){
 function renderInventory(library){
   const slots={all:document.getElementById('tab-all'),games:document.getElementById('tab-games'),music:document.getElementById('tab-music'),reading:document.getElementById('tab-reading')};
   const fallback={games:[{icon:'i-pick',name:'Minecraft',url:'https://minecraft.net'},{icon:'i-grass',name:'Survival'},{icon:'i-chest',name:'Builds'}],music:[{icon:'i-note',name:'Playlists'},{icon:'i-note',name:'Ambient'}],reading:[{icon:'i-book',name:'Docs'},{icon:'i-sign',name:'Notes'}]};
-  const normalize=(key)=>Array.isArray(library?.[key])&&library[key].length?library[key]:fallback[key];
+  const normalize=(key)=>Array.isArray(library?.[key])&&library[key].length?library[key].filter(i=>!i.hidden):fallback[key];
   const combined=[...normalize('games'),...normalize('music'),...normalize('reading')];
   slots.all.innerHTML=combined.map((item,idx)=>renderLibraryItem(item,'all',idx)).join('');
   Object.entries(slots).forEach(([key,el])=>{
@@ -374,17 +374,18 @@ function applyDiscord(d){
     const u=d.discord_user,url='https://cdn.discordapp.com/avatars/'+u.id+'/'+u.avatar+'.webp?size=256',img=document.getElementById('avatar');
     img.src=url;img.hidden=false;document.getElementById('avatar-fallback').style.display='none';
   }
+  const name=siteData.name||'Reef';
   const s=d.spotify,game=(d.activities||[]).find(a=>a.type===0);
   if(s&&s.song){
-    prim.textContent='🎵 '+s.song;
+    prim.textContent=name+' 🎵 '+s.song;
     det.textContent=(s.artist||'')+(s.timestamps?.start?' · '+fmtElapsed(s.timestamps.start,s.timestamps.end):'');
   }else if(game){
-    prim.textContent='🎮 '+game.name;
+    prim.textContent=name+' 🎮 '+game.name;
     det.textContent=(game.details?game.details:'')+(game.timestamps?.start?' · '+fmtElapsed(game.timestamps.start):'')+(game.state?' — '+game.state:'');
     if(!game.details&&!game.timestamps&&game.state) det.textContent=game.state;
   }else{
     const lbl={online:'🟢 Online',idle:'🌙 Idle',offline:'🔴 Offline'}[st]||'🔴 Offline';
-    prim.textContent=lbl;det.textContent='No activity';
+    prim.textContent=name+' '+lbl;det.textContent='—';
   }
 }
 

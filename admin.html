@@ -647,10 +647,13 @@ function renderLibList(tab, list) {
   el.innerHTML = list.map((item,i) => `
     <div class="card-item">
       <div class="card-content">
-        <input class="mc-input" value="${item.type||'basic'}" oninput="libData['${tab}'][${i}].type=this.value" placeholder="Type basic or steam" style="width:120px">
-        <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Icon or CSS class" style="width:140px">
+        <div style="display:flex;gap:8px;align-items:center">
+          <span onclick="toggleLibHidden('${tab}',${i})" style="cursor:pointer;font-size:16px;color:${item.hidden?'#555':'var(--xp)'}" title="${item.hidden?'Hidden - click to show':'Visible - click to hide'}">${item.hidden?'⬜':'👁'}</span>
+          <input class="mc-input" value="${item.type||'basic'}" oninput="libData['${tab}'][${i}].type=this.value" placeholder="Type basic or steam" style="width:120px">
+          <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Icon" style="width:100px">
+        </div>
         <input class="mc-input" value="${item.name||''}" oninput="libData['${tab}'][${i}].name=this.value" placeholder="Name">
-        <input class="mc-input" value="${item.url||''}" oninput="libData['${tab}'][${i}].url=this.value" placeholder="URL or Steam store/SteamDB link">
+        <input class="mc-input" value="${item.url||''}" oninput="libData['${tab}'][${i}].url=this.value" placeholder="URL or Steam link">
         <input class="mc-input" value="${item.appid||''}" oninput="libData['${tab}'][${i}].appid=this.value" placeholder="Steam App ID">
       </div>
       <div class="card-actions">
@@ -659,12 +662,13 @@ function renderLibList(tab, list) {
     </div>
   `).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">Nothing here yet.</div>';
 }
+function toggleLibHidden(tab,i){libData[tab][i].hidden=!libData[tab][i].hidden;renderLibList(tab,libData[tab])}
 function addLibItem(tab) {
-  libData[tab].push({type:'basic',icon:'❓',name:'New Item',url:'',appid:''});
+  libData[tab].push({type:'basic',icon:'❓',name:'New Item',url:'',appid:'',hidden:false});
   renderLibList(tab, libData[tab]);
 }
 function addSteamGame() {
-  libData.games.push({type:'steam',icon:'▶',name:'Steam Game',url:'',appid:''});
+  libData.games.push({type:'steam',icon:'▶',name:'Steam Game',url:'',appid:'',hidden:false});
   renderLibList('games', libData.games);
 }
 function rmLibItem(tab, i) { libData[tab].splice(i,1); renderLibList(tab, libData[tab]); }
