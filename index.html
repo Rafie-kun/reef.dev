@@ -327,7 +327,8 @@ function renderLibraryItem(item,key,idx){
   if((item.type||'basic')==='steam' || steamAppId){
     const slotId=`steam-slot-${key}-${idx}`;
     queueSteamRender(slotId,item,steamAppId,name,itemJson);
-    return `<div class="inv-item" data-item='${itemJson}' id="${slotId}"><span class="mc-item i-star"></span><span class="label">${name}</span><span class="label">Loading Steam...</span></div>`;
+    const imgHtml=item.img?`<span style="width:100%;height:42px;display:block;background:url('${item.img}') center/cover no-repeat;border-bottom:2px solid #555"></span>`:'';
+    return `<div class="inv-item" data-item='${itemJson}' id="${slotId}">${imgHtml}<span class="mc-item i-star"></span><span class="label">${name}</span><span class="label">Loading Steam...</span></div>`;
   }
   return `<a class="inv-item" data-item='${itemJson}' href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><span class="mc-item ${icon}"></span><span class="label">${name}</span></a>`;
 }
@@ -351,7 +352,8 @@ function extractSteamAppId(item){
 
 function steamStoreFallback(item,name,appId,reason,itemJson){
   const href=item?.url && item.url.startsWith('http') ? item.url : (appId ? `https://store.steampowered.com/app/${appId}` : '#');
-  return `<a class="inv-item" data-item='${itemJson||''}' href="${href}" target="_blank" rel="noreferrer"><span class="mc-item i-star"></span><span class="label">${name}</span><span class="label">${reason||'Steam game'}</span></a>`;
+  const img=item?.img?`<span style="width:100%;height:42px;display:block;background:url('${item.img}') center/cover no-repeat;border-bottom:2px solid #555"></span>`:'';
+  return `<a class="inv-item" data-item='${itemJson||''}' href="${href}" target="_blank" rel="noreferrer">${img}<span class="mc-item i-star"></span><span class="label">${name}</span><span class="label">${reason||'Steam game'}</span></a>`;
 }
 
 async function fetchSteamApp(appId){

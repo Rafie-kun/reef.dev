@@ -652,7 +652,7 @@ async function importFromUrl(tab){
       const res=await fetch(proxy+encodeURIComponent('https://store.steampowered.com/api/appdetails?appids='+appId+'&l=en&cc=us'));
       const j=await res.json();const data=j?.[appId]?.data;
       if(data){
-        libData[tab].push({type:'steam',icon:'i-star',name:data.name||'Steam Game',url:data.steam_appid?'https://store.steampowered.com/app/'+data.steam_appid:url,appid:appId,hidden:false});
+        libData[tab].push({type:'steam',icon:'i-star',name:data.name||'Steam Game',url:data.steam_appid?'https://store.steampowered.com/app/'+data.steam_appid:url,appid:appId,img:data.header_image||data.capsule_image||'',hidden:false});
         renderLibList(tab,libData[tab]);input.value='';toast('Imported: '+data.name);return;
       }
     }catch(e){}
@@ -677,6 +677,7 @@ async function fetchSteamGame(tab,i){
     libData[tab][i].type='steam';
     libData[tab][i].appid=appId;
     libData[tab][i].url=data.steam_appid?`https://store.steampowered.com/app/${data.steam_appid}`:(url||'');
+    libData[tab][i].img=data.header_image||data.capsule_image||'';
     renderLibList(tab,libData[tab]);
     toast('Imported: '+data.name);
   }catch(e){toast('Steam fetch failed: '+e.message,false)}
@@ -694,7 +695,9 @@ function renderLibList(tab, list) {
           <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Icon" style="width:100px">
           <button class="btn-sm" onclick="fetchSteamGame('${tab}',${i})" title="Auto-fetch from Steam" style="font-size:10px;padding:2px 6px">🔄 Steam</button>
         </div>
+        ${item.img?`<img src="${item.img}" style="width:100%;height:42px;object-fit:cover;border:2px solid var(--stone-dark);margin-bottom:4px">`:''}
         <input class="mc-input" value="${item.name||''}" oninput="libData['${tab}'][${i}].name=this.value" placeholder="Name">
+        <input class="mc-input" value="${item.img||''}" oninput="libData['${tab}'][${i}].img=this.value" placeholder="Image URL (auto-filled from Steam)">
         <input class="mc-input" value="${item.url||''}" oninput="libData['${tab}'][${i}].url=this.value" placeholder="URL or Steam link">
         <input class="mc-input" value="${item.appid||''}" oninput="libData['${tab}'][${i}].appid=this.value" placeholder="Steam App ID">
       </div>
