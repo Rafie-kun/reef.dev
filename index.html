@@ -76,7 +76,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .book-socials{margin-top:18px;display:grid;gap:6px;position:relative;z-index:1}.book-sl{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(80,50,15,.12);border:1px solid rgba(80,50,15,.25);color:#3a1a00;font-size:18px;text-decoration:none}.book-sl:hover{background:rgba(80,50,15,.25)}
 .panel{background:var(--panel);border:3px solid var(--stone-dark);box-shadow:3px 3px 0 rgba(0,0,0,.45);padding:18px}
 .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px;background:#4d4d4d;padding:6px;border:4px solid #8b8b8b}.project{background:#3a3a3a;border:2px solid;border-color:#555 #e4e4e4 #e4e4e4 #555;padding:16px;display:flex;flex-direction:column;gap:8px}.project h3{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold)}.project p{font-size:18px;color:#d3d0c6}.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto}
-.inventory{background:#c6c6c6;border:4px solid #555;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #555}.tabs{display:flex;flex-wrap:wrap;border-bottom:3px solid #555}.tab{padding:10px 14px;background:#8b8b8b;color:#222;border-right:2px solid #555;font-family:'Press Start 2P',monospace;font-size:6px;cursor:pointer;user-select:none}.tab.active{background:#c6c6c6;color:#000;margin-bottom:-3px;border-bottom:3px solid #c6c6c6}.inv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:3px;background:#555;padding:8px}.inv-item{min-height:92px;background:#8b8b8b;border:2px solid;border-color:#555 #dbdbdb #dbdbdb #555;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:#111;text-align:center}.inv-item .label{font-family:'Press Start 2P',monospace;font-size:6px;line-height:1.5}
+.inventory{background:#c6c6c6;border:4px solid #555;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #555}.tabs{display:flex;flex-wrap:wrap;border-bottom:3px solid #555}.tab{padding:10px 14px;background:#8b8b8b;color:#222;border-right:2px solid #555;font-family:'Press Start 2P',monospace;font-size:6px;cursor:pointer;user-select:none}.tab.active{background:#c6c6c6;color:#000;margin-bottom:-3px;border-bottom:3px solid #c6c6c6}.inv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:3px;background:#555;padding:8px}.inv-item{min-height:92px;background:#8b8b8b;border:2px solid;border-color:#555 #dbdbdb #dbdbdb #555;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:#111;text-align:center;overflow:hidden}.inv-item .label{font-family:'Press Start 2P',monospace;font-size:6px;line-height:1.5}
 .badge-wall{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:rgba(0,0,0,.55);border:2px solid #777}.badge-link{width:88px;height:31px;display:block;border:1px solid #555;overflow:hidden;background:repeating-conic-gradient(#17102f 0 25%,#2c165b 0 50%) 0 0/8px 8px;image-rendering:pixelated;transition:transform .08s steps(1),filter .08s steps(1),border-color .08s steps(1)}.badge-link:hover{transform:translateY(-1px);filter:brightness(1.2);border-color:var(--gold)}.badge-link img,.badge-fallback{width:100%;height:100%;display:grid;place-items:center}.badge-link img{object-fit:cover;image-rendering:pixelated}.badge-fallback{font-family:'Press Start 2P',monospace;font-size:5px;color:#bbb}
 .presence{margin-top:22px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:rgba(0,0,0,.84);border:3px solid #33208a;padding:16px;max-width:560px;box-shadow:0 0 20px rgba(50,0,150,.3)}.presence-avatar{width:70px;height:70px;border:3px solid #000;background:#333;display:grid;place-items:center;overflow:hidden}.presence-avatar img{width:100%;height:100%;object-fit:cover}.presence h3{font-family:'Press Start 2P',monospace;font-size:8px;margin-bottom:6px}.presence p{font-size:19px;color:#c8c0b4}.footer{text-align:center;padding:34px 24px 48px;background:rgba(0,0,0,.55);border-top:2px solid #333;font-family:'Press Start 2P',monospace;font-size:7px;color:#888}.footer .note{margin-top:10px;color:var(--gold)}
 .tooltip{position:fixed;z-index:30;display:none;pointer-events:none;background:#100010;border:2px solid #2d0096;color:var(--gold);padding:8px 10px;font-size:18px;box-shadow:2px 2px 0 #000}
@@ -236,7 +236,6 @@ document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{playClick('tab')
 function navUpdate(){const current=sections.find(s=>{const r=s.getBoundingClientRect();return r.top<=innerHeight*.35&&r.bottom>=innerHeight*.35});if(current)slots.forEach(a=>a.classList.toggle('active',a.hash==='#'+current.id))}
 addEventListener('scroll',navUpdate,{passive:true});addEventListener('resize',navUpdate);navUpdate();
 
-// Scroll fade
 document.querySelectorAll('section:not(#home)').forEach(el=>{new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('section-visible');}},{threshold:.08}).observe(el)});
 
 function loadBadges(){
@@ -261,13 +260,71 @@ function renderInventory(library){
   Object.entries(slots).forEach(([key,el])=>{
     if(!el) return;
     const items=normalize(key);
-    el.innerHTML=items.map(item=>{
+    el.innerHTML=items.map((item,idx)=>{
       const icon=(item.icon||'i-book').replace(/[^a-z-]/g,'');
       const name=(item.name||'Item').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       const href=item.url||'#';
+      const steamAppId=extractSteamAppId(item);
+      if((item.type||'basic')==='steam' || steamAppId){
+        const slotId=`steam-slot-${key}-${idx}`;
+        queueSteamRender(slotId,item,steamAppId,name);
+        return `<div class="inv-item" id="${slotId}"><span class="mc-item i-star"></span><span class="label">${name}</span><span class="label">Loading Steam...</span></div>`;
+      }
       return `<a class="inv-item" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><span class="mc-item ${icon}"></span><span class="label">${name}</span></a>`;
     }).join('');
   });
+}
+
+function extractSteamAppId(item){
+  const direct=String(item?.appid||'').match(/\d+/)?.[0];
+  if(direct) return direct;
+  const url=String(item?.url||'');
+  const m=url.match(/store\.steampowered\.com\/app\/(\d+)/i) || url.match(/steamdb\.info\/app\/(\d+)/i) || url.match(/app\/(\d+)/i);
+  return m?.[1]||'';
+}
+
+function steamStoreFallback(item,name,appId,reason){
+  const href=item?.url && item.url.startsWith('http') ? item.url : (appId ? `https://store.steampowered.com/app/${appId}` : '#');
+  return `<a class="inv-item" href="${href}" target="_blank" rel="noreferrer"><span class="mc-item i-star"></span><span class="label">${name}</span><span class="label">${reason||'Steam game'}</span></a>`;
+}
+
+async function fetchSteamApp(appId){
+  const res=await fetch(`https://store.steampowered.com/api/appdetails?appids=${encodeURIComponent(appId)}&l=en&cc=us`);
+  const json=await res.json();
+  return json?.[appId]?.data || null;
+}
+
+const steamPending=new Map();
+function queueSteamRender(slotId,item,appId,name){
+  if(steamPending.has(slotId)) return;
+  const el=()=>document.getElementById(slotId);
+  steamPending.set(slotId,true);
+  (async()=>{
+    try{
+      const data=appId?await fetchSteamApp(appId):null;
+      const href=item?.url && item.url.startsWith('http') ? item.url : (appId ? `https://store.steampowered.com/app/${appId}` : '#');
+      const steamdb=`https://steamdb.info/app/${appId||extractSteamAppId(item)}/`;
+      if(!data){
+        const target=el();
+        if(target) target.outerHTML=steamStoreFallback(item,name,appId,'Steam data unavailable');
+        return;
+      }
+      const header=data.header_image || data.capsule_image || '';
+      const price=data.price_overview?.final_formatted || (data.is_free ? 'Free' : 'Price unavailable');
+      const platforms=[data.platforms?.windows&&'Win',data.platforms?.mac&&'Mac',data.platforms?.linux&&'Linux'].filter(Boolean).join('/');
+      const genres=(data.genres||[]).slice(0,2).map(g=>g.description).join(', ') || 'Steam game';
+      const label=(data.name||name||'Steam Game').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const target=el();
+      if(target){
+        target.outerHTML=`<a class="inv-item" href="${href}" target="_blank" rel="noreferrer" title="SteamDB: ${steamdb}"><span class="mc-item i-star"></span>${header?`<span style="width:100%;height:42px;display:block;background:url('${header}') center/cover no-repeat;border-bottom:2px solid #555"></span>`:''}<span class="label">${label}</span><span class="label">${price}</span><span class="label">${platforms||genres}</span></a>`;
+      }
+    }catch(e){
+      const target=el();
+      if(target) target.outerHTML=steamStoreFallback(item,name,appId,'Steam lookup failed');
+    }finally{
+      steamPending.delete(slotId);
+    }
+  })();
 }
 
 function renderProjectsFromCMS(){
