@@ -375,6 +375,10 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <input class="mc-input" id="cfg-bg" placeholder="https://... (leave blank for default panorama)">
         <small style="color:#666;font-family:'VT323';font-size:16px;">Tip: Use a Minecraft screenshot. Paste any direct image URL.</small>
       </div>
+      <div class="field">
+        <label>My Card Image URL (shown on homepage as your 88x31 button)</label>
+        <input class="mc-input" id="cfg-card-img" placeholder="https://... (leave blank for default)">
+      </div>
       <div class="save-bar">
         <button class="mc-btn green" onclick="saveAppearance()">💾 Apply Background</button>
         <span class="save-msg" id="appearance-msg"></span>
@@ -441,6 +445,7 @@ const DEFAULT_DATA = {
     'Also try eating something!',
   ],
   bg: '',
+  cardImg: 'https://reef-dev.vercel.app/assets/reef-card.webp',
   soundDefault: true,
 };
 
@@ -532,6 +537,7 @@ function loadAllPanels() {
   renderAlbum(d.album || []);
   renderPhrases(d.phrases || DEFAULT_DATA.phrases);
   document.getElementById('cfg-bg').value = d.bg || '';
+  document.getElementById('cfg-card-img').value = d.cardImg || 'https://reef-dev.vercel.app/assets/reef-card.webp';
   const soundOn = d.soundDefault !== false;
   const tog = document.getElementById('snd-toggle');
   tog.className = 'toggle' + (soundOn ? ' on' : '');
@@ -786,9 +792,11 @@ document.getElementById('new-phrase').addEventListener('keydown', e => { if(e.ke
 function saveAppearance() {
   const d = loadData();
   d.bg = document.getElementById('cfg-bg').value.trim();
+  d.cardImg = document.getElementById('cfg-card-img').value.trim() || 'https://reef-dev.vercel.app/assets/reef-card.webp';
   saveData(d);
   localStorage.setItem('reef-bg', d.bg);
-  toast('Background saved! Reload the site to see it.');
+  localStorage.setItem('reef-card-img', d.cardImg);
+  toast('Appearance saved! Reload the site to see it.');
 }
 
 // ============================================

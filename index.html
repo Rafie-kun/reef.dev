@@ -123,11 +123,11 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
     <div class="book"><div class="book-pages"><div class="page"><h3>WHO IS REEF?</h3><p id="bio-copy">Hey, I'm Reef. I build things, break things, and occasionally sleep. This version is built around custom pixel items, a menu-style panorama, and Minecraft-like UI pieces.</p></div><div class="page"><h3>WORLD NOTES</h3><ul><li>Custom CSS item icons — no emoji dependency.</li><li>Blurred block panorama behind every section.</li><li>Live GitHub and Discord data via API.</li><li>The homepage keeps admin hidden.</li></ul><div class="book-socials" id="book-socials"><a class="book-sl" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">💬 Discord</a><a class="book-sl" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">🐙 GitHub</a></div></div></div></div>
     <div class="presence"><div class="presence-avatar" id="presence-avatar">R</div><div><h3 id="presence-name">REEF</h3><p id="presence-status-text">Offline</p><p id="presence-activity">No activity yet.</p></div></div>
   </section>
-  <section id="projects"><h2 class="title">Projects / Crafting Bench</h2><div class="panel"><div class="project-grid" id="repo-grid"><div class="project"><h3>Loading...</h3><p>Fetching projects.</p></div></div></div></section>
+  <section id="projects"><h2 class="title">Projects / Crafting Bench</h2><div class="panel"><div class="project-grid" id="repo-grid"></div></div></section>
   <section id="blog"><h2 class="title">Blog / Reading</h2><div class="panel"><div class="blog-grid" id="blog-grid"></div></div></section>
   <section id="album"><h2 class="title">Album / Gallery</h2><div class="panel"><div class="album-grid" id="album-grid"></div></div></section>
   <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div></div><div class="inv-grid tab-panel" id="tab-all"></div><div class="inv-grid tab-panel" id="tab-games" hidden></div><div class="inv-grid tab-panel" id="tab-music" hidden></div><div class="inv-grid tab-panel" id="tab-reading" hidden></div></div></section>
-  <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall" id="friends-grid"></div><div class="panel" style="margin-top:18px"><h3 style="font-family:'Press Start 2P';font-size:8px;margin-bottom:12px">My Card</h3><div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start"><button id="my-card-preview" class="badge-link" type="button" style="width:176px;height:62px;padding:0;border:0"><img src="assets/reef-card.webp" alt="REEF card"></button><textarea id="my-card-code" readonly class="mc-input" style="min-height:110px;font-size:16px;line-height:1.4;display:none"></textarea><div style="font-family:'Press Start 2P';font-size:6px;color:#bbb;line-height:1.7">Click the card to copy the embed code. It uses the proper 88x31 button format.</div></div></div></section>
+  <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall" id="friends-grid"></div><div class="panel" style="margin-top:18px"><h3 style="font-family:'Press Start 2P';font-size:8px;margin-bottom:12px">My Card</h3><div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start"><button id="my-card-preview" class="badge-link" type="button" style="width:176px;height:62px;padding:0;border:0"><img id="my-card-img" src="assets/reef-card.webp" alt="REEF card"></button><textarea id="my-card-code" readonly class="mc-input" style="min-height:110px;font-size:16px;line-height:1.4;display:none"></textarea><div style="font-family:'Press Start 2P';font-size:6px;color:#bbb;line-height:1.7">Click the card to copy the embed code. It uses the proper 88x31 button format.</div></div></div></section>
   <section id="contact"><h2 class="title">Contact / Sign</h2><div class="panel"><p style="font-size:22px;margin-bottom:16px">Reach Reef through these portals.</p><div class="actions" id="contact-actions"><a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">Discord</a><a class="mc-btn" href="mailto:reef@example.com">Email</a><a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">GitHub</a></div></div></section>
   <footer class="footer"><div>(C) REEF 2026</div><div class="note" id="footer-note">Also try mining at sunset.</div></footer>
 </main>
@@ -144,6 +144,7 @@ function loadSiteData(){
   const email=siteData.email||localStorage.getItem('reef-email')||'reef@example.com';
   const socials=siteData.socials||JSON.parse(localStorage.getItem('reef-socials')||'{}');
   const bg=siteData.bg||localStorage.getItem('reef-bg')||'';
+  siteData.cardImg=siteData.cardImg||localStorage.getItem('reef-card-img')||'https://reef-dev.vercel.app/assets/reef-card.webp';
   const phrases=Array.isArray(siteData.phrases)?siteData.phrases:(JSON.parse(localStorage.getItem('reef-phrases')||'[]'));
   if(siteData.tagline) document.getElementById('tagline-static').textContent=siteData.tagline;
   document.title=`${name.toUpperCase()} | Minecraft Portfolio`;
@@ -216,7 +217,7 @@ addEventListener('scroll',navUpdate,{passive:true});addEventListener('resize',na
 document.querySelectorAll('section:not(#home)').forEach(el=>{new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('section-visible');}},{threshold:.08}).observe(el)});
 
 function loadBadges(){
-  let list=[{name:'88x31',img:'',url:'#'},{name:'88x31',img:'',url:'#'},{name:'88x31',img:'',url:'#'},{name:'88x31',img:'',url:'#'},{name:'88x31',img:'',url:'#'},{name:'88x31',img:'',url:'#'}];
+  let list=[];
   try{
     const cms=JSON.parse(localStorage.getItem('reef-cms')||'{}');
     if(Array.isArray(cms.friends)&&cms.friends.length) list=cms.friends;
@@ -338,25 +339,38 @@ function renderAlbumItems(items){
   }).join('');
 }
 
-function renderProjectsFromCMS(){
-  let cmsProjects=[];
-  try{cmsProjects=(JSON.parse(localStorage.getItem(DATA_KEY)||'{}').projects)||[]}catch(e){}
-  if(!Array.isArray(cmsProjects)||!cmsProjects.length) return false;
-  document.getElementById('repo-grid').innerHTML=cmsProjects.map(p=>{
-    const href=p.url||p.repo||'#';
-    const tags=(p.tags||'').split(',').map(s=>s.trim()).filter(Boolean);
-    return `<a class="project" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><h3>${p.name||'Untitled Project'}</h3><p>${p.desc||'No description provided.'}</p><div class="meta">${tags.map(t=>`<span>${t}</span>`).join('')||'<span>Custom build</span>'}</div></a>`;
-  }).join('');
-  return true;
+function loadProjects(){
+  const repoGrid=document.getElementById('repo-grid');
+  if(!repoGrid) return;
+  try{
+    const cms=JSON.parse(localStorage.getItem(DATA_KEY)||'{}');
+    const list=Array.isArray(cms.projects)&&cms.projects.length?cms.projects:(JSON.parse(localStorage.getItem('reef-projects')||'[]'));
+    if(Array.isArray(list)&&list.length){
+      repoGrid.innerHTML=list.map(p=>{
+        const href=p.url||p.repo||'#';
+        const tags=(p.tags||'').split(',').map(s=>s.trim()).filter(Boolean);
+        return `<a class="project" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><h3>${p.name||'Untitled Project'}</h3><p>${p.desc||'No description provided.'}</p><div class="meta">${tags.map(t=>`<span>${t}</span>`).join('')||'<span>Custom build</span>'}</div></a>`;
+      }).join('');
+    } else {
+      repoGrid.innerHTML='<div class="project" style="background:#2a2a2a;border-color:#444"><h3 style="color:#888">No projects yet</h3><p style="color:#666">Add projects from the admin panel.</p></div>';
+    }
+  }catch(e){}
 }
 
 async function loadGitHub(){try{
-  if(renderProjectsFromCMS()) return;
-  const repoGrid=document.getElementById('repo-grid');
-  if(!repoGrid) return;
-  const[uRes,rRes]=await Promise.all([fetch(`https://api.github.com/users/${GITHUB_USER}`),fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=stars&per_page=9`)]),u=await uRes.json(),repos=await rRes.json();
-  if(!u||!repos){repoGrid.innerHTML='<div class="project"><h3>Failed to load</h3><p>GitHub is unavailable.</p></div>';return}
-  document.getElementById('stat-repos').textContent=u.public_repos??'--';document.getElementById('stat-followers').textContent=u.followers??'--';const stars=Array.isArray(repos)?repos.reduce((a,r)=>a+(r.stargazers_count||0),0):0;document.getElementById('stat-stars').textContent=stars||'--';const colors={JavaScript:'#f7df1e',TypeScript:'#3178c6',HTML:'#e34f26',CSS:'#663399',Python:'#3572a5'};repoGrid.innerHTML=(Array.isArray(repos)&&repos.length?repos:[]).map(r=>`<a class="project" href="${r.html_url}" target="_blank" rel="noreferrer"><h3>${r.name}</h3><p>${r.description||'No description provided.'}</p><div class="meta">${r.language?`<span><span style="display:inline-block;width:10px;height:10px;background:${colors[r.language]||'#bbb'}"></span> ${r.language}</span>`:''}<span>⭐ ${r.stargazers_count}</span><span>🍴 ${r.forks_count}</span></div></a>`).join('')||'<div class="project"><h3>No public repos yet.</h3></div>'}catch(e){const repoGrid=document.getElementById('repo-grid');if(repoGrid) repoGrid.innerHTML='<div class="project"><h3>Failed to load</h3><p>GitHub is unavailable right now.</p></div>'}}
+  const uRes=await fetch(`https://api.github.com/users/${GITHUB_USER}`);
+  const u=await uRes.json();
+  if(u&&u.public_repos!=null){
+    document.getElementById('stat-repos').textContent=u.public_repos;
+    document.getElementById('stat-followers').textContent=u.followers||'--';
+  }
+  const rRes=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=stars&per_page=9`);
+  const repos=await rRes.json();
+  if(Array.isArray(repos)&&repos.length){
+    const stars=repos.reduce((a,r)=>a+(r.stargazers_count||0),0);
+    document.getElementById('stat-stars').textContent=stars||'--';
+  }
+}catch(e){}}
 
 function applyDiscord(d){
   const st=d.discord_status||'offline';
@@ -376,7 +390,10 @@ function applyDiscord(d){
 function connectLanyard(){const ws=new WebSocket('wss://api.lanyard.rest/socket');let hb;ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.op===1){hb=setInterval(()=>ws.readyState===1&&ws.send(JSON.stringify({op:3})),m.d.heartbeat_interval);ws.send(JSON.stringify({op:2,d:{subscribe_to_id:DISCORD_ID}}))}if(m.op===0)applyDiscord(m.d)};ws.onclose=()=>{clearInterval(hb);setTimeout(connectLanyard,4000)}}
 
 function setupCardCopy(name){
-  const code=`<a href="https://reef-dev.vercel.app/" target="_blank" rel="noopener noreferrer"><img src="https://reef-dev.vercel.app/assets/reef-card.webp" width="88" height="31" alt="${name}" /></a>`;
+  const cardImg=siteData.cardImg||localStorage.getItem('reef-card-img')||'https://reef-dev.vercel.app/assets/reef-card.webp';
+  const imgEl=document.getElementById('my-card-img');
+  if(imgEl) imgEl.src=cardImg;
+  const code=`<a href="https://reef-dev.vercel.app/" target="_blank" rel="noopener noreferrer"><img src="${cardImg}" width="88" height="31" alt="${name}" /></a>`;
   const area=document.getElementById('my-card-code');
   const card=document.getElementById('my-card-preview');
   if(area) area.value=code;
@@ -384,7 +401,7 @@ function setupCardCopy(name){
   if(card) card.onclick=copy;
 }
 
-loadSiteData();loadBadges();loadGitHub();connectLanyard();
+loadSiteData();loadBadges();loadProjects();loadGitHub();connectLanyard();
 </script>
 </body>
 </html>
