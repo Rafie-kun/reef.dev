@@ -114,7 +114,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
         <div class="xp-label"><span>LEVEL 42</span><span id="presence-text">LOADING</span></div>
         <div class="xp-bar"><div class="xp-fill" id="xp-fill-bar" style="width:78%"></div></div>
         <div class="actions" id="social-actions"><a class="mc-btn" href="#library">View Builds</a><a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">GitHub</a><a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">Discord</a></div>
-        <div class="stats"><div class="stat"><b id="stat-repos">--</b><span>PUBLIC REPOS</span></div><div class="stat"><b id="stat-followers">--</b><span>FOLLOWERS</span></div><div class="stat"><b id="stat-stars">--</b><span>TOTAL STARS</span></div></div>
+        <div class="stats" id="hero-activity"><div class="stat"><b id="act-status">🔴 Offline</b><span>STATUS</span></div><div class="stat" id="act-spotify-box"><b id="act-spotify">—</b><span>SPOTIFY</span></div><div class="stat" id="act-game-box"><b id="act-game">—</b><span>PLAYING</span></div></div>
       </div>
     </div>
   </section>
@@ -332,14 +332,14 @@ function queueSteamRender(slotId,item,appId,name){
 function renderBlogPosts(posts){
   const el=document.getElementById('blog-grid');
   if(!el) return;
-  const list=Array.isArray(posts)&&posts.length?posts:[{title:'No posts yet',date:'',body:'Add blog posts from the admin panel.'}];
+  const list=Array.isArray(posts)&&posts.length?posts:[{title:'No posts yet',date:'',body:'Nothing published yet. Check back later!'}];
   el.innerHTML=list.map(p=>`<article class="blog-post"><h3>${String(p.title||'Untitled').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</h3><div class="date">${String(p.date||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div><p>${String(p.body||'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</p></article>`).join('');
 }
 
 function renderAlbumItems(items){
   const el=document.getElementById('album-grid');
   if(!el) return;
-  const list=Array.isArray(items)&&items.length?items:[{caption:'Add images from the admin panel.',img:'',link:''}];
+  const list=Array.isArray(items)&&items.length?items:[{caption:'No images yet. Check back soon!',img:'',link:''}];
   el.innerHTML=list.map(item=>{
     const caption=String(item.caption||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     const inner=item.img?`<img src="${item.img}" alt="${caption}" onerror="this.style.display='none'"><div class="cap">${caption}</div>`:`<div class="cap">${caption||'No image yet'}</div>`;
@@ -382,17 +382,37 @@ async function loadGitHub(){try{
 
 function applyDiscord(d){
   const st=d.discord_status||'offline';
+  const stLabel={online:'🟢 Online',idle:'🌙 Idle',dnd:'⛔ DND',offline:'🔴 Offline'}[st]||'🔴 Offline';
   document.getElementById('status-dot').className='status '+st;
   document.getElementById('presence-text').textContent=st.toUpperCase();
   document.getElementById('presence-status-text').textContent={online:'Online',idle:'Idle',dnd:'Do Not Disturb',offline:'Offline'}[st]||'Offline';
+  document.getElementById('act-status').textContent=stLabel;
   if(d.discord_user){
     const u=d.discord_user;
     document.getElementById('presence-name').textContent=u.global_name||u.username||'REEF';
     if(u.avatar){const url=`https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.webp?size=256`,img=document.getElementById('avatar');img.src=url;img.hidden=false;document.getElementById('avatar-fallback').style.display='none';document.getElementById('presence-avatar').innerHTML=`<img src="${url}" alt="REEF">`}
   }
   const s=d.spotify,act=document.getElementById('presence-activity');
-  if(s&&s.song)act.textContent='Now playing: '+s.song;
-  else{const game=(d.activities||[]).find(a=>a.type===0);act.textContent=game?'Playing: '+game.name+(game.details?' - '+game.details:''):'No activity yet.'}
+  const spotifyBox=document.getElementById('act-spotify-box');
+  const spotifyLabel=document.getElementById('act-spotify');
+  if(s&&s.song){
+    spotifyBox.hidden=false;
+    spotifyLabel.textContent=s.song+(s.artist?' — '+s.artist:'');
+    act.textContent='Now playing: '+s.song;
+  }else{
+    spotifyBox.hidden=true;
+    const game=(d.activities||[]).find(a=>a.type===0);
+    act.textContent=game?'Playing: '+game.name+(game.details?' - '+game.details:''):'No activity yet.';
+  }
+  const gameBox=document.getElementById('act-game-box');
+  const gameLabel=document.getElementById('act-game');
+  const game=(d.activities||[]).find(a=>a.type===0);
+  if(game){
+    gameBox.hidden=false;
+    gameLabel.textContent=game.name+(game.details?' — '+game.details:'');
+  }else{
+    gameBox.hidden=true;
+  }
 }
 
 function connectLanyard(){const ws=new WebSocket('wss://api.lanyard.rest/socket');let hb;ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.op===1){hb=setInterval(()=>ws.readyState===1&&ws.send(JSON.stringify({op:3})),m.d.heartbeat_interval);ws.send(JSON.stringify({op:2,d:{subscribe_to_id:DISCORD_ID}}))}if(m.op===0)applyDiscord(m.d)};ws.onclose=()=>{clearInterval(hb);setTimeout(connectLanyard,4000)}}
@@ -407,7 +427,7 @@ function setupCardCopy(name){
   if(card) card.onclick=copy;
 }
 
-loadSiteData();loadBadges();loadProjects();loadGitHub();connectLanyard();
+loadSiteData();loadBadges();loadProjects();connectLanyard();
 </script>
 </body>
 </html>
