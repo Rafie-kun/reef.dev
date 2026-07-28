@@ -337,25 +337,15 @@ function queueSteamRender(slotId,item,appId,name){
   })();
 }
 
-function renderProjectsFromCMS(){
-  let cmsProjects=[];
-  try{cmsProjects=(JSON.parse(localStorage.getItem(DATA_KEY)||'{}').projects)||[]}catch(e){}
-  if(!Array.isArray(cmsProjects)||!cmsProjects.length) return false;
-  document.getElementById('repo-grid').innerHTML=cmsProjects.map(p=>{
-    const href=p.url||p.repo||'#';
-    const tags=(p.tags||'').split(',').map(s=>s.trim()).filter(Boolean);
-    return `<a class="project" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><h3>${p.name||'Untitled Project'}</h3><p>${p.desc||'No description provided.'}</p><div class="meta">${tags.map(t=>`<span>${t}</span>`).join('')||'<span>Custom build</span>'}</div></a>`;
-  }).join('');
-  return true;
-}
-
 async function loadGitHub(){try{
-  if(renderProjectsFromCMS()) return;
-  const repoGrid=document.getElementById('repo-grid');
-  if(!repoGrid) return;
-  const[uRes,rRes]=await Promise.all([fetch(`https://api.github.com/users/${GITHUB_USER}`),fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=stars&per_page=9`)]),u=await uRes.json(),repos=await rRes.json();
-  if(!u||!repos){repoGrid.innerHTML='<div class="project"><h3>Failed to load</h3><p>GitHub is unavailable.</p></div>';return}
-  document.getElementById('stat-repos').textContent=u.public_repos??'--';document.getElementById('stat-followers').textContent=u.followers??'--';const stars=Array.isArray(repos)?repos.reduce((a,r)=>a+(r.stargazers_count||0),0):0;document.getElementById('stat-stars').textContent=stars||'--';const colors={JavaScript:'#f7df1e',TypeScript:'#3178c6',HTML:'#e34f26',CSS:'#663399',Python:'#3572a5'};repoGrid.innerHTML=(Array.isArray(repos)&&repos.length?repos:[]).map(r=>`<a class="project" href="${r.html_url}" target="_blank" rel="noreferrer"><h3>${r.name}</h3><p>${r.description||'No description provided.'}</p><div class="meta">${r.language?`<span><span style="display:inline-block;width:10px;height:10px;background:${colors[r.language]||'#bbb'}"></span> ${r.language}</span>`:''}<span>⭐ ${r.stargazers_count}</span><span>🍴 ${r.forks_count}</span></div></a>`).join('')||'<div class="project"><h3>No public repos yet.</h3></div>'}catch(e){const repoGrid=document.getElementById('repo-grid');if(repoGrid) repoGrid.innerHTML='<div class="project"><h3>Failed to load</h3><p>GitHub is unavailable right now.</p></div>'}}
+  const[self]=await Promise.all([fetch(`https://api.github.com/users/${GITHUB_USER}`),fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=stars&per_page=9`)]);
+  const u=await self.json();
+  document.getElementById('stat-repos').textContent=u.public_repos??'--';
+  document.getElementById('stat-followers').textContent=u.followers??'--';
+  const repos=await(await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=stars&per_page=9`)).json();
+  const stars=Array.isArray(repos)?repos.reduce((a,r)=>a+(r.stargazers_count||0),0):0;
+  document.getElementById('stat-stars').textContent=stars||'--';
+}catch(e){}}
 
 function applyDiscord(d){
   const st=d.discord_status||'offline';
@@ -380,7 +370,15 @@ function setupCardCopy(name){
   const btn=document.getElementById('copy-card-btn');
   const card=document.getElementById('my-card-preview');
   if(area) area.value=code;
-  const copy=async()=>{try{await navigator.clipboard.writeText(code);playClick('click')}catch(e){area?.select();document.execCommand('copy');playClick('click')}};
+  const copy=async()=>{
+    try{await navigator.clipboard.writeText(code)}catch(e){area?.select();document.execCommand('copy')}
+    playClick('click');
+    const t=document.createElement('div');
+    t.textContent='[Copied!]';
+    t.style.cssText='position:fixed;top:20px;right:20px;z-index:9999;font-family:\'Press Start 2P\',monospace;font-size:7px;padding:12px 18px;background:#000;border:2px solid var(--xp);color:var(--xp);';
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(),1500);
+  };
   if(btn) btn.onclick=copy;
   if(card) card.onclick=copy;
 }
