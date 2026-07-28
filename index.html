@@ -69,7 +69,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .online{background:#43b581}.idle{background:#faa61a}.dnd{background:#f04747}.offline{background:#747f8d}
 .xp-label{display:flex;justify-content:space-between;max-width:490px;margin:18px 0 6px;font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa}
 .xp-bar{height:10px;max-width:490px;background:#111;border:2px solid #000;overflow:hidden}.xp-fill{height:100%;width:78%;background:var(--xp);box-shadow:0 0 8px var(--xp);transition:width .5s}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.stats{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:10px;margin-top:18px;max-width:620px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px;max-width:460px}
 .stat{background:var(--panel);border:3px solid var(--stone-dark);padding:14px;text-align:center}.stat b{display:block;font-family:'Press Start 2P',monospace;font-size:16px;color:var(--cyan)}.stat span{display:block;margin-top:7px;font-family:'Press Start 2P',monospace;font-size:6px;color:#999}
 .title{font-family:'Press Start 2P',monospace;font-size:16px;color:var(--gold);text-shadow:2px 2px 0 #3f3f00;margin-bottom:28px}.title:before{content:"[ ";color:#aaa}.title:after{content:" ]";color:#aaa}
 .book{background:#c2a46f;border:4px solid #623c1b;box-shadow:5px 5px 0 #2b1907}.book-pages{display:grid;grid-template-columns:1fr 1fr}.page{position:relative;min-height:320px;padding:26px 22px;background:#f5e7c9;color:#2c1b08}.page:first-child{border-right:2px solid #a88458}.page:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 27px,rgba(101,63,29,.18) 27px 28px);pointer-events:none}.page h3{font-family:'Press Start 2P',monospace;font-size:9px;margin-bottom:14px;position:relative;z-index:1}.page p,.page li{position:relative;z-index:1;font-size:22px;line-height:1.35}.page ul{padding-left:18px;display:grid;gap:8px}
@@ -78,7 +78,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px;background:#4d4d4d;padding:6px;border:4px solid #8b8b8b}.project{background:#3a3a3a;border:2px solid;border-color:#555 #e4e4e4 #e4e4e4 #555;padding:16px;display:flex;flex-direction:column;gap:8px}.project h3{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold)}.project p{font-size:18px;color:#d3d0c6}.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto}
 .inventory{background:#c6c6c6;border:4px solid #555;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #555}.tabs{display:flex;flex-wrap:wrap;border-bottom:3px solid #555}.tab{padding:10px 14px;background:#8b8b8b;color:#222;border-right:2px solid #555;font-family:'Press Start 2P',monospace;font-size:6px;cursor:pointer;user-select:none}.tab.active{background:#c6c6c6;color:#000;margin-bottom:-3px;border-bottom:3px solid #c6c6c6}.inv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:3px;background:#555;padding:8px}.inv-item{min-height:92px;background:#8b8b8b;border:2px solid;border-color:#555 #dbdbdb #dbdbdb #555;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:#111;text-align:center;overflow:hidden}.inv-item .label{font-family:'Press Start 2P',monospace;font-size:6px;line-height:1.5}
 .badge-wall{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:rgba(0,0,0,.55);border:2px solid #777;flex-direction:column}.badge-link,.badge-embed{width:88px;min-width:88px;height:31px;display:block;border:1px solid #555;overflow:hidden;background:repeating-conic-gradient(#17102f 0 25%,#2c165b 0 50%) 0 0/8px 8px;image-rendering:pixelated;transition:transform .08s steps(1),filter .08s steps(1),border-color .08s steps(1)}.badge-link:hover,.badge-embed:hover{transform:translateY(-1px);filter:brightness(1.2);border-color:var(--gold)}.badge-link img,.badge-fallback,.badge-embed img{width:100%;height:100%;display:grid;place-items:center}.badge-link img,.badge-embed img{object-fit:cover;image-rendering:pixelated}.badge-embed a{width:88px;height:31px;display:block;overflow:hidden}.badge-embed a img{width:88px!important;height:31px!important;object-fit:cover!important;image-rendering:pixelated}.badge-fallback{font-family:'Press Start 2P',monospace;font-size:6px;color:#ccc;background:#111;text-shadow:1px 1px 0 #000}
-.presence{margin-top:22px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:rgba(0,0,0,.84);border:3px solid #33208a;padding:16px;max-width:560px;box-shadow:0 0 20px rgba(50,0,150,.3)}.presence-avatar{width:70px;height:70px;border:3px solid #000;background:#333;display:grid;place-items:center;overflow:hidden}.presence-avatar img{width:100%;height:100%;object-fit:cover}.presence h3{font-family:'Press Start 2P',monospace;font-size:8px;margin-bottom:6px}.presence p{font-size:19px;color:#c8c0b4}.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}.blog-post{background:rgba(0,0,0,.75);border:2px solid #555;padding:18px}.blog-post h3{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);margin-bottom:8px}.blog-post .date{font-family:'Press Start 2P',monospace;font-size:5px;color:#999;margin-bottom:10px}.blog-post p{font-size:20px;line-height:1.5}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}.blog-post{background:rgba(0,0,0,.75);border:2px solid #555;padding:18px}.blog-post h3{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);margin-bottom:8px}.blog-post .date{font-family:'Press Start 2P',monospace;font-size:5px;color:#999;margin-bottom:10px}.blog-post p{font-size:20px;line-height:1.5}
 .album-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.album-item{background:rgba(0,0,0,.75);border:2px solid #555;padding:8px;display:block;text-decoration:none}.album-item img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid #333}.album-item .cap{font-family:'Press Start 2P',monospace;font-size:5px;color:#bbb;margin-top:6px;text-align:center}
 .footer{text-align:center;padding:34px 24px 48px;background:rgba(0,0,0,.55);border-top:2px solid #333;font-family:'Press Start 2P',monospace;font-size:7px;color:#888}.footer .note{margin-top:10px;color:var(--gold)}
 .tooltip{position:fixed;z-index:30;display:none;pointer-events:none;background:#100010;border:2px solid #2d0096;color:var(--gold);padding:8px 10px;font-size:18px;box-shadow:2px 2px 0 #000}
@@ -114,14 +114,13 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
         <div class="xp-label"><span>LEVEL 42</span><span id="presence-text">LOADING</span></div>
         <div class="xp-bar"><div class="xp-fill" id="xp-fill-bar" style="width:78%"></div></div>
         <div class="actions" id="social-actions"><a class="mc-btn" href="#library">View Builds</a><a class="mc-btn" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">GitHub</a><a class="mc-btn" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">Discord</a></div>
-        <div class="stats" id="hero-activity"><div class="stat"><b id="act-status">🔴 Offline</b><span>STATUS</span></div><div class="stat" id="act-spotify-box"><b id="act-spotify">—</b><span>SPOTIFY</span></div><div class="stat" id="act-game-box"><b id="act-game">—</b><span>PLAYING</span></div></div>
+        <div class="stats" id="hero-activity"><div class="stat"><b id="act-primary">Idle</b><span>ACTIVITY</span></div><div class="stat"><b id="act-detail">—</b><span>TIME / DETAIL</span></div></div>
       </div>
     </div>
   </section>
   <section id="about">
     <h2 class="title">About / Book</h2>
     <div class="book"><div class="book-pages"><div class="page"><h3>WHO IS REEF?</h3><p id="bio-copy">Hey, I'm Reef. I build things, break things, and occasionally sleep. This version is built around custom pixel items, a menu-style panorama, and Minecraft-like UI pieces.</p></div><div class="page"><h3>WORLD NOTES</h3><ul><li>Custom CSS item icons — no emoji dependency.</li><li>Blurred block panorama behind every section.</li><li>Live GitHub and Discord data via API.</li><li>The homepage keeps admin hidden.</li></ul><div class="book-socials" id="book-socials"><a class="book-sl" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">💬 Discord</a><a class="book-sl" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">🐙 GitHub</a></div></div></div></div>
-    <div class="presence"><div class="presence-avatar" id="presence-avatar">R</div><div><h3 id="presence-name">REEF</h3><p id="presence-status-text">Offline</p><p id="presence-activity">No activity yet.</p></div></div>
   </section>
   <section id="projects"><h2 class="title">Projects / Crafting Bench</h2><div class="panel"><div class="project-grid" id="repo-grid"></div></div></section>
   <section id="blog"><h2 class="title">Blog / Reading</h2><div class="panel"><div class="blog-grid" id="blog-grid"></div></div></section>
@@ -148,7 +147,6 @@ function loadSiteData(){
   const phrases=Array.isArray(siteData.phrases)?siteData.phrases:(JSON.parse(localStorage.getItem('reef-phrases')||'[]'));
   if(siteData.tagline) document.getElementById('tagline-static').textContent=siteData.tagline;
   document.title=`${name.toUpperCase()} | Minecraft Portfolio`;
-  document.getElementById('presence-name').textContent=name;
   document.getElementById('bio-copy').textContent=bio;
   document.getElementById('contact-actions').querySelector('a[href^="mailto:"]').href=`mailto:${email}`;
   if(bg){const o=document.getElementById('panorama-bg-overlay');o.style.backgroundImage=`url('${bg}')`;o.classList.add('active')}
@@ -365,53 +363,28 @@ function loadProjects(){
   }catch(e){}
 }
 
-async function loadGitHub(){try{
-  const uRes=await fetch(`https://api.github.com/users/${GITHUB_USER}`);
-  const u=await uRes.json();
-  if(u&&u.public_repos!=null){
-    document.getElementById('stat-repos').textContent=u.public_repos;
-    document.getElementById('stat-followers').textContent=u.followers||'--';
-  }
-  const rRes=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=stars&per_page=9`);
-  const repos=await rRes.json();
-  if(Array.isArray(repos)&&repos.length){
-    const stars=repos.reduce((a,r)=>a+(r.stargazers_count||0),0);
-    document.getElementById('stat-stars').textContent=stars||'--';
-  }
-}catch(e){}}
-
+function fmtTime(ms){const s=Math.floor(ms/1000);if(s>=3600){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h+'h '+m+'m'}return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function fmtElapsed(start,end){const now=Date.now(),el=now-start;if(end){const t=end-start;return fmtTime(el)+' / '+fmtTime(t)}return fmtTime(el)}
 function applyDiscord(d){
   const st=d.discord_status||'offline';
-  const stLabel={online:'🟢 Online',idle:'🌙 Idle',dnd:'⛔ DND',offline:'🔴 Offline'}[st]||'🔴 Offline';
   document.getElementById('status-dot').className='status '+st;
   document.getElementById('presence-text').textContent=st.toUpperCase();
-  document.getElementById('presence-status-text').textContent={online:'Online',idle:'Idle',dnd:'Do Not Disturb',offline:'Offline'}[st]||'Offline';
-  document.getElementById('act-status').textContent=stLabel;
-  if(d.discord_user){
-    const u=d.discord_user;
-    document.getElementById('presence-name').textContent=u.global_name||u.username||'REEF';
-    if(u.avatar){const url=`https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.webp?size=256`,img=document.getElementById('avatar');img.src=url;img.hidden=false;document.getElementById('avatar-fallback').style.display='none';document.getElementById('presence-avatar').innerHTML=`<img src="${url}" alt="REEF">`}
+  const prim=document.getElementById('act-primary'),det=document.getElementById('act-detail');
+  if(d.discord_user&&d.discord_user.avatar){
+    const u=d.discord_user,url='https://cdn.discordapp.com/avatars/'+u.id+'/'+u.avatar+'.webp?size=256',img=document.getElementById('avatar');
+    img.src=url;img.hidden=false;document.getElementById('avatar-fallback').style.display='none';
   }
-  const s=d.spotify,act=document.getElementById('presence-activity');
-  const spotifyBox=document.getElementById('act-spotify-box');
-  const spotifyLabel=document.getElementById('act-spotify');
+  const s=d.spotify,game=(d.activities||[]).find(a=>a.type===0);
   if(s&&s.song){
-    spotifyBox.hidden=false;
-    spotifyLabel.textContent=s.song+(s.artist?' — '+s.artist:'');
-    act.textContent='Now playing: '+s.song;
+    prim.textContent='🎵 '+s.song;
+    det.textContent=(s.artist||'')+(s.timestamps?.start?' · '+fmtElapsed(s.timestamps.start,s.timestamps.end):'');
+  }else if(game){
+    prim.textContent='🎮 '+game.name;
+    det.textContent=(game.details?game.details:'')+(game.timestamps?.start?' · '+fmtElapsed(game.timestamps.start):'')+(game.state?' — '+game.state:'');
+    if(!game.details&&!game.timestamps&&game.state) det.textContent=game.state;
   }else{
-    spotifyBox.hidden=true;
-    const game=(d.activities||[]).find(a=>a.type===0);
-    act.textContent=game?'Playing: '+game.name+(game.details?' - '+game.details:''):'No activity yet.';
-  }
-  const gameBox=document.getElementById('act-game-box');
-  const gameLabel=document.getElementById('act-game');
-  const game=(d.activities||[]).find(a=>a.type===0);
-  if(game){
-    gameBox.hidden=false;
-    gameLabel.textContent=game.name+(game.details?' — '+game.details:'');
-  }else{
-    gameBox.hidden=true;
+    const lbl={online:'🟢 Online',idle:'🌙 Idle',offline:'🔴 Offline'}[st]||'🔴 Offline';
+    prim.textContent=lbl;det.textContent='No activity';
   }
 }
 
@@ -423,7 +396,12 @@ function setupCardCopy(name){
   if(imgEl) imgEl.src=cardImg;
   const code=`<a href="https://reef-dev.vercel.app/" target="_blank" rel="noopener noreferrer"><img src="${cardImg}" width="88" height="31" alt="${name}" /></a>`;
   const card=document.getElementById('my-card-preview');
-  const copy=async()=>{try{await navigator.clipboard.writeText(code);playClick('click')}catch(e){const ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);playClick('click')}};
+  const copyMsg=document.getElementById('my-card-preview-wrap')?.querySelector('div:last-child');
+  const copy=async()=>{
+    try{await navigator.clipboard.writeText(code)}catch(e){const ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}
+    playClick('click');
+    if(copyMsg){const orig=copyMsg.textContent;copyMsg.textContent='✅ Copied!';setTimeout(()=>copyMsg.textContent=orig,1500)}
+  };
   if(card) card.onclick=copy;
 }
 
