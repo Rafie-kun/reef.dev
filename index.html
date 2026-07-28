@@ -126,7 +126,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
   <section id="projects"><h2 class="title">Projects / Crafting Bench</h2><div class="panel"><div class="project-grid" id="repo-grid"></div></div></section>
   <section id="blog"><h2 class="title">Blog / Reading</h2><div class="panel"><div class="blog-grid" id="blog-grid"></div></div></section>
   <section id="album"><h2 class="title">Album / Gallery</h2><div class="panel"><div class="album-grid" id="album-grid"></div></div></section>
-  <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="steam">Steam</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div></div><div class="inv-grid tab-panel" id="tab-all"></div><div class="inv-grid tab-panel" id="tab-steam" hidden></div><div class="inv-grid tab-panel" id="tab-games" hidden></div><div class="inv-grid tab-panel" id="tab-music" hidden></div><div class="inv-grid tab-panel" id="tab-reading" hidden></div></div></section>
+  <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div></div><div class="inv-grid tab-panel" id="tab-all"></div><div class="inv-grid tab-panel" id="tab-games" hidden></div><div class="inv-grid tab-panel" id="tab-music" hidden></div><div class="inv-grid tab-panel" id="tab-reading" hidden></div></div></section>
   <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall"><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:var(--gold);margin-bottom:4px">My Card</div><div id="my-card-preview-wrap" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;width:100%;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid #555"><button id="my-card-preview" class="badge-link" type="button" style="width:88px;height:31px;padding:0;border:1px solid #888;cursor:pointer"><img id="my-card-img" src="assets/button-88x31.webp" alt="REEF card"></button><div style="font-family:'Press Start 2P';font-size:5px;color:#888;line-height:1.6">Click card to copy embed code</div></div><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:#999;margin:4px 0">Friend Badges</div><div id="friends-badges" style="display:flex;flex-wrap:wrap;gap:8px;width:100%"></div></div></section>
   <section id="contact"><h2 class="title">Contact / Sign</h2><div class="panel"><p style="font-size:22px;margin-bottom:20px;text-align:center;color:var(--gold)">☎ Leave a message after the beep.</p><div class="contact-signs" id="contact-actions"><a class="contact-sign" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer"><span class="cs-icon">💬</span><span class="cs-label">Discord</span><span class="cs-line">@reef</span></a><a class="contact-sign" href="mailto:reef@example.com"><span class="cs-icon">✉</span><span class="cs-label">Email</span><span class="cs-line">reef@example.com</span></a><a class="contact-sign" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer"><span class="cs-icon">🐙</span><span class="cs-label">GitHub</span><span class="cs-line">/Rafie-kun</span></a></div></div></section>
   <footer class="footer"><div>(C) REEF 2026</div><div class="note" id="footer-note">Also try mining at sunset.</div></footer>
@@ -234,9 +234,7 @@ function renderTab(id){
   if(!el) return;
   if(id==='all'){renderLibraryAll();return}
   const library=siteData.library||JSON.parse(localStorage.getItem('reef-library')||'{}');
-  const allItems=[...Array.isArray(library?.games)?library.games:[],...Array.isArray(library?.music)?library.music:[],...Array.isArray(library?.reading)?library.reading:[]];
-  const steamItems=allItems.filter(i=>i.type==='steam'||extractSteamAppId(i));
-  const items=id==='steam'?steamItems:(Array.isArray(library?.[id])?library[id].filter(i=>!i.hidden):[]);
+  const items=Array.isArray(library?.[id])?library[id].filter(i=>!i.hidden):[];
   el.innerHTML=items.map((item,idx)=>renderLibraryItem(item,id,idx)).join('');
 }
 document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{playClick('tab');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(p=>p.hidden=true);tab.classList.add('active');document.getElementById('tab-'+tab.dataset.tab).hidden=false;renderTab(tab.dataset.tab);});
@@ -276,11 +274,10 @@ function renderInventory(library){
   const allItems=[...Array.isArray(library?.games)?library.games.filter(i=>!i.hidden):[],...Array.isArray(library?.music)?library.music.filter(i=>!i.hidden):[],...Array.isArray(library?.reading)?library.reading.filter(i=>!i.hidden):[]];
   const fallback={games:[{icon:'i-pick',name:'Minecraft',url:'https://minecraft.net'},{icon:'i-grass',name:'Survival'},{icon:'i-chest',name:'Builds'}],music:[{icon:'i-note',name:'Playlists'},{icon:'i-note',name:'Ambient'}],reading:[{icon:'i-book',name:'Docs'},{icon:'i-sign',name:'Notes'}]};
   const normalize=(key)=>Array.isArray(library?.[key])&&library[key].length?library[key].filter(i=>!i.hidden):fallback[key];
-  ['all','steam','games','music','reading'].forEach(id=>{
+  ['all','games','music','reading'].forEach(id=>{
     const el=document.getElementById('tab-'+id);
     if(!el) return;
     if(id==='all'){el.innerHTML=allItems.map((item,idx)=>renderLibraryItem(item,'all',idx)).join('');return}
-    if(id==='steam'){el.innerHTML=allItems.filter(i=>i.type==='steam'||extractSteamAppId(i)).map((item,idx)=>renderLibraryItem(item,'steam',idx)).join('');return}
     el.innerHTML=normalize(id).map((item,idx)=>renderLibraryItem(item,id,idx)).join('');
   });
 }
