@@ -191,7 +191,7 @@ function loadSiteData(){
   const bookSocials=document.getElementById('book-socials');
   bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('');
 
-  renderInventory(siteData.library||JSON.parse(localStorage.getItem('reef-library')||'{}'));
+  renderInventory(JSON.parse(localStorage.getItem('reef-library')||'{}'));
   renderBlogPosts(siteData.blog||JSON.parse(localStorage.getItem('reef-blog')||'[]'));
   renderAlbumItems(siteData.album||JSON.parse(localStorage.getItem('reef-album')||'[]'));
   setupCardCopy(name);
@@ -233,8 +233,8 @@ function renderTab(id){
   const el=document.getElementById('tab-'+id);
   if(!el) return;
   if(id==='all'){renderLibraryAll();return}
-  const library=siteData.library||JSON.parse(localStorage.getItem('reef-library')||'{}');
-  const items=Array.isArray(library?.[id])?library[id].filter(i=>!i.hidden):[];
+  const lib=JSON.parse(localStorage.getItem('reef-library')||'{}');
+  const items=Array.isArray(lib?.[id])?lib[id].filter(i=>!i.hidden):[];
   el.innerHTML=items.map((item,idx)=>renderLibraryItem(item,id,idx)).join('');
 }
 document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{playClick('tab');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(p=>p.hidden=true);tab.classList.add('active');document.getElementById('tab-'+tab.dataset.tab).hidden=false;renderTab(tab.dataset.tab);});
@@ -335,9 +335,9 @@ function renderLibraryItem(item,key,idx){
 function renderLibraryAll(){
   const el=document.getElementById('tab-all');
   if(!el) return;
-  const library=siteData.library||JSON.parse(localStorage.getItem('reef-library')||'{}');
+  const lib=JSON.parse(localStorage.getItem('reef-library')||'{}');
   const buckets=['games','music','reading'];
-  const items=buckets.flatMap(k=>Array.isArray(library?.[k])?library[k].map(it=>({...it,_bucket:k})) : []);
+  const items=buckets.flatMap(k=>Array.isArray(lib?.[k])?lib[k].map(it=>({...it,_bucket:k})) : []);
   el.innerHTML=items.map((item,idx)=>renderLibraryItem(item,'all',idx)).join('');
 }
 
