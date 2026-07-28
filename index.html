@@ -157,8 +157,7 @@ function updateActivityBars(){
   });
 }
 
-function loadSiteData(){
-  try{siteData=JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{}}catch(e){siteData={}}
+function applySiteData(){
   const name=siteData.name||localStorage.getItem('reef-name')||'Reef';
   const bio=siteData.bio||localStorage.getItem('reef-bio')||"Hey, I'm Reef. I build things, break things, and occasionally sleep. This version is built around custom pixel items, a menu-style panorama, and Minecraft-like UI pieces.";
   const email=siteData.email||localStorage.getItem('reef-email')||'reef@example.com';
@@ -169,12 +168,12 @@ function loadSiteData(){
   if(siteData.tagline) document.getElementById('tagline-static').textContent=siteData.tagline;
   document.title=`${name.toUpperCase()} | Minecraft Portfolio`;
   document.getElementById('bio-copy').textContent=bio;
-  document.getElementById('contact-actions').querySelector('a[href^="mailto:"]').href=`mailto:${email}`;
+  const mailEl=document.getElementById('contact-actions').querySelector('a[href^="mailto:"]');
+  if(mailEl) mailEl.href='mailto:'+email;
   if(bg){const o=document.getElementById('panorama-bg-overlay');o.style.backgroundImage=`url('${bg}')`;o.classList.add('active')}
   const phrasesList=Array.isArray(phrases)&&phrases.length?phrases:DEFAULT_PHRASES;
   rotatePhrases(phrasesList);
   const fn=document.getElementById('footer-note');fn.textContent=phrasesList[Math.floor(Math.random()*phrasesList.length)];
-
   const socialActions=document.getElementById('social-actions');
   const links=[];
   if(socials.discord||DISCORD_ID) links.push({label:'Discord',href:`https://discord.com/users/${socials.discord||DISCORD_ID}`});
@@ -184,18 +183,20 @@ function loadSiteData(){
   if(socials.spotify) links.push({label:'Spotify',href:socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>s?.url&&links.push({label:s.icon||s.name||'Link',href:s.url}));
   socialActions.innerHTML=['<a class="mc-btn" href="#library">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`)].join('');
-
   const contactAct=document.getElementById('contact-actions');
   contactAct.innerHTML=links.slice(0,3).map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('')+`<a class="mc-btn" href="mailto:${email}">Email</a>`;
-
   const bookSocials=document.getElementById('book-socials');
   bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('');
-
   renderInventory(JSON.parse(localStorage.getItem('reef-library')||'{}'));
   renderBlogPosts(siteData.blog||JSON.parse(localStorage.getItem('reef-blog')||'[]'));
   renderAlbumItems(siteData.album||JSON.parse(localStorage.getItem('reef-album')||'[]'));
   setupCardCopy(name);
   return {name,bio,email,socials,bg,phrases:phrasesList};
+}
+function loadSiteData(){
+  try{siteData=JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{}}catch(e){siteData={}}
+  applySiteData();
+  fetch('/api/data').then(r=>r.ok&&r.json()).then(d=>{if(d&&d.name){siteData=d;localStorage.setItem(DATA_KEY,JSON.stringify(d));applySiteData()}}).catch(()=>{});
 }
 
 const DEFAULT_PHRASES=['Also try touching grass!','Also try sleeping!','Also try GitHub!','Also try talking to Reef!','Also try Limbo!','Also try not mining at night!','Also try clicking things!','Also try F3!'];

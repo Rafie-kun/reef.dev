@@ -486,7 +486,10 @@ function loadData() {
   try { return JSON.parse(localStorage.getItem(DATA_KEY)) || {...DEFAULT_DATA}; }
   catch { return {...DEFAULT_DATA}; }
 }
-function saveData(d) { localStorage.setItem(DATA_KEY, JSON.stringify(d)); }
+function saveData(d) {
+  localStorage.setItem(DATA_KEY, JSON.stringify(d));
+  fetch('/api/data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).catch(()=>{});
+}
 
 // ============================================
 // AUTH
