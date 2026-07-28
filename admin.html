@@ -173,7 +173,7 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 .phrase-pill .rm{cursor:pointer;color:var(--red);font-size:16px;}
 .phrase-pill .rm:hover{color:#ff8888;}
 
-.toggle-wrap{display:flex;align-items:center;gap:14px;}
+.import-bar{display:flex;gap:8px;margin-bottom:12px;align-items:center;background:#1a1a2a;border:2px solid #2a2a4a;padding:10px}.import-bar .mc-input{background:#0a0a0a}.toggle-wrap{display:flex;align-items:center;gap:14px;}
 .toggle{
   width:54px;height:26px;background:#2a2a2a;border:2px solid var(--stone-dark);
   cursor:pointer;position:relative;transition:background 0.1s;
@@ -304,10 +304,10 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <div class="tab-btn" onclick="libTab(this,'lib-proj')">⚔️ Projects</div>
         <div class="tab-btn" onclick="libTab(this,'lib-read')">📚 Reading</div>
       </div>
-      <div id="lib-games" class="tab-content active"><div class="card-list" id="lib-games-list"></div><button class="mc-btn" onclick="addLibItem('games')" style="width:auto;padding:8px 14px">+ Add Game</button><button class="mc-btn" onclick="addSteamGame()" style="width:auto;padding:8px 14px;margin-left:8px">+ Add Steam Game</button></div>
-      <div id="lib-music" class="tab-content"><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
-      <div id="lib-proj"  class="tab-content"><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
-      <div id="lib-read"  class="tab-content"><div class="card-list" id="lib-read-list"></div><button class="mc-btn" onclick="addLibItem('read')" style="width:auto;padding:8px 14px">+ Add Item</button></div>
+      <div id="lib-games" class="tab-content active"><div class="import-bar"><input class="mc-input" id="import-url-games" placeholder="Paste Steam URL to auto-import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('games')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-games-list"></div><button class="mc-btn" onclick="addLibItem('games')" style="width:auto;padding:8px 14px">+ Add Game</button></div>
+      <div id="lib-music" class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-music" placeholder="Paste song URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('music')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
+      <div id="lib-proj"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-proj" placeholder="Paste project URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('proj')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
+      <div id="lib-read"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-read" placeholder="Paste article URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('read')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-read-list"></div><button class="mc-btn" onclick="addLibItem('read')" style="width:auto;padding:8px 14px">+ Add Item</button></div>
       <div class="save-bar" style="margin-top:20px">
         <button class="mc-btn green" onclick="saveLibrary()">💾 Save Library</button>
         <span class="save-msg" id="lib-msg"></span>
@@ -564,6 +564,7 @@ function loadAllPanels() {
   document.getElementById('cfg-spotify').value = d.socials?.spotify || '';
   renderExtraSocials(d.socials?.extra || []);
   ['games','music','proj','read'].forEach(tab => renderLibList(tab, d.library?.[tab] || []));
+  if(!d.library?.read?.length && d.library?.reading?.length) renderLibList('read', d.library.reading);
   renderBadges(d.friends || []);
   loadAdminCardPreview(d);
   renderProjects(d.projects || []);
@@ -640,6 +641,26 @@ function saveSocials() {
 // LIBRARY
 // ============================================
 let libData = {games:[],music:[],proj:[],read:[]};
+async function importFromUrl(tab){
+  const input=document.getElementById('import-url-'+tab);if(!input)return;
+  const url=input.value.trim();if(!url)return;
+  const appId=url.match(/store\.steampowered\.com\/app\/(\d+)/i)?.[1]||url.match(/steamdb\.info\/app\/(\d+)/i)?.[1]||url.match(/app\/(\d+)/i)?.[1];
+  if(appId){
+    toast('Fetching Steam data...',true);
+    try{
+      const proxy='https://api.allorigins.win/raw?url=';
+      const res=await fetch(proxy+encodeURIComponent('https://store.steampowered.com/api/appdetails?appids='+appId+'&l=en&cc=us'));
+      const j=await res.json();const data=j?.[appId]?.data;
+      if(data){
+        libData[tab].push({type:'steam',icon:'i-star',name:data.name||'Steam Game',url:data.steam_appid?'https://store.steampowered.com/app/'+data.steam_appid:url,appid:appId,hidden:false});
+        renderLibList(tab,libData[tab]);input.value='';toast('Imported: '+data.name);return;
+      }
+    }catch(e){}
+  }
+  const name=url.split('/').filter(Boolean).pop()?.replace(/[-_]/g,' ')||'New Item';
+  libData[tab].push({type:'basic',icon:'i-link',name:name.charAt(0).toUpperCase()+name.slice(1),url:url,appid:'',hidden:false});
+  renderLibList(tab,libData[tab]);input.value='';toast('Added from URL');
+}
 async function fetchSteamGame(tab,i){
   const item=libData[tab][i];if(!item) return;
   const url=item.url||'';const aid=item.appid||'';
@@ -701,7 +722,7 @@ function libTab(el, id) {
 }
 function saveLibrary() {
   const d = loadData();
-  d.library = {...libData};
+  d.library = {games:libData.games||[], music:libData.music||[], proj:libData.proj||[], read:libData.read||[], reading:libData.read||[]};
   saveData(d);
   localStorage.setItem('reef-library', JSON.stringify(d.library));
   toast('Library saved!');
