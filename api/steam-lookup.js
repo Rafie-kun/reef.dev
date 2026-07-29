@@ -37,10 +37,22 @@ export default async function handler(req, res) {
     res.status(200); setCORS(res);
     res.json({
       appid: appId,
+      steam_appid: data.steam_appid,
       name: data.name || '',
-      headerImage: data.header_image || '',
-      capsuleImage: data.capsule_image || '',
-      shortDescription: data.short_description || '',
+      header_image: data.header_image || '',
+      capsule_image: data.capsule_image || '',
+      short_description: data.short_description || '',
+      is_free: !!data.is_free,
+      price_overview: data.price_overview || null,
+      platforms: data.platforms || null,
+      metacritic: data.metacritic || null,
+      release_date: data.release_date || null,
+      developers: data.developers || [],
+      publishers: data.publishers || [],
+      genres: data.genres || [],
+      categories: data.categories || [],
+      recommendations: data.recommendations || null,
+      pc_requirements: data.pc_requirements || null,
     });
   } catch (e) {
     res.status(502); setCORS(res);
