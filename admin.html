@@ -834,14 +834,14 @@ function renderGamesList(list) {
   const el = document.getElementById('games-list');
   if (!el) return;
   el.innerHTML = list.map((g, i) => {
-    const thumbSrc = g.img || (g.appid ? 'https://cdn.cloudflare.steamstatic.com/steam/apps/'+g.appid+'/header.jpg' : '');
-    const thumbHtml = thumbSrc ? `<img class="game-thumb" src="${thumbSrc}" alt="${esc(g.title||'')}" onerror="this.onerror=null;this.closest('.card-item').querySelector('.game-thumb')&&false;var fb=this.dataset.f?'':'${g.appid?'https://cdn.cloudflare.steamstatic.com/steam/apps/'+g.appid+'/library_600x900.jpg':''}';if(fb&&!this.dataset.f){this.dataset.f='1';this.src=fb}else{this.outerHTML='<div class=\\'game-thumb-fail\\'>☐<\\/div>'}" loading="lazy">` : '<div class="game-thumb-fail">☐</div>';
+    const thumbSrc = g.img || (g.appid ? 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+g.appid+'/header.jpg' : '');
+    const thumbHtml = thumbSrc ? `<img class="game-thumb" src="${thumbSrc}" alt="${esc(g.title||'')}" onerror="this.onerror=null;var fb=this.dataset.f?'':'${g.appid?'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+g.appid+'/library_600x900.jpg':''}';if(fb&&!this.dataset.f){this.dataset.f='1';this.src=fb}else{this.outerHTML='<div class=\"game-thumb-fail\">☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">` : '<div class="game-thumb-fail">☐</div>';
     const statusOptions = ['playing','completed','backlog'];
     return `<div class="card-item">
       <div style="display:flex;flex-direction:column;gap:4px;align-items:center;cursor:grab;color:#555;font-size:14px;user-select:none" onclick="moveGame(${i},-1)" title="Move up">▲</div>
       ${thumbHtml}
       <div class="card-content" style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;gap:8px;align-items:center">
-        <input class="mc-input" type="number" value="${g.appid||''}" oninput="gamesData[${i}].appid=this.value.replace(/\\D/g,'');gamesData[${i}].img='';this.closest('.card-item').querySelector('.game-thumb').src='https://cdn.cloudflare.steamstatic.com/steam/apps/'+this.value+'/header.jpg'" placeholder="App ID" style="width:90px;font-size:14px;padding:4px 6px" min="1">
+        <input class="mc-input" type="number" value="${g.appid||''}" oninput="gamesData[${i}].appid=this.value.replace(/\\D/g,'');gamesData[${i}].img='';this.closest('.card-item').querySelector('.game-thumb').src='https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+this.value+'/header.jpg'" placeholder="App ID" style="width:90px;font-size:14px;padding:4px 6px" min="1">
         <input class="mc-input" value="${escAttr(g.title||'')}" oninput="gamesData[${i}].title=this.value" placeholder="Game title" style="font-size:14px;padding:4px 6px">
         <select class="mc-input" onchange="gamesData[${i}].status=this.value" style="font-size:14px;padding:4px 6px;width:auto">
           ${statusOptions.map(s => `<option value="${s}"${g.status===s?' selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
