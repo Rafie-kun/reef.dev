@@ -324,7 +324,7 @@ function renderAllTabContent(){
     const imgSrc=g.img || (appId?cdn+appId+'/header.jpg':'');
     const fbSrc=appId?cdn+appId+'/library_600x900.jpg':'';
     const statusLabel={playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||'▶ Playing';
-    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=\"game-card-img game-card-fail\">☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">`:'<div class="game-card-img game-card-fail">☐</div>';
+    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">`:'<div class="game-card-img game-card-fail">☐</div>';
     const itemJson=escAttr(JSON.stringify({type:'steam',name:g.title,url:'https://store.steampowered.com/app/'+appId,appid:appId}));
     html+=`<div class="game-card" data-item='${itemJson}'><span class="cat-badge gm">GAME</span>${imgHtml}<div class="game-card-body"><span class="game-card-title">${title}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours">⏱ ${hours}h</span></div></div>`;
   });
@@ -365,7 +365,7 @@ function renderGamesTab(el){
     const imgSrc=g.img || (appId?cdn+appId+'/header.jpg':'');
     const fbSrc=appId?cdn+appId+'/library_600x900.jpg':'';
     const statusLabel={playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||'▶ Playing';
-    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=\"game-card-img game-card-fail\">☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">`:'<div class="game-card-img game-card-fail">☐</div>';
+    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">`:'<div class="game-card-img game-card-fail">☐</div>';
     const itemJson=escAttr(JSON.stringify({type:'steam',name:g.title,url:'https://store.steampowered.com/app/'+appId,appid:appId}));
     return `<div class="game-card" data-item='${itemJson}'>${imgHtml}<div class="game-card-body"><span class="game-card-title">${title}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours">⏱ ${hours}h</span></div></div>`;
   }).join('')+'</div>';
