@@ -688,9 +688,6 @@ function saveBio() {
   d.bio = document.getElementById('cfg-bio').value;
   d.email = document.getElementById('cfg-email').value;
   saveData(d);
-  localStorage.setItem('reef-bio', d.bio);
-  localStorage.setItem('reef-name', d.name);
-  localStorage.setItem('reef-email', d.email);
   toast('Bio saved!');
 }
 
@@ -732,7 +729,6 @@ function saveSocials() {
     extra: extraSocials,
   };
   saveData(d);
-  localStorage.setItem('reef-socials', JSON.stringify(d.socials));
   toast('Socials saved!');
 }
 
@@ -964,7 +960,6 @@ function saveFriends() {
   const d = loadData();
   d.friends = friendsData;
   saveData(d);
-  localStorage.setItem('reef-friends', JSON.stringify(d.friends));
   toast('Badges saved!');
 }
 
@@ -996,7 +991,6 @@ function saveProjects() {
   const d = loadData();
   d.projects = projectsData;
   saveData(d);
-  localStorage.setItem('reef-projects', JSON.stringify(d.projects));
   toast('Projects saved!');
 }
 
@@ -1029,7 +1023,7 @@ function uploadBlogImg(i,input){
 }
 function addBlogPost(){ blogData.push({title:'New Post',date:'',body:'',img:''}); renderBlog(blogData); }
 function rmBlog(i){ blogData.splice(i,1); renderBlog(blogData); }
-function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); localStorage.setItem('reef-blog', JSON.stringify(blogData)); toast('Blog saved!'); }
+function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); toast('Blog saved!'); }
 
 // ============================================
 // ALBUM
@@ -1051,7 +1045,7 @@ function renderAlbum(list){
 }
 function addAlbumItem(){ albumData.push({caption:'New Image',img:'',link:''}); renderAlbum(albumData); }
 function rmAlbum(i){ albumData.splice(i,1); renderAlbum(albumData); }
-function saveAlbum(){ const d=loadData(); d.album=albumData; saveData(d); localStorage.setItem('reef-album', JSON.stringify(albumData)); toast('Album saved!'); }
+function saveAlbum(){ const d=loadData(); d.album=albumData; saveData(d); toast('Album saved!'); }
 
 // ============================================
 // PHRASES
@@ -1075,7 +1069,6 @@ function savePhrases() {
   const d = loadData();
   d.phrases = phrasesData;
   saveData(d);
-  localStorage.setItem('reef-phrases', JSON.stringify(d.phrases));
   toast('Phrases saved!');
 }
 document.getElementById('new-phrase').addEventListener('keydown', e => { if(e.key==='Enter') addPhrase(); });
@@ -1088,8 +1081,6 @@ function saveAppearance() {
   d.bg = document.getElementById('cfg-bg').value.trim();
   d.cardImg = document.getElementById('cfg-card-img').value.trim() || '/assets/button-88x31.webp';
   saveData(d);
-  localStorage.setItem('reef-bg', d.bg);
-  localStorage.setItem('reef-card-img', d.cardImg);
   toast('Appearance saved! Reload the site to see it.');
 }
 
