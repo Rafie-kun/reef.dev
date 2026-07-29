@@ -310,7 +310,7 @@ function renderInventory(library){
   ['all','games','music','reading'].forEach(id=>{
     const el=document.getElementById('tab-'+id);
     if(!el) return;
-    if(id==='all'){el.innerHTML=allItems.map((item,idx)=>renderLibraryItem(item,'all',idx)).join('');return}
+    if(id==='all'){el.innerHTML=allItems.length?allItems.map((item,idx)=>renderLibraryItem(item,'all',idx)).join(''):'<div style="color:#555;padding:20px;text-align:center;font-family:VT323;font-size:18px">Nothing in your library yet. Add music or reading from the admin panel.</div>';return}
     if(id==='games'){renderGamesTab(el);return}
     el.innerHTML=normalize(id).map((item,idx)=>renderLibraryItem(item,id,idx)).join('');
   });
@@ -401,7 +401,7 @@ function renderLibraryAll(){
   const lib=JSON.parse(localStorage.getItem('reef-library')||'{}');
   const buckets=['music','reading'];
   const items=buckets.flatMap(k=>Array.isArray(lib?.[k])?lib[k].map(it=>({...it,_bucket:k})) : []);
-  el.innerHTML=items.map((item,idx)=>renderLibraryItem(item,'all',idx)).join('');
+  el.innerHTML=items.length?items.map((item,idx)=>renderLibraryItem(item,'all',idx)).join(''):'<div style="color:#555;padding:20px;text-align:center;font-family:VT323;font-size:18px">Nothing in your library yet. Add music or reading from the admin panel.</div>';
 }
 
 function extractSteamAppId(item){
