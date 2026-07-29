@@ -236,7 +236,6 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
     <div class="nav-item active" onclick="showPanel('bio',this)"><span class="ni">📖</span>Bio &amp; About</div>
     <div class="nav-item" onclick="showPanel('socials',this)"><span class="ni">🔗</span>Social Links</div>
     <div class="nav-item" onclick="showPanel('library',this)"><span class="ni">📦</span>Library</div>
-    <div class="nav-item" onclick="showPanel('games',this)"><span class="ni">🎮</span>Games</div>
     <div class="nav-item" onclick="showPanel('friends',this)"><span class="ni">👾</span>Friends / Badges</div>
     <div class="nav-item" onclick="showPanel('projects',this)"><span class="ni">⚔️</span>Projects</div>
     <div class="nav-item" onclick="showPanel('blog',this)"><span class="ni">📝</span>Blog</div>
@@ -256,7 +255,7 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileNav()"></div>
 
     <div class="preview-bar">
-      ✅ Changes save to localStorage instantly.
+      💾 Data persists to server via API.
       <a href="/" target="_blank" class="mc-btn" style="margin-left:auto;width:auto;padding:7px 14px;font-size:6px;">👁 Preview Site</a>
     </div>
 
@@ -310,11 +309,13 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <div class="tab-btn" onclick="libTab(this,'lib-read')">📚 Reading</div>
       </div>
       <div id="lib-games" class="tab-content active">
-  <div class="import-bar"><input class="mc-input" id="import-url-games" placeholder="Paste Steam URL to auto-import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('games')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div>
-  <div class="steam-search-bar"><input class="mc-input" id="steam-search-input" placeholder="Search Steam for a game..." style="flex:1" onkeydown="if(event.key==='Enter')searchSteam()"><button class="mc-btn" onclick="searchSteam()" style="width:auto;padding:6px 12px;font-size:7px">🔍 Search</button></div>
-  <div id="steam-search-results" class="steam-results"></div>
-  <div class="card-list" id="lib-games-list"></div>
-  <button class="mc-btn" onclick="addLibItem('games')" style="width:auto;padding:8px 14px">+ Add Game</button>
+  <div class="import-bar"><input class="mc-input" id="import-url-games" placeholder="Paste Steam URL to auto-import..." style="flex:1"><button class="mc-btn" onclick="importGameUrl()" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div>
+  <div class="card-list" id="games-list"></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+    <button class="mc-btn" onclick="addGame()" style="width:auto;padding:8px 16px">+ Add Game</button>
+    <button class="mc-btn green" onclick="saveGames()" style="width:auto;padding:8px 22px">💾 Save Games</button>
+    <span class="save-msg" id="games-msg"></span>
+  </div>
 </div>
       <div id="lib-music" class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-music" placeholder="Paste song URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('music')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
       <div id="lib-proj"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-proj" placeholder="Paste project URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('proj')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
@@ -322,18 +323,6 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
       <div class="save-bar" style="margin-top:20px">
         <button class="mc-btn green" onclick="saveLibrary()">💾 Save Library</button>
         <span class="save-msg" id="lib-msg"></span>
-      </div>
-    </div>
-
-    <!-- GAMES -->
-    <div id="panel-games" class="panel" style="display:none">
-      <div class="panel-title">🎮 Games Manager</div>
-      <p style="font-family:VT323;font-size:17px;color:#888;margin-bottom:14px">Each game needs a Steam App ID (numeric). Cover art loads automatically from Steam's CDN.</p>
-      <div class="card-list" id="games-list"></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-        <button class="mc-btn" onclick="addGame()" style="width:auto;padding:8px 16px">+ Add Game</button>
-        <button class="mc-btn green" onclick="saveGames()" style="width:auto;padding:8px 22px">💾 Save Games</button>
-        <span class="save-msg" id="games-msg"></span>
       </div>
     </div>
 
@@ -489,7 +478,7 @@ const DEFAULT_DATA = {
     spotify: '',
     extra: [],
   },
-  library: { games:[], music:[], proj:[], read:[] },
+  library: { music:[], proj:[], read:[] },
   games: [
     {appid:'620',title:'Portal 2',status:'completed',hours:42},
     {appid:'367520',title:'Hollow Knight',status:'playing',hours:86},
@@ -625,7 +614,7 @@ function loadAllPanels() {
   document.getElementById('cfg-instagram').value = d.socials?.instagram || '';
   document.getElementById('cfg-spotify').value = d.socials?.spotify || '';
   renderExtraSocials(d.socials?.extra || []);
-  ['games','music','proj','read'].forEach(tab => renderLibList(tab, d.library?.[tab] || []));
+  ['music','proj','read'].forEach(tab => renderLibList(tab, d.library?.[tab] || []));
   if(!d.library?.read?.length && d.library?.reading?.length) renderLibList('read', d.library.reading);
   loadGamesPanel(d);
   renderBadges(d.friends || []);
@@ -663,7 +652,7 @@ async function loadAllPanelsAsync(){
       renderExtraSocials(d.socials.extra||[]);
     }
     if(d.library){
-      ['games','music','proj','read'].forEach(tab => {
+      ['music','proj','read'].forEach(tab => {
         const arr=d.library[tab]||(tab==='read'?(d.library.reading||[]):[]);
         renderLibList(tab,arr);
       });
@@ -748,28 +737,7 @@ function saveSocials() {
 // ============================================
 // LIBRARY
 // ============================================
-let libData = {games:[],music:[],proj:[],read:[]};
-let steamSearchTimeout;
-async function searchSteam(){
-  const q=document.getElementById('steam-search-input').value.trim();
-  if(!q){document.getElementById('steam-search-results').classList.remove('show');return}
-  document.getElementById('steam-search-results').innerHTML='<div style="color:#888;padding:12px;text-align:center">Searching...</div>';
-  document.getElementById('steam-search-results').classList.add('show');
-  try{
-    const r=await fetch('https://store.steampowered.com/api/storesearch/?term='+encodeURIComponent(q)+'&l=en&cc=us');
-    const j=await r.json();
-    const items=j?.items||[];
-    if(!items.length){document.getElementById('steam-search-results').innerHTML='<div style="color:#888;padding:12px;text-align:center">No results</div>';return}
-    document.getElementById('steam-search-results').innerHTML=items.map(it=>`<div class="steam-result-item" onclick="addSteamFromSearch('${it.id}','${esc(it.name)}','${it.tiny_image||''}',${it.price?.final||'null'})"><img src="${it.tiny_image||''}" alt="${esc(it.name)}" onerror="this.style.display='none'"><span class="sr-name">${esc(it.name)}</span><span class="sr-price">${it.price?.final_formatted||(it.price?'$'+(it.price.final/100).toFixed(2):'')}</span></div>`).join('');
-  }catch(e){document.getElementById('steam-search-results').innerHTML='<div style="color:var(--red);padding:12px;text-align:center">Search failed</div>'}
-}
-function addSteamFromSearch(appId,name,img,priceCents){
-  libData.games.push({type:'steam',icon:'i-star',name:name,url:'https://store.steampowered.com/app/'+appId,appid:appId,img:img||'',hidden:false});
-  renderLibList('games',libData.games);
-  document.getElementById('steam-search-results').classList.remove('show');
-  document.getElementById('steam-search-input').value='';
-  toast('Added: '+name);
-}
+let libData = {music:[],proj:[],read:[]};
 async function importFromUrl(tab){
   const input=document.getElementById('import-url-'+tab);if(!input)return;
   const url=input.value.trim();if(!url)return;
@@ -841,10 +809,6 @@ function addLibItem(tab) {
   libData[tab].push({type:'basic',icon:'❓',name:'New Item',url:'',appid:'',hidden:false});
   renderLibList(tab, libData[tab]);
 }
-function addSteamGame() {
-  libData.games.push({type:'steam',icon:'▶',name:'Steam Game',url:'',appid:'',hidden:false});
-  renderLibList('games', libData.games);
-}
 function rmLibItem(tab, i) { libData[tab].splice(i,1); renderLibList(tab, libData[tab]); }
 function libTab(el, id) {
   document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
@@ -854,9 +818,8 @@ function libTab(el, id) {
 }
 function saveLibrary() {
   const d = loadData();
-  d.library = {games:libData.games||[], music:libData.music||[], proj:libData.proj||[], read:libData.read||[], reading:libData.read||[]};
+  d.library = {music:libData.music||[], proj:libData.proj||[], read:libData.read||[], reading:libData.read||[]};
   saveData(d);
-  localStorage.setItem('reef-library', JSON.stringify(d.library));
   toast('Library saved!');
 }
 
@@ -922,6 +885,25 @@ function loadGamesPanel(d){
   const list=Array.isArray(d.games)?d.games:[];
   gamesData=JSON.parse(JSON.stringify(list));
   renderGamesList(gamesData);
+}
+
+// Import a game from a Steam URL via the serverless API
+async function importGameUrl() {
+  const input = document.getElementById('import-url-games');
+  if (!input) return;
+  const url = input.value.trim();
+  if (!url) { toast('Paste a Steam URL first', false); return; }
+  input.value = '';
+  try {
+    const r = await fetch('/api/steam-lookup?' + new URLSearchParams({url}));
+    const data = await r.json();
+    if (!r.ok || data.error) { toast(data.error || 'Lookup failed', false); return; }
+    gamesData.push({appid: data.appid, title: data.name, status: 'playing', hours: 0});
+    renderGamesList(gamesData);
+    toast('Imported: ' + data.name);
+  } catch(e) {
+    toast('Steam lookup failed: ' + e.message, false);
+  }
 }
 
 // ============================================
