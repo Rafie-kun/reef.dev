@@ -85,7 +85,16 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .album-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.album-item{background:rgba(0,0,0,.75);border:2px solid #555;padding:8px;display:block;text-decoration:none}.album-item img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid #333}.album-item .cap{font-family:'Press Start 2P',monospace;font-size:5px;color:#bbb;margin-top:6px;text-align:center}
 .footer{text-align:center;padding:34px 24px 48px;background:rgba(0,0,0,.55);border-top:2px solid #333;font-family:'Press Start 2P',monospace;font-size:7px;color:#888}.footer .note{margin-top:10px;color:var(--gold)}
 .tooltip{position:fixed;z-index:30;display:none;pointer-events:none;background:#100010;border:2px solid #2d0096;color:var(--gold);padding:8px 10px;font-size:18px;box-shadow:2px 2px 0 #000}
-.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center}.modal-overlay.open{display:flex}.modal-box{background:#0d0d12;border:3px solid var(--stone-dark);max-width:520px;width:92vw;max-height:85vh;overflow-y:auto;padding:0;position:relative}.modal-close{position:absolute;top:10px;right:12px;cursor:pointer;font-size:22px;color:#888;z-index:2;width:32px;height:32px;display:grid;place-items:center;background:rgba(0,0,0,.6);border:1px solid #555}.modal-close:hover{color:#fff;border-color:var(--gold)}.modal-box .m-img{widows:100%;width:100%;height:200px;object-fit:cover;display:block;border-bottom:3px solid var(--stone-dark)}.modal-box .m-body{padding:20px}.modal-box h3{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold);margin-bottom:12px;line-height:1.5}.modal-box .m-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #222;font-size:18px}.modal-box .m-row b{color:var(--cyan)}.modal-box .m-row span{color:#ccc}.modal-box .m-desc{font-size:17px;color:#999;line-height:1.6;margin-top:10px;max-height:100px;overflow-y:auto;padding:8px;background:rgba(0,0,0,.3);border-left:3px solid var(--stone-dark)}.modal-box .m-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.modal-box .m-tags span{background:#1a1a2a;border:1px solid #333;padding:4px 10px;font-size:13px;color:var(--gold);font-family:VT323}.modal-box .m-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}.modal-box .m-reqs{background:#0a0a0e;border:1px solid #333;padding:12px;margin-top:12px;max-height:140px;overflow-y:auto;font-size:15px;color:#aaa;line-height:1.5}.modal-box .m-reqs-title{display:block;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gold);margin-bottom:8px}.inv-item{cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;will-change:transform}.inv-item:hover{transform:scale(1.08);box-shadow:0 0 16px rgba(126,255,21,.4),0 0 4px rgba(126,255,21,.2);z-index:2;position:relative}.inv-item .label{transition:color .2s}.inv-item:hover .label{color:var(--gold)}.contact-signs{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}.contact-sign{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--panel);border:3px solid var(--stone-dark);padding:18px 24px;min-width:140px;text-align:center;transition:transform .2s,box-shadow .2s;text-decoration:none}.contact-sign:hover{transform:scale(1.08);box-shadow:0 0 14px rgba(83,215,255,.35);border-color:var(--cyan)}.contact-sign .cs-icon{font-size:32px}.contact-sign .cs-label{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold)}.contact-sign .cs-line{font-family:VT323;font-size:16px;color:#aaa}
+.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center}.modal-overlay.open{display:flex}.modal-box{background:#0d0d12;border:3px solid var(--stone-dark);max-width:520px;width:92vw;max-height:85vh;overflow-y:auto;padding:0;position:relative}.modal-close{position:absolute;top:10px;right:12px;cursor:pointer;font-size:22px;color:#888;z-index:2;width:32px;height:32px;display:grid;place-items:center;background:rgba(0,0,0,.6);border:1px solid #555}.modal-close:hover{color:#fff;border-color:var(--gold)}.modal-box .m-img{widows:100%;width:100%;height:200px;object-fit:cover;display:block;border-bottom:3px solid var(--stone-dark)}.modal-box .m-body{padding:20px}.modal-box h3{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold);margin-bottom:12px;line-height:1.5}.modal-box .m-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #222;font-size:18px}.modal-box .m-row b{color:var(--cyan)}.modal-box .m-row span{color:#ccc}.modal-box .m-desc{font-size:17px;color:#999;line-height:1.6;margin-top:10px;max-height:100px;overflow-y:auto;padding:8px;background:rgba(0,0,0,.3);border-left:3px solid var(--stone-dark)}.modal-box .m-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.modal-box .m-tags span{background:#1a1a2a;border:1px solid #333;padding:4px 10px;font-size:13px;color:var(--gold);font-family:VT323}.modal-box .m-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}.modal-box .m-reqs{background:#0a0a0e;border:1px solid #333;padding:12px;margin-top:12px;max-height:140px;overflow-y:auto;font-size:15px;color:#aaa;line-height:1.5}.modal-box .m-reqs-title{display:block;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gold);margin-bottom:8px}.inv-item{cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;will-change:transform}.inv-item:hover{transform:scale(1.08);box-shadow:0 0 16px rgba(126,255,21,.4),0 0 4px rgba(126,255,21,.2);z-index:2;position:relative}.inv-item .label{transition:color .2s}.inv-item:hover .label{color:var(--gold)}.contact-anvil{background:#3a2a1a;border:6px solid #4a3a2a;box-shadow:inset 0 0 0 3px #2a1a0a,4px 4px 0 #1a0a00;padding:0;margin-bottom:10px}
+.contact-anvil-head{background:#5a4a3a;border-bottom:4px solid #3a2a1a;padding:14px 20px;font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);display:flex;align-items:center;gap:10px}
+.contact-anvil-head span{color:#aaa;font-size:6px;margin-left:auto}
+.contact-table{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0;background:#5a4428;padding:3px}
+.contact-slot{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--slot);border:2px solid;border-color:#ddd #333 #333 #ddd;padding:16px 12px;text-align:center;transition:transform .12s steps(1),filter .12s steps(1);text-decoration:none;position:relative}
+.contact-slot:hover{transform:scale(1.06);filter:brightness(1.3);z-index:2;border-color:var(--gold) var(--stone-dark) var(--stone-dark) var(--gold)}
+.contact-slot .cs-icon{font-size:28px;width:40px;height:40px;display:grid;place-items:center;background:rgba(0,0,0,.3);border:2px solid;border-color:#555 #ddd #ddd #555}
+.contact-slot .cs-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold)}
+.contact-slot .cs-line{font-family:VT323;font-size:16px;color:#aaa}
+.contact-slot .cs-hint{font-family:VT323;font-size:12px;color:#666;margin-top:2px}
 @media(max-width:900px){.hotbar{left:0;right:0;transform:none;justify-content:center;flex-wrap:wrap}.hero-grid,.book-pages{grid-template-columns:1fr}.hero{padding-top:150px}.logo{font-size:48px}.page:first-child{border-right:0;border-bottom:2px solid #a88458}.act-icon,.act-icon-fallback{width:32px;height:32px}.act-icon-fallback{font-size:14px}}
 </style>
 </head>
@@ -131,7 +140,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
   <section id="album"><h2 class="title">Album / Gallery</h2><div class="panel"><div class="album-grid" id="album-grid"></div></div></section>
   <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div></div><div class="inv-grid tab-panel" id="tab-all"></div><div class="inv-grid tab-panel" id="tab-games" hidden></div><div class="inv-grid tab-panel" id="tab-music" hidden></div><div class="inv-grid tab-panel" id="tab-reading" hidden></div></div></section>
   <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall"><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:var(--gold);margin-bottom:4px">My Card</div><div id="my-card-preview-wrap" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;width:100%;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid #555"><button id="my-card-preview" class="badge-link" type="button" style="width:88px;height:31px;padding:0;border:1px solid #888;cursor:pointer"><img id="my-card-img" src="assets/button-88x31.webp" alt="REEF card"></button><div style="font-family:'Press Start 2P';font-size:5px;color:#888;line-height:1.6">Click card to copy embed code</div></div><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:#999;margin:4px 0">Friend Badges</div><div id="friends-badges" style="display:flex;flex-wrap:wrap;gap:8px;width:100%"></div></div></section>
-  <section id="contact"><h2 class="title">Contact / Sign</h2><div class="panel"><p style="font-size:22px;margin-bottom:20px;text-align:center;color:var(--gold)">☎ Leave a message after the beep.</p><div class="contact-signs" id="contact-actions"><a class="contact-sign" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer"><span class="cs-icon">💬</span><span class="cs-label">Discord</span><span class="cs-line">@reef</span></a><a class="contact-sign" href="mailto:reef@example.com"><span class="cs-icon">✉</span><span class="cs-label">Email</span><span class="cs-line">reef@example.com</span></a><a class="contact-sign" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer"><span class="cs-icon">🐙</span><span class="cs-label">GitHub</span><span class="cs-line">/Rafie-kun</span></a></div></div></section>
+  <section id="contact"><h2 class="title">Contact / Anvil</h2><div class="contact-anvil"><div class="contact-anvil-head">🔨 Contact<span>Right-click to use</span></div><div class="contact-table" id="contact-actions"></div></div></section>
   <footer class="footer"><div>(C) REEF 2026</div><div class="note" id="footer-note">Also try mining at sunset.</div></footer>
 <div id="lib-modal" class="modal-overlay" onclick="closeLibModal(event)"><div class="modal-box"><div class="modal-close" onclick="closeLibModal()">✕</div><div id="modal-content"></div></div></div>
 </main>
@@ -187,7 +196,14 @@ function applySiteData(){
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>s?.url&&links.push({label:s.icon||s.name||'Link',href:s.url}));
   socialActions.innerHTML=['<a class="mc-btn" href="#library">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`)].join('');
   const contactAct=document.getElementById('contact-actions');
-  contactAct.innerHTML=links.slice(0,3).map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('')+`<a class="mc-btn" href="mailto:${email}">Email</a>`;
+  const contactSlots=[{icon:'💬',label:'Discord',line:socials.discord?'@'+(socials.discord_label||socials.discord):'Click to chat',hint:'Active',href:`https://discord.com/users/${socials.discord||DISCORD_ID}`},
+    {icon:'✉',label:'Email',line:email,hint:'Reply within 24h',href:'mailto:'+email},
+    {icon:'🐙',label:'GitHub',line:'/'+(socials.github||GITHUB_USER),hint:'Open source',href:`https://github.com/${socials.github||GITHUB_USER}`}];
+  if(socials.twitter) contactSlots.push({icon:'𝕏',label:'X',line:socials.twitter.replace('https://',''),hint:'Social',href:socials.twitter});
+  if(socials.instagram) contactSlots.push({icon:'📷',label:'Instagram',line:socials.instagram.replace('https://',''),hint:'Photos',href:socials.instagram});
+  if(socials.spotify) contactSlots.push({icon:'🎵',label:'Spotify',line:socials.spotify.replace('https://','').split('/').pop()||'Profile',hint:'Music',href:socials.spotify});
+  if(Array.isArray(socials.extra)) socials.extra.forEach(s=>{if(s?.url) contactSlots.push({icon:s.icon||'🔗',label:s.name||'Link',line:s.url.replace('https://',''),hint:'Extra',href:s.url})});
+  contactAct.innerHTML=contactSlots.map(s=>`<a class="contact-slot" href="${s.href}" target="_blank" rel="noreferrer"><span class="cs-icon">${s.icon}</span><span class="cs-label">${s.label}</span><span class="cs-line">${s.line}</span><span class="cs-hint">${s.hint||'→'}</span></a>`).join('');
   const bookSocials=document.getElementById('book-socials');
   bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('');
   renderInventory(JSON.parse(localStorage.getItem('reef-library')||'{}'));
@@ -297,9 +313,9 @@ function openLibModal(item,key,idx){
     const appId=steamAppId||extractSteamAppId(item);
     (async()=>{
       try{
-        const data=await fetchSteamApp(appId);
+        const [data,stats]=await Promise.all([fetchSteamApp(appId),fetchSteamStats(appId)]);
         if(!data){c.innerHTML=modalErrorHtml(name,appId);return}
-        c.innerHTML=modalSteamHtml(data,name,appId);
+        c.innerHTML=modalSteamHtml(data,name,appId,stats);
       }catch(e){c.innerHTML=modalErrorHtml(name,appId)}
     })();
     return;
@@ -307,7 +323,7 @@ function openLibModal(item,key,idx){
   const body=item.icon?`<div style="font-size:48px;text-align:center;padding:30px;background:#111;border:2px solid var(--stone-dark);margin-bottom:14px"><span class="mc-item ${(item.icon||'i-book').replace(/[^a-z-]/g,'')}"></span></div>`:'';
   c.innerHTML=`<div class="m-body"><h3>${name}</h3>${body}<div class="m-row"><b>Type</b><span>${(item.type||'basic').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span></div>${href&&href!=='#'?`<div class="m-row"><b>Link</b><span><a href="${href}" target="_blank" style="color:var(--cyan)">Open →</a></span></div>`:''}</div>`;
 }
-function modalSteamHtml(data,name,appId){
+function modalSteamHtml(data,name,appId,stats){
   const label=data.name||name;
   const desc=(data.short_description||'').replace(/<[^>]*>/g,'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const price=data.price_overview?.final_formatted||(data.is_free?'Free':'N/A');
@@ -322,8 +338,9 @@ function modalSteamHtml(data,name,appId){
   const cats=Array.isArray(data.categories)?data.categories.map(c=>'<span>'+esc(c.description)+'</span>').join(''):'';
   const reqs=data.pc_requirements?.[0]||data.pc_requirements?.minimum||'';
   const reqsRec=data.pc_requirements?.[1]||data.pc_requirements?.recommended||'';
+  const statsHtml=stats?`${stats.playtime_hours!=null?`<div class="m-row"><b>⏱ Hours Played</b><span style="color:var(--xp)">${stats.playtime_hours}h${stats.playtime_2weeks?` (${stats.playtime_2weeks}h last 2 weeks)`:''}</span></div>`:''}${stats.achievements?`<div class="m-row"><b>🏆 Achievements</b><span>${stats.achievements.earned}/${stats.achievements.total} (${Math.round(stats.achievements.earned/stats.achievements.total*100)}%)</span></div>`:''}`:'';
   const reqsHtml=reqs?`<div class="m-reqs"><b class="m-reqs-title">System Requirements</b><div class="m-reqs-content">${String(reqs).replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]*>/g,'')}</div>${reqsRec?`<div class="m-reqs-content" style="margin-top:6px">${String(reqsRec).replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]*>/g,'')}</div>`:''}</div>`:'';
-  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3><div class="m-row"><b>💰 Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>🖥 Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>👨‍💻 Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>📢 Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>📅 Release</b><span>${esc(release)}</span></div><div class="m-row"><b>⭐ Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>👍 Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`;
+  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3><div class="m-row"><b>💰 Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>🖥 Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>👨‍💻 Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>📢 Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>📅 Release</b><span>${esc(release)}</span></div><div class="m-row"><b>⭐ Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>👍 Recommendations</b>${recs}</div>`:''}${statsHtml}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`;
 }
 function modalErrorHtml(name,appId){return `<div class="m-body"><h3>${esc(name)}</h3><div class="m-desc" style="color:#888">Steam data unavailable.</div><div class="m-actions"><a class="mc-btn" href="https://store.steampowered.com/app/${appId}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a><a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`}
 function closeLibModal(e){if(e&&e.target!==e.currentTarget) return;document.getElementById('lib-modal').classList.remove('open')}
@@ -392,6 +409,18 @@ async function fetchSteamApp(appId){
   return data;
 }
 
+async function fetchSteamStats(appId){
+  try{
+    const d=loadData();
+    if(!d.steamId) return null;
+    const r=await fetch('/api/steam-stats?steamid='+d.steamId+'&appid='+appId);
+    if(!r.ok) return null;
+    return await r.json();
+  }catch(e){return null}
+}
+function loadData(){
+  try{return JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{}}catch(e){return{}}
+}
 const steamPending=new Map();
 function queueSteamRender(slotId,item,appId,name,itemJson){
   if(steamPending.has(slotId)) return;
@@ -412,9 +441,11 @@ function queueSteamRender(slotId,item,appId,name,itemJson){
       const platforms=[data.platforms?.windows&&'🪟 Win',data.platforms?.mac&&'🍏 Mac',data.platforms?.linux&&'🐧 Linux'].filter(Boolean).join(' ');
       const genres=(data.genres||[]).slice(0,2).map(g=>g.description).join(', ') || 'Steam game';
       const label=(data.name||name||'Steam Game').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const statsData=await fetchSteamStats(appId);
+      const statsHtml=statsData&&statsData.playtime_hours!=null?`<span class="label i-sub">⏱ ${statsData.playtime_hours}h played${statsData.achievements?` | 🏆 ${statsData.achievements.earned}/${statsData.achievements.total}`:''}</span>`:'';
       const target=el();
       if(target){
-        target.outerHTML=`<a class="inv-item" data-item='${itemJson||''}' href="${href}" target="_blank" rel="noreferrer" title="SteamDB: ${steamdb}">${header?`<div class="inv-img-wrap"><img src="${header}" alt="${label}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item i-star"></span></div>'}<span class="label">${label}</span><span class="label i-price">${price}</span><span class="label i-sub">${platforms||genres}</span></a>`;
+        target.outerHTML=`<a class="inv-item" data-item='${itemJson||''}' href="${href}" target="_blank" rel="noreferrer" title="SteamDB: ${steamdb}">${header?`<div class="inv-img-wrap"><img src="${header}" alt="${label}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item i-star"></span></div>'}<span class="label">${label}</span><span class="label i-price">${price}</span><span class="label i-sub">${platforms||genres}</span>${statsHtml}</a>`;
       }
     }catch(e){
       const target=el();

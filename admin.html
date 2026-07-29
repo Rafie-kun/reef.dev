@@ -189,7 +189,7 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 }
 .toggle.on::after{transform:translateX(28px);background:var(--xp);}
 
-.preview-bar{
+.steam-search-bar{display:flex;gap:8px;margin-bottom:6px;align-items:center;background:#0a1a1a;border:2px solid #1a3a3a;padding:10px}.steam-results{display:none;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px;margin-bottom:10px;padding:8px;background:#111;border:2px solid #333;max-height:300px;overflow-y:auto}.steam-results.show{display:grid}.steam-result-item{display:flex;gap:8px;align-items:center;padding:6px 8px;background:#1a1a2a;border:1px solid #333;cursor:pointer;transition:background .1s}.steam-result-item:hover{background:#2a2a4a;border-color:var(--xp)}.steam-result-item img{width:69px;height:26px;object-fit:cover;flex-shrink:0}.steam-result-item .sr-name{font-family:'Press Start 2P',monospace;font-size:6px;color:#ddd;flex:1;line-height:1.4}.steam-result-item .sr-price{font-size:15px;color:var(--xp);white-space:nowrap}.preview-bar{
   background:#1a2a1a;border:2px solid #2a4a2a;padding:12px 18px;
   margin-bottom:22px;display:flex;align-items:center;gap:14px;
   font-family:'Press Start 2P',monospace;font-size:7px;color:#4a8a4a;
@@ -307,7 +307,13 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <div class="tab-btn" onclick="libTab(this,'lib-proj')">⚔️ Projects</div>
         <div class="tab-btn" onclick="libTab(this,'lib-read')">📚 Reading</div>
       </div>
-      <div id="lib-games" class="tab-content active"><div class="import-bar"><input class="mc-input" id="import-url-games" placeholder="Paste Steam URL to auto-import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('games')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-games-list"></div><button class="mc-btn" onclick="addLibItem('games')" style="width:auto;padding:8px 14px">+ Add Game</button></div>
+      <div id="lib-games" class="tab-content active">
+  <div class="import-bar"><input class="mc-input" id="import-url-games" placeholder="Paste Steam URL to auto-import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('games')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div>
+  <div class="steam-search-bar"><input class="mc-input" id="steam-search-input" placeholder="Search Steam for a game..." style="flex:1" onkeydown="if(event.key==='Enter')searchSteam()"><button class="mc-btn" onclick="searchSteam()" style="width:auto;padding:6px 12px;font-size:7px">🔍 Search</button></div>
+  <div id="steam-search-results" class="steam-results"></div>
+  <div class="card-list" id="lib-games-list"></div>
+  <button class="mc-btn" onclick="addLibItem('games')" style="width:auto;padding:8px 14px">+ Add Game</button>
+</div>
       <div id="lib-music" class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-music" placeholder="Paste song URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('music')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
       <div id="lib-proj"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-proj" placeholder="Paste project URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('proj')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
       <div id="lib-read"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-read" placeholder="Paste article URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('read')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-read-list"></div><button class="mc-btn" onclick="addLibItem('read')" style="width:auto;padding:8px 14px">+ Add Item</button></div>
@@ -426,6 +432,10 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         </div>
       </div>
       <div class="field" style="margin-top:14px">
+        <label>Steam Profile ID (for game stats — <a href="https://steamid.io/" target="_blank" style="color:var(--cyan)">find yours</a>)</label>
+        <input class="mc-input" id="cfg-steamid" placeholder="7656119...">
+      </div>
+      <div class="field" style="margin-top:14px">
         <label>Change Admin Password</label>
         <input class="mc-input" id="new-pw" type="password" placeholder="New password...">
         <input class="mc-input" id="new-pw2" type="password" placeholder="Confirm..." style="margin-top:6px">
@@ -489,13 +499,20 @@ const DEFAULT_DATA = {
   bg: '',
   cardImg: '/assets/button-88x31.webp',
   soundDefault: true,
+  adminPw: '',
+  steamId: '',
 };
 
-function loadData() {
-  try {
-    const d = JSON.parse(localStorage.getItem(DATA_KEY));
-    if (d && typeof d === 'object') return d;
-  } catch(e) {}
+let serverData=null;
+async function loadDataAsync(){
+  try{const r=await fetch('/api/data');if(r.ok){const d=await r.json();if(d&&d.name){serverData=d;localStorage.setItem(DATA_KEY,JSON.stringify(d));return d}}}catch(e){}
+  return loadData();
+}
+function loadData(){
+  try{
+    const d=JSON.parse(localStorage.getItem(DATA_KEY));
+    if(d&&typeof d==='object') return d;
+  }catch(e){}
   return JSON.parse(JSON.stringify(DEFAULT_DATA));
 }
 function saveData(d) {
@@ -504,21 +521,31 @@ function saveData(d) {
 }
 
 // ============================================
-// AUTH
+// AUTH — password synced to server via CMS
 // ============================================
 const DEFAULT_PW = 'reef2026';
 
 function getAdminPw() {
-  return localStorage.getItem(ADMIN_PW_KEY) || DEFAULT_PW;
+  const d=loadData();
+  return d.adminPw||localStorage.getItem(ADMIN_PW_KEY)||DEFAULT_PW;
 }
 
-function doLogin() {
+async function doLogin() {
   const pw = document.getElementById('pw-input').value;
-  if (pw === getAdminPw()) {
+  let valid = pw === getAdminPw();
+  if(!valid){
+    try{
+      const d=await loadDataAsync();
+      valid = d&&pw===d.adminPw;
+    }catch(e){}
+  }
+  if (valid) {
+    localStorage.setItem(ADMIN_PW_KEY, pw);
     sessionStorage.setItem(SESSION_KEY, '1');
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('dashboard').style.display = 'flex';
     loadAllPanels();
+    setTimeout(()=>loadAllPanelsAsync(),100);
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('pw-input').value = '';
@@ -538,7 +565,7 @@ document.getElementById('pw-input').addEventListener('keydown', e => {
 if (sessionStorage.getItem(SESSION_KEY)) {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'flex';
-  setTimeout(loadAllPanels, 0);
+  setTimeout(()=>{loadAllPanels();loadAllPanelsAsync()}, 0);
 }
 
 // ============================================
@@ -588,11 +615,55 @@ function loadAllPanels() {
   renderPhrases(d.phrases || DEFAULT_DATA.phrases);
   document.getElementById('cfg-bg').value = d.bg || '';
   document.getElementById('cfg-card-img').value = d.cardImg || '/assets/button-88x31.webp';
+  document.getElementById('cfg-steamid').value = d.steamId || '';
   const soundOn = d.soundDefault !== false;
   const tog = document.getElementById('snd-toggle');
   tog.className = 'toggle' + (soundOn ? ' on' : '');
   document.getElementById('snd-label').textContent = soundOn ? 'Sound ON' : 'Sound OFF';
   document.getElementById('snd-label').style.color = soundOn ? 'var(--xp)' : '#888';
+}
+
+// ============================================
+// LOAD FROM SERVER (async, after panels load)
+// ============================================
+async function loadAllPanelsAsync(){
+  try{
+    const d=await loadDataAsync();
+    if(!d||!d.name) return;
+    document.getElementById('cfg-name').value=d.name||'';
+    document.getElementById('cfg-bio').value=d.bio||'';
+    document.getElementById('cfg-email').value=d.email||'';
+    if(d.socials){
+      document.getElementById('cfg-discord').value=d.socials.discord||'';
+      document.getElementById('cfg-github').value=d.socials.github||'';
+      document.getElementById('cfg-twitter').value=d.socials.twitter||'';
+      document.getElementById('cfg-instagram').value=d.socials.instagram||'';
+      document.getElementById('cfg-spotify').value=d.socials.spotify||'';
+      renderExtraSocials(d.socials.extra||[]);
+    }
+    if(d.library){
+      ['games','music','proj','read'].forEach(tab => {
+        const arr=d.library[tab]||(tab==='read'?(d.library.reading||[]):[]);
+        renderLibList(tab,arr);
+      });
+    }
+    if(d.friends) renderBadges(d.friends);
+    loadAdminCardPreview(d);
+    if(d.projects) renderProjects(d.projects);
+    if(d.blog) renderBlog(d.blog);
+    if(d.album) renderAlbum(d.album);
+    if(d.phrases) renderPhrases(d.phrases);
+    if(d.bg!==undefined) document.getElementById('cfg-bg').value=d.bg||'';
+    if(d.cardImg!==undefined) document.getElementById('cfg-card-img').value=d.cardImg||'/assets/button-88x31.webp';
+    if(d.steamId!==undefined) document.getElementById('cfg-steamid').value=d.steamId||'';
+    if(d.soundDefault!==undefined){
+      const on=d.soundDefault!==false;
+      document.getElementById('snd-toggle').className='toggle'+(on?' on':'');
+      document.getElementById('snd-label').textContent=on?'Sound ON':'Sound OFF';
+      document.getElementById('snd-label').style.color=on?'var(--xp)':'#888';
+    }
+    toast('Synced from server!',true);
+  }catch(e){}
 }
 
 // ============================================
@@ -656,6 +727,27 @@ function saveSocials() {
 // LIBRARY
 // ============================================
 let libData = {games:[],music:[],proj:[],read:[]};
+let steamSearchTimeout;
+async function searchSteam(){
+  const q=document.getElementById('steam-search-input').value.trim();
+  if(!q){document.getElementById('steam-search-results').classList.remove('show');return}
+  document.getElementById('steam-search-results').innerHTML='<div style="color:#888;padding:12px;text-align:center">Searching...</div>';
+  document.getElementById('steam-search-results').classList.add('show');
+  try{
+    const r=await fetch('https://store.steampowered.com/api/storesearch/?term='+encodeURIComponent(q)+'&l=en&cc=us');
+    const j=await r.json();
+    const items=j?.items||[];
+    if(!items.length){document.getElementById('steam-search-results').innerHTML='<div style="color:#888;padding:12px;text-align:center">No results</div>';return}
+    document.getElementById('steam-search-results').innerHTML=items.map(it=>`<div class="steam-result-item" onclick="addSteamFromSearch('${it.id}','${esc(it.name)}','${it.tiny_image||''}',${it.price?.final||'null'})"><img src="${it.tiny_image||''}" alt="${esc(it.name)}" onerror="this.style.display='none'"><span class="sr-name">${esc(it.name)}</span><span class="sr-price">${it.price?.final_formatted||(it.price?'$'+(it.price.final/100).toFixed(2):'')}</span></div>`).join('');
+  }catch(e){document.getElementById('steam-search-results').innerHTML='<div style="color:var(--red);padding:12px;text-align:center">Search failed</div>'}
+}
+function addSteamFromSearch(appId,name,img,priceCents){
+  libData.games.push({type:'steam',icon:'i-star',name:name,url:'https://store.steampowered.com/app/'+appId,appid:appId,img:img||'',hidden:false});
+  renderLibList('games',libData.games);
+  document.getElementById('steam-search-results').classList.remove('show');
+  document.getElementById('steam-search-input').value='';
+  toast('Added: '+name);
+}
 async function importFromUrl(tab){
   const input=document.getElementById('import-url-'+tab);if(!input)return;
   const url=input.value.trim();if(!url)return;
@@ -922,12 +1014,14 @@ function toggleSnd() {
 function saveSettings() {
   const d = loadData();
   d.soundDefault = document.getElementById('snd-toggle').classList.contains('on');
+  d.steamId = document.getElementById('cfg-steamid').value.trim();
   const newPw = document.getElementById('new-pw').value;
   const newPw2 = document.getElementById('new-pw2').value;
   if(newPw) {
     if(newPw !== newPw2) { toast('Passwords do not match!', false); return; }
     if(newPw.length < 6) { toast('Password too short (min 6 chars)', false); return; }
     localStorage.setItem(ADMIN_PW_KEY, newPw);
+    d.adminPw = newPw;
     document.getElementById('new-pw').value = '';
     document.getElementById('new-pw2').value = '';
   }
