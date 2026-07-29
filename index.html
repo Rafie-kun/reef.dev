@@ -305,7 +305,7 @@ function loadBadges(){
 
 function renderInventory(library){
   const allItems=[...Array.isArray(library?.games)?library.games.filter(i=>!i.hidden):[],...Array.isArray(library?.music)?library.music.filter(i=>!i.hidden):[],...Array.isArray(library?.reading)?library.reading.filter(i=>!i.hidden):[]];
-  const fallback={games:[{icon:'i-pick',name:'Minecraft',url:'https://minecraft.net'},{icon:'i-grass',name:'Survival'},{icon:'i-chest',name:'Builds'}],music:[{icon:'i-note',name:'Playlists'},{icon:'i-note',name:'Ambient'}],reading:[{icon:'i-book',name:'Docs'},{icon:'i-sign',name:'Notes'}]};
+  const fallback={music:[{icon:'i-note',name:'Playlists'},{icon:'i-note',name:'Ambient'}],reading:[{icon:'i-book',name:'Docs'},{icon:'i-sign',name:'Notes'}]};
   const normalize=(key)=>Array.isArray(library?.[key])&&library[key].length?library[key].filter(i=>!i.hidden):fallback[key];
   ['all','games','music','reading'].forEach(id=>{
     const el=document.getElementById('tab-'+id);
