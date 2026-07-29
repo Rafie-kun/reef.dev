@@ -312,10 +312,10 @@ function loadBadges(){
 
 function renderDashboardContent(){
   const d=loadData();
-  const games=Array.isArray(d.games)?d.games.filter(g=>g.appid):[];
+  const games=Array.isArray(d.library?.games)?d.library.games.filter(g=>g.appid):[];
   const music=Array.isArray(d.library?.music)?d.library.music.filter(i=>!i.hidden):[];
-  const reading=Array.isArray(d.library?.read)?d.library.read.filter(i=>!i.hidden):[];
-  const projects=Array.isArray(d.library?.proj)?d.library.proj.filter(i=>!i.hidden):[];
+  const reading=Array.isArray(d.library?.reading)?d.library.reading.filter(i=>!i.hidden):[];
+  const projects=Array.isArray(d.library?.projects)?d.library.projects.filter(i=>!i.hidden):[];
   const allEmpty=!games.length&&!music.length&&!reading.length&&!projects.length;
   if(allEmpty) return '<div class="empty-state">Nothing in your library yet. Add items from the admin panel.</div>';
   const tiles=[
@@ -336,7 +336,7 @@ function renderTab(id,silent){
   if(id==='games'){el.className='tab-panel';el.style.padding='0';renderGamesTab(el);return}
   el.className='tab-panel';el.style.padding='0';
   const d=loadData();
-  const srcMap={music:d.library?.music,reading:d.library?.read||d.library?.reading||[],proj:d.library?.proj||[]};
+  const srcMap={music:d.library?.music,reading:d.library?.reading||[],proj:d.library?.projects||[]};
   const src=srcMap[id]||[];
   const items=Array.isArray(src)?src.filter(i=>!i.hidden):[];
   if(!items.length){el.innerHTML='<div class="empty-state">Nothing here yet. Import from the admin panel.</div>';return}
@@ -344,7 +344,7 @@ function renderTab(id,silent){
 }
 function renderGamesTab(el){
   const d=loadData();
-  const games=Array.isArray(d.games)&&d.games.length?d.games.filter(g=>g.appid):[];
+  const games=Array.isArray(d.library?.games)&&d.library.games.length?d.library.games.filter(g=>g.appid):[];
   if(!games.length){el.innerHTML='<div class="empty-state">No games yet. Add some in the admin panel.</div>';return}
   el.innerHTML='<div class="games-scroll">'+games.map(g=>{
     const appId=String(g.appid||'').replace(/\D/g,'');
@@ -449,11 +449,18 @@ async function fetchSteamApp(appId){
 }
 
 function loadData(){
-  try{return JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{}}catch(e){return{}}
+  try{
+    const d=JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{};
+    if(!d.library) d.library={};
+    if(d.games&&!d.library.games){d.library.games=d.games;delete d.games}
+    if(d.library.read&&!d.library.reading){d.library.reading=d.library.read;delete d.library.read}
+    if(d.library.proj&&!d.library.projects){d.library.projects=d.library.proj;delete d.library.proj}
+    return d;
+  }catch(e){return{}}
 }
 async function fetchMissingGameImgs() {
   const d = loadData();
-  const games = Array.isArray(d.games) ? d.games : [];
+  const games = Array.isArray(d.library?.games) ? d.library.games : [];
   const pending = games.filter(g => !g.img && g.appid && String(g.appid).replace(/\D/g,''));
   if (!pending.length) return;
   let changed = false;
@@ -469,6 +476,7 @@ async function fetchMissingGameImgs() {
     } catch(e) {}
   }
   if (changed) {
+    d.library.games = d.library.games || [];
     try { localStorage.setItem(DATA_KEY, JSON.stringify(d)); } catch(e) {}
     renderAllTabs();
   }

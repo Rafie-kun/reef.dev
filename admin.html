@@ -478,8 +478,7 @@ const DEFAULT_DATA = {
     spotify: '',
     extra: [],
   },
-  library: { music:[], proj:[], read:[], reading:[] },
-  games: [],
+  library: { music:[], projects:[], reading:[], games:[] },
   friends: [
     {name:'peeblyweeb',img:'',url:'https://salamithecat.com/',code:'<a href="https://salamithecat.com/" target="_blank" rel="noopener noreferrer"><img src="https://salamithecat.com/button.webp" width="88" height="31" alt="peeblyweeb" /></a>'},
     {name:'xs10',img:'',url:'https://xs10.dev',code:'<a href="https://xs10.dev" target="_blank" rel="noopener"><img src="https://xs10.dev/buttons/xs10.webp" srcset="https://xs10.dev/buttons/xs10@2x.webp 2x" alt="xs10" width="256" height="90" /></a>'},
@@ -515,7 +514,13 @@ async function loadDataAsync(){
 function loadData(){
   try{
     const d=JSON.parse(localStorage.getItem(DATA_KEY));
-    if(d&&typeof d==='object') return d;
+    if(d&&typeof d==='object'){
+      if(!d.library) d.library={};
+      if(d.games&&!d.library.games){d.library.games=d.games;delete d.games}
+      if(d.library.read&&!d.library.reading){d.library.reading=d.library.read;delete d.library.read}
+      if(d.library.proj&&!d.library.projects){d.library.projects=d.library.proj;delete d.library.proj}
+      return d;
+    }
   }catch(e){}
   return JSON.parse(JSON.stringify(DEFAULT_DATA));
 }
@@ -616,10 +621,9 @@ function loadAllPanels() {
   document.getElementById('cfg-instagram').value = d.socials?.instagram || '';
   document.getElementById('cfg-spotify').value = d.socials?.spotify || '';
   renderExtraSocials(d.socials?.extra || []);
-  ['music','proj','read'].forEach(tab => {
-    const arr = d.library?.[tab] || (tab==='read' ? (d.library?.reading||[]) : []);
-    renderLibList(tab, arr);
-  });
+  renderLibList('music', d.library?.music||[]);
+  renderLibList('proj', d.library?.projects||[]);
+  renderLibList('read', d.library?.reading||[]);
   loadGamesPanel(d);
   renderBadges(d.friends || []);
   loadAdminCardPreview(d);
@@ -656,9 +660,9 @@ async function loadAllPanelsAsync(){
       renderExtraSocials(d.socials.extra||[]);
     }
     if(d.library){
-      ['music','proj','read'].forEach(tab => {
-        renderLibList(tab, d.library[tab]||(tab==='read'?(d.library.reading||[]):[]));
-      });
+      renderLibList('music', d.library.music||[]);
+      renderLibList('proj', d.library.projects||[]);
+      renderLibList('read', d.library.reading||[]);
     }
     loadGamesPanel(d);
     if(d.friends) renderBadges(d.friends);
@@ -810,7 +814,10 @@ function libTab(el, id) {
 }
 function saveLibrary() {
   const d = loadData();
-  d.library = {music:libData.music||[], proj:libData.proj||[], read:libData.read||[]};
+  d.library = d.library || {};
+  d.library.music = libData.music||[];
+  d.library.proj = libData.proj||[];
+  d.library.read = libData.read||[];
   if(d.library.reading) delete d.library.reading;
   saveData(d);
   toast('Library saved!');
@@ -869,13 +876,13 @@ function saveGames() {
     if(!g.title) g.title='Game #'+a;
   }
   const d=loadData();
-  d.games=JSON.parse(JSON.stringify(gamesData));
+  d.library.games=JSON.parse(JSON.stringify(gamesData));
   saveData(d);
   toast('Games saved!');
 }
 // Load games on panel init — called from loadAllPanels/loadAllPanelsAsync
 async function loadGamesPanel(d){
-  const list=Array.isArray(d.games)?d.games:[];
+  const list=Array.isArray(d.library?.games)?d.library.games:[];
   gamesData=JSON.parse(JSON.stringify(list));
   renderGamesList(gamesData);
   await fetchMissingGameImgs();
@@ -898,7 +905,7 @@ async function fetchMissingGameImgs() {
   if (changed) {
     renderGamesList(gamesData);
     const d = loadData();
-    d.games = JSON.parse(JSON.stringify(gamesData));
+    d.library.games = JSON.parse(JSON.stringify(gamesData));
     saveData(d);
   }
 }
