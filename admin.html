@@ -1037,12 +1037,20 @@ function renderAlbum(list){
     <div class="card-item">
       <div class="card-content">
         <input class="mc-input" value="${p.caption||''}" oninput="albumData[${i}].caption=this.value" placeholder="Caption">
-        <input class="mc-input" value="${p.img||''}" oninput="albumData[${i}].img=this.value" placeholder="Image URL">
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+          <input class="mc-input" value="${p.img||''}" oninput="albumData[${i}].img=this.value" placeholder="Image URL" style="flex:1">
+          <input type="file" accept="image/*" onchange="uploadAlbumImg(${i},this)" style="font-size:12px;font-family:VT323;max-width:130px">
+        </div>
+        ${p.img?`<img src="${p.img}" style="max-width:160px;height:auto;margin-bottom:6px;border:2px solid var(--stone-dark)">`:''}
         <input class="mc-input" value="${p.link||''}" oninput="albumData[${i}].link=this.value" placeholder="Optional link">
       </div>
       <div class="card-actions"><button class="btn-sm del" onclick="rmAlbum(${i})">✕</button></div>
     </div>
   `).join('');
+}
+function uploadAlbumImg(i,input){
+  const file=input.files[0];if(!file) return;
+  const r=new FileReader();r.onload=e=>{albumData[i].img=e.target.result;renderAlbum(albumData);};r.readAsDataURL(file);
 }
 function addAlbumItem(){ albumData.push({caption:'New Image',img:'',link:''}); renderAlbum(albumData); }
 function rmAlbum(i){ albumData.splice(i,1); renderAlbum(albumData); }
