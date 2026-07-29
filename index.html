@@ -320,7 +320,7 @@ function renderAllTabContent(){
     const title=esc(g.title||'Game #'+appId);
     const status=g.status||'playing';
     const hours=parseInt(g.hours)||0;
-    const imgSrc=appId?'https://cdn.cloudflare.steamstatic.com/steam/apps/'+appId+'/header.jpg':'';
+    const imgSrc=g.img || (appId?'https://cdn.cloudflare.steamstatic.com/steam/apps/'+appId+'/header.jpg':'');
     const fbSrc=appId?'https://cdn.cloudflare.steamstatic.com/steam/apps/'+appId+'/library_600x900.jpg':'';
     const statusLabel={playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||'▶ Playing';
     const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" loading="lazy" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=game-card-img game-card-fail>☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">`:'<div class="game-card-img game-card-fail">☐</div>';
@@ -360,7 +360,7 @@ function renderGamesTab(el){
     const title=esc(g.title||'Game #'+appId);
     const status=g.status||'playing';
     const hours=parseInt(g.hours)||0;
-    const imgSrc=appId?'https://cdn.cloudflare.steamstatic.com/steam/apps/'+appId+'/header.jpg':'';
+    const imgSrc=g.img || (appId?'https://cdn.cloudflare.steamstatic.com/steam/apps/'+appId+'/header.jpg':'');
     const fbSrc=appId?'https://cdn.cloudflare.steamstatic.com/steam/apps/'+appId+'/library_600x900.jpg':'';
     const statusLabel={playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||'▶ Playing';
     const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" loading="lazy" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=game-card-img game-card-fail>☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">`:'<div class="game-card-img game-card-fail">☐</div>';
