@@ -1,10 +1,11 @@
+function setCORS(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
 export default async function handler(req, res) {
-  const CORS = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
-  if (req.method === 'OPTIONS') { res.status(200).setHeader(CORS).end(); return; }
+  if (req.method === 'OPTIONS') { res.status(200); setCORS(res); res.end(); return; }
 
   const { url: inputUrl, appid } = req.query;
   let appId = appid || '';
@@ -19,7 +20,8 @@ export default async function handler(req, res) {
   }
 
   if (!appId) {
-    res.status(400).setHeader(CORS).json({ error: 'Could not extract a numeric Steam App ID from the input.' });
+    res.status(400); setCORS(res);
+    res.json({ error: 'Could not extract a numeric Steam App ID from the input.' });
     return;
   }
 
@@ -28,10 +30,12 @@ export default async function handler(req, res) {
     const j = await r.json();
     const data = j?.[appId]?.data;
     if (!data) {
-      res.status(404).setHeader(CORS).json({ error: `Steam App ID ${appId} not found.` });
+      res.status(404); setCORS(res);
+      res.json({ error: `Steam App ID ${appId} not found.` });
       return;
     }
-    res.status(200).setHeader(CORS).json({
+    res.status(200); setCORS(res);
+    res.json({
       appid: appId,
       name: data.name || '',
       headerImage: data.header_image || '',
@@ -39,6 +43,7 @@ export default async function handler(req, res) {
       shortDescription: data.short_description || '',
     });
   } catch (e) {
-    res.status(502).setHeader(CORS).json({ error: 'Failed to fetch from Steam API.' });
+    res.status(502); setCORS(res);
+    res.json({ error: 'Failed to fetch from Steam API.' });
   }
 }

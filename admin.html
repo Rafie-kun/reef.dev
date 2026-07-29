@@ -526,7 +526,14 @@ function loadData(){
 }
 function saveData(d) {
   localStorage.setItem(DATA_KEY, JSON.stringify(d));
-  fetch('/api/data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).catch(()=>{});
+  fetch('/api/data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})
+    .then(async r=>{
+      if(r.ok){
+        const j=await r.json();
+        if(j&&j.stored===false)
+          toast('⚠ Save stored locally only — configure KV_URL or BLOB_READ_WRITE_TOKEN in Vercel env vars for server persistence',false);
+      }
+    }).catch(()=>{});
 }
 
 // ============================================

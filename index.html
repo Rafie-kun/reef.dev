@@ -348,9 +348,9 @@ function openLibModal(item,key,idx){
     const appId=steamAppId||extractSteamAppId(item);
     (async()=>{
       try{
-        const [data,stats]=await Promise.all([fetchSteamApp(appId),fetchSteamStats(appId)]);
+        const data=await fetchSteamApp(appId);
         if(!data){c.innerHTML=modalErrorHtml(name,appId);return}
-        c.innerHTML=modalSteamHtml(data,name,appId,stats);
+        c.innerHTML=modalSteamHtml(data,name,appId);
       }catch(e){c.innerHTML=modalErrorHtml(name,appId)}
     })();
     return;
@@ -358,7 +358,7 @@ function openLibModal(item,key,idx){
   const body=item.icon?`<div style="font-size:48px;text-align:center;padding:30px;background:#111;border:2px solid var(--stone-dark);margin-bottom:14px"><span class="mc-item ${(item.icon||'i-book').replace(/[^a-z-]/g,'')}"></span></div>`:'';
   c.innerHTML=`<div class="m-body"><h3>${name}</h3>${body}<div class="m-row"><b>Type</b><span>${(item.type||'basic').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span></div>${href&&href!=='#'?`<div class="m-row"><b>Link</b><span><a href="${href}" target="_blank" style="color:var(--cyan)">Open →</a></span></div>`:''}</div>`;
 }
-function modalSteamHtml(data,name,appId,stats){
+function modalSteamHtml(data,name,appId){
   const label=data.name||name;
   const desc=(data.short_description||'').replace(/<[^>]*>/g,'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const price=data.price_overview?.final_formatted||(data.is_free?'Free':'N/A');
@@ -373,9 +373,8 @@ function modalSteamHtml(data,name,appId,stats){
   const cats=Array.isArray(data.categories)?data.categories.map(c=>'<span>'+esc(c.description)+'</span>').join(''):'';
   const reqs=data.pc_requirements?.[0]||data.pc_requirements?.minimum||'';
   const reqsRec=data.pc_requirements?.[1]||data.pc_requirements?.recommended||'';
-  const statsHtml=stats?`${stats.playtime_hours!=null?`<div class="m-row"><b>⏱ Hours Played</b><span style="color:var(--xp)">${stats.playtime_hours}h${stats.playtime_2weeks?` (${stats.playtime_2weeks}h last 2 weeks)`:''}</span></div>`:''}${stats.achievements?`<div class="m-row"><b>🏆 Achievements</b><span>${stats.achievements.earned}/${stats.achievements.total} (${Math.round(stats.achievements.earned/stats.achievements.total*100)}%)</span></div>`:''}`:'';
   const reqsHtml=reqs?`<div class="m-reqs"><b class="m-reqs-title">System Requirements</b><div class="m-reqs-content">${String(reqs).replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]*>/g,'')}</div>${reqsRec?`<div class="m-reqs-content" style="margin-top:6px">${String(reqsRec).replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]*>/g,'')}</div>`:''}</div>`:'';
-  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3><div class="m-row"><b>💰 Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>🖥 Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>👨‍💻 Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>📢 Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>📅 Release</b><span>${esc(release)}</span></div><div class="m-row"><b>⭐ Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>👍 Recommendations</b>${recs}</div>`:''}${statsHtml}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`;
+  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3><div class="m-row"><b>💰 Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>🖥 Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>👨‍💻 Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>📢 Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>📅 Release</b><span>${esc(release)}</span></div><div class="m-row"><b>⭐ Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>👍 Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`;
 }
 function modalErrorHtml(name,appId){return `<div class="m-body"><h3>${esc(name)}</h3><div class="m-desc" style="color:#888">Steam data unavailable.</div><div class="m-actions"><a class="mc-btn" href="https://store.steampowered.com/app/${appId}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a><a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`}
 function closeLibModal(e){if(e&&e.target!==e.currentTarget) return;document.getElementById('lib-modal').classList.remove('open')}
@@ -444,15 +443,6 @@ async function fetchSteamApp(appId){
   return data;
 }
 
-async function fetchSteamStats(appId){
-  try{
-    const d=loadData();
-    if(!d.steamId) return null;
-    const r=await fetch('/api/steam-stats?steamid='+d.steamId+'&appid='+appId);
-    if(!r.ok) return null;
-    return await r.json();
-  }catch(e){return null}
-}
 function loadData(){
   try{return JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{}}catch(e){return{}}
 }
@@ -476,11 +466,9 @@ function queueSteamRender(slotId,item,appId,name,itemJson){
       const platforms=[data.platforms?.windows&&'🪟 Win',data.platforms?.mac&&'🍏 Mac',data.platforms?.linux&&'🐧 Linux'].filter(Boolean).join(' ');
       const genres=(data.genres||[]).slice(0,2).map(g=>g.description).join(', ') || 'Steam game';
       const label=(data.name||name||'Steam Game').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      const statsData=await fetchSteamStats(appId);
-      const statsHtml=statsData&&statsData.playtime_hours!=null?`<span class="label i-sub">⏱ ${statsData.playtime_hours}h played${statsData.achievements?` | 🏆 ${statsData.achievements.earned}/${statsData.achievements.total}`:''}</span>`:'';
       const target=el();
       if(target){
-        target.outerHTML=`<a class="inv-item" data-item='${itemJson||''}' href="${href}" target="_blank" rel="noreferrer" title="SteamDB: ${steamdb}">${header?`<div class="inv-img-wrap"><img src="${header}" alt="${label}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item i-star"></span></div>'}<span class="label">${label}</span><span class="label i-price">${price}</span><span class="label i-sub">${platforms||genres}</span>${statsHtml}</a>`;
+        target.outerHTML=`<a class="inv-item" data-item='${itemJson||''}' href="${href}" target="_blank" rel="noreferrer" title="SteamDB: ${steamdb}">${header?`<div class="inv-img-wrap"><img src="${header}" alt="${label}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item i-star"></span></div>'}<span class="label">${label}</span><span class="label i-price">${price}</span><span class="label i-sub">${platforms||genres}</span></a>`;
       }
     }catch(e){
       const target=el();

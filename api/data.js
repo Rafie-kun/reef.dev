@@ -1,10 +1,11 @@
+function setCORS(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
 export default async function handler(req, res) {
-  const CORS = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
-  if (req.method === 'OPTIONS') { res.status(200).setHeader(CORS).end(); return; }
+  if (req.method === 'OPTIONS') { res.status(200); setCORS(res); res.end(); return; }
 
   const BLOB_KEY = 'reef-cms.json';
 
@@ -23,7 +24,8 @@ export default async function handler(req, res) {
       const storage = [];
       if (kv) storage.push('KV');
       if (blob) storage.push('Blob');
-      res.status(200).setHeader(CORS).json({
+      res.status(200); setCORS(res);
+      res.json({
         ok: true, stored: storage.length > 0,
         storage: storage.length ? storage : 'none',
         msg: storage.length
@@ -54,16 +56,20 @@ export default async function handler(req, res) {
       }
 
       if (data) {
-        res.status(200).setHeader(CORS).json(data);
+        res.status(200); setCORS(res);
+        res.json(data);
         return;
       }
 
-      res.status(200).setHeader(CORS).json({ msg: 'No data stored yet' });
+      res.status(200); setCORS(res);
+      res.json({ msg: 'No data stored yet' });
       return;
     }
 
-    res.status(405).setHeader(CORS).json({ error: 'Method not allowed' });
+    res.status(405); setCORS(res);
+    res.json({ error: 'Method not allowed' });
   } catch (e) {
-    res.status(500).setHeader(CORS).json({ error: e.message });
+    res.status(500); setCORS(res);
+    res.json({ error: e.message });
   }
 }
