@@ -317,9 +317,9 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
     <span class="save-msg" id="games-msg"></span>
   </div>
 </div>
-      <div id="lib-music" class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-music" placeholder="Paste Spotify track/album/playlist URL..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('music')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
-      <div id="lib-proj"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-proj" placeholder="Paste GitHub, Devpost, or portfolio URL..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('proj')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
-      <div id="lib-read"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-read" placeholder="Paste Goodreads, StoryGraph, book link, or article URL..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('read')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-read-list"></div><button class="mc-btn" onclick="addLibItem('read')" style="width:auto;padding:8px 14px">+ Add Item</button></div>
+      <div id="lib-music" class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-music" placeholder="Paste song URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('music')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
+      <div id="lib-proj"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-proj" placeholder="Paste project URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('proj')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
+      <div id="lib-read"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-read" placeholder="Paste article URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('read')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-read-list"></div><button class="mc-btn" onclick="addLibItem('read')" style="width:auto;padding:8px 14px">+ Add Item</button></div>
       <div class="save-bar" style="margin-top:20px">
         <button class="mc-btn green" onclick="saveLibrary()">💾 Save Library</button>
         <span class="save-msg" id="lib-msg"></span>
@@ -478,7 +478,8 @@ const DEFAULT_DATA = {
     spotify: '',
     extra: [],
   },
-  library: { music:[], projects:[], reading:[], games:[] },
+  library: { music:[], proj:[], read:[] },
+  games: [],
   friends: [
     {name:'peeblyweeb',img:'',url:'https://salamithecat.com/',code:'<a href="https://salamithecat.com/" target="_blank" rel="noopener noreferrer"><img src="https://salamithecat.com/button.webp" width="88" height="31" alt="peeblyweeb" /></a>'},
     {name:'xs10',img:'',url:'https://xs10.dev',code:'<a href="https://xs10.dev" target="_blank" rel="noopener"><img src="https://xs10.dev/buttons/xs10.webp" srcset="https://xs10.dev/buttons/xs10@2x.webp 2x" alt="xs10" width="256" height="90" /></a>'},
@@ -516,9 +517,12 @@ function loadData(){
     const d=JSON.parse(localStorage.getItem(DATA_KEY));
     if(d&&typeof d==='object'){
       if(!d.library) d.library={};
-      if(d.games&&!d.library.games){d.library.games=d.games;delete d.games}
-      if(d.library.read&&!d.library.reading){d.library.reading=d.library.read;delete d.library.read}
-      if(d.library.proj&&!d.library.projects){d.library.projects=d.library.proj;delete d.library.proj}
+      if(d.library?.games&&!d.games) d.games=d.library.games;
+      if(d.games&&!d.library.games) d.library.games=d.games;
+      if(d.library?.reading&&!d.library.read) d.library.read=d.library.reading;
+      if(d.library.read&&!d.library.reading) d.library.reading=d.library.read;
+      if(d.library?.projects&&!d.library.proj) d.library.proj=d.library.projects;
+      if(d.library.proj&&!d.library.projects) d.library.projects=d.library.proj;
       return d;
     }
   }catch(e){}
@@ -621,9 +625,8 @@ function loadAllPanels() {
   document.getElementById('cfg-instagram').value = d.socials?.instagram || '';
   document.getElementById('cfg-spotify').value = d.socials?.spotify || '';
   renderExtraSocials(d.socials?.extra || []);
-  renderLibList('music', d.library?.music||[]);
-  renderLibList('proj', d.library?.projects||[]);
-  renderLibList('read', d.library?.reading||[]);
+  ['music','proj','read'].forEach(tab => renderLibList(tab, d.library?.[tab] || []));
+  if(!d.library?.read?.length && d.library?.reading?.length) renderLibList('read', d.library.reading);
   loadGamesPanel(d);
   renderBadges(d.friends || []);
   loadAdminCardPreview(d);
@@ -660,9 +663,10 @@ async function loadAllPanelsAsync(){
       renderExtraSocials(d.socials.extra||[]);
     }
     if(d.library){
-      renderLibList('music', d.library.music||[]);
-      renderLibList('proj', d.library.projects||[]);
-      renderLibList('read', d.library.reading||[]);
+      ['music','proj','read'].forEach(tab => {
+        const arr=d.library[tab]||(tab==='read'?(d.library.reading||[]):[]);
+        renderLibList(tab,arr);
+      });
     }
     loadGamesPanel(d);
     if(d.friends) renderBadges(d.friends);
@@ -738,71 +742,77 @@ function saveSocials() {
 }
 
 // ============================================
-// LIBRARY — Music, Reading, Projects (OG import)
+// LIBRARY
 // ============================================
 let libData = {music:[],proj:[],read:[]};
 async function importFromUrl(tab){
   const input=document.getElementById('import-url-'+tab);if(!input)return;
   const url=input.value.trim();if(!url)return;
-  input.value='';
-  toast('Fetching preview...',true);
-  try{
-    const r=await fetch('/api/og-preview?'+new URLSearchParams({url}));
-    const og=await r.json();
-    const item={type:'basic',name:og.title||'Imported Item',url,og,hidden:false};
-    libData[tab].push(item);
-    renderLibList(tab,libData[tab]);
-    toast('Imported: '+(og.title||'Item'));
-  }catch(e){
-    libData[tab].push({type:'basic',name:'Imported Item',url,og:null,hidden:false});
-    renderLibList(tab,libData[tab]);
-    toast('Added from URL (preview unavailable)');
+  const appId=url.match(/store\.steampowered\.com\/app\/(\d+)/i)?.[1]||url.match(/steamdb\.info\/app\/(\d+)/i)?.[1];
+  if(appId){
+    toast('Fetching Steam data...',true);
+    try{
+      const r=await fetch('/api/steam-lookup?'+new URLSearchParams({url}));
+      const data=await r.json();
+      if(r.ok&&data&&!data.error){
+        const item={type:'basic',icon:'i-link',name:data.name||'Steam Game',url:data.steam_appid?'https://store.steampowered.com/app/'+data.steam_appid:url,appid:'',hidden:false};
+        if(tab==='proj'){item.type='steam';item.icon='i-star';item.appid=appId;item.img=data.header_image||data.capsule_image||''}
+        libData[tab].push(item);
+        renderLibList(tab,libData[tab]);input.value='';toast('Imported: '+data.name);return;
+      }
+    }catch(e){}
   }
+  const name=url.split('/').filter(Boolean).pop()?.replace(/[-_]/g,' ')||'New Item';
+  libData[tab].push({type:'basic',icon:'i-link',name:name.charAt(0).toUpperCase()+name.slice(1),url:url,appid:'',hidden:false});
+  renderLibList(tab,libData[tab]);input.value='';toast('Added from URL');
+}
+async function fetchSteamGame(tab,i){
+  const item=libData[tab][i];if(!item) return;
+  const url=item.url||'';const aid=item.appid||'';
+  const appId=aid.match(/\d+/)?.[0]||url.match(/store\.steampowered\.com\/app\/(\d+)/i)?.[1]||url.match(/steamdb\.info\/app\/(\d+)/i)?.[1];
+  if(!appId){toast('No Steam App ID found in URL or App ID field',false);return}
+  toast('Fetching Steam data...',true);
+  try{
+    const r=await fetch('/api/steam-lookup?'+new URLSearchParams({url}));
+    const data=await r.json();
+    if(!r.ok||!data||data.error){toast('Steam data not found',false);return}
+    libData[tab][i].name=data.name||item.name;
+    libData[tab][i].appid=appId;
+    libData[tab][i].url=data.steam_appid?`https://store.steampowered.com/app/${data.steam_appid}`:(url||'');
+    libData[tab][i].img=data.header_image||data.capsule_image||'';
+    if(tab==='proj'){libData[tab][i].icon='i-star';libData[tab][i].type='steam'}
+    renderLibList(tab,libData[tab]);
+    toast('Imported: '+data.name);
+  }catch(e){toast('Steam fetch failed: '+e.message,false)}
 }
 function renderLibList(tab, list) {
   libData[tab] = list;
   const el = document.getElementById('lib-'+tab+'-list');
   if(!el) return;
-  el.innerHTML = list.map((item,i) => {
-    const og=item.og||{};
-    const ogImg=og.image||'';
-    const ogFav=og.favicon||'';
-    return `
-    <div class="card-item" style="flex-direction:column;align-items:stretch">
+  el.innerHTML = list.map((item,i) => `
+    <div class="card-item">
       <div class="card-content">
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px">
+        <div style="display:flex;gap:8px;align-items:center">
           <span onclick="toggleLibHidden('${tab}',${i})" style="cursor:pointer;font-size:16px;color:${item.hidden?'#555':'var(--xp)'}" title="${item.hidden?'Hidden - click to show':'Visible - click to hide'}">${item.hidden?'⬜':'👁'}</span>
-          <input class="mc-input" value="${escAttr(item.name||'')}" oninput="libData['${tab}'][${i}].name=this.value" placeholder="Name" style="font-size:16px;padding:4px 8px;flex:1">
+          <input class="mc-input" value="${item.type||'basic'}" oninput="libData['${tab}'][${i}].type=this.value" placeholder="Type basic or steam" style="width:120px">
+          <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Icon" style="width:100px">
+          <button class="btn-sm" onclick="fetchSteamGame('${tab}',${i})" title="Auto-fetch from Steam" style="font-size:10px;padding:2px 6px">🔄 Steam</button>
         </div>
-        ${ogImg?`<div style="position:relative;margin-bottom:6px"><img src="${ogImg}" style="width:100%;max-height:120px;object-fit:cover;border:2px solid var(--stone-dark)" onerror="this.style.display='none'">${ogFav?`<img src="${ogFav}" style="position:absolute;bottom:6px;left:6px;width:20px;height:20px;object-fit:contain;border:2px solid #000;background:#000;image-rendering:pixelated">`:''}</div>`:''}
-        <input class="mc-input" value="${escAttr(item.url||'')}" oninput="libData['${tab}'][${i}].url=this.value" placeholder="URL" style="font-size:14px;padding:4px 8px">
-        <div style="display:flex;gap:6px;margin-top:4px;font-size:13px;color:#888;font-family:VT323">
-          <span>${esc(og.siteName||'')}</span>
-          ${ogFav?`<img src="${ogFav}" style="width:14px;height:14px;object-fit:contain;image-rendering:pixelated" onerror="this.style.display='none'">`:''}
-        </div>
+        ${item.img?`<img src="${item.img}" style="width:100%;height:42px;object-fit:cover;border:2px solid var(--stone-dark);margin-bottom:4px">`:''}
+        <input class="mc-input" value="${item.name||''}" oninput="libData['${tab}'][${i}].name=this.value" placeholder="Name">
+        <input class="mc-input" value="${item.img||''}" oninput="libData['${tab}'][${i}].img=this.value" placeholder="Image URL (auto-filled from Steam)">
+        <input class="mc-input" value="${item.url||''}" oninput="libData['${tab}'][${i}].url=this.value" placeholder="URL or Steam link">
+        <input class="mc-input" value="${item.appid||''}" oninput="libData['${tab}'][${i}].appid=this.value" placeholder="Steam App ID">
       </div>
-      <div class="card-actions" style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end">
-        <button class="btn-sm" onclick="refreshOG('${tab}',${i})" style="font-size:9px;padding:2px 8px">🔄 Refresh OG</button>
+      <div class="card-actions">
         <button class="btn-sm del" onclick="rmLibItem('${tab}',${i})">✕</button>
       </div>
-    </div>`;
-  }).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">Nothing here yet.</div>';
-}
-async function refreshOG(tab,i){
-  const item=libData[tab][i];if(!item||!item.url) return;
-  toast('Refreshing preview...',true);
-  try{
-    const r=await fetch('/api/og-preview?'+new URLSearchParams({url:item.url}));
-    const og=await r.json();
-    libData[tab][i].og=og;
-    if(!libData[tab][i].name) libData[tab][i].name=og.title||'';
-    renderLibList(tab,libData[tab]);
-    toast('Preview updated');
-  }catch(e){toast('Refresh failed: '+e.message,false)}
+    </div>
+  `).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">Nothing here yet.</div>';
 }
 function toggleLibHidden(tab,i){libData[tab][i].hidden=!libData[tab][i].hidden;renderLibList(tab,libData[tab])}
 function addLibItem(tab) {
-  libData[tab].push({type:'basic',name:'New Item',url:'',og:null,hidden:false});
+  libData[tab].push({type:'basic',icon:'❓',name:'New Item',url:'',appid:'',hidden:false});
   renderLibList(tab, libData[tab]);
 }
 function rmLibItem(tab, i) { libData[tab].splice(i,1); renderLibList(tab, libData[tab]); }
@@ -818,7 +828,7 @@ function saveLibrary() {
   d.library.music = libData.music||[];
   d.library.proj = libData.proj||[];
   d.library.read = libData.read||[];
-  if(d.library.reading) delete d.library.reading;
+  delete d.library.reading;
   saveData(d);
   toast('Library saved!');
 }
@@ -876,13 +886,14 @@ function saveGames() {
     if(!g.title) g.title='Game #'+a;
   }
   const d=loadData();
+  d.games=JSON.parse(JSON.stringify(gamesData));
   d.library.games=JSON.parse(JSON.stringify(gamesData));
   saveData(d);
   toast('Games saved!');
 }
 // Load games on panel init — called from loadAllPanels/loadAllPanelsAsync
 async function loadGamesPanel(d){
-  const list=Array.isArray(d.library?.games)?d.library.games:[];
+  const list=Array.isArray(d.games)?d.games:(Array.isArray(d.library?.games)?d.library.games:[]);
   gamesData=JSON.parse(JSON.stringify(list));
   renderGamesList(gamesData);
   await fetchMissingGameImgs();
@@ -905,6 +916,7 @@ async function fetchMissingGameImgs() {
   if (changed) {
     renderGamesList(gamesData);
     const d = loadData();
+    d.games = JSON.parse(JSON.stringify(gamesData));
     d.library.games = JSON.parse(JSON.stringify(gamesData));
     saveData(d);
   }
