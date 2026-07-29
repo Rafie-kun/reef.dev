@@ -92,13 +92,29 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .game-card-status.s-completed{color:var(--cyan);border-color:var(--cyan)}
 .game-card-status.s-backlog{color:var(--yellow);border-color:var(--yellow)}
 .game-card-hours{font-family:VT323;font-size:15px;color:#888;margin-top:auto}
-.cat-badge{font-family:'Press Start 2P',monospace;font-size:5px;padding:1px 5px 0;display:inline-block;width:fit-content;border:1px solid;background:rgba(0,0,0,.25);margin-bottom:2px;line-height:1.6}.cat-badge.gm{color:var(--xp);border-color:var(--xp)}.cat-badge.ms{color:var(--cyan);border-color:var(--cyan)}.cat-badge.rd{color:var(--gold);border-color:var(--gold)}.all-grid{display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#555;min-height:100px;align-content:flex-start}.all-grid .game-card{width:140px}.all-grid .inv-item{width:92px}
+.cat-badge{font-family:'Press Start 2P',monospace;font-size:5px;padding:1px 5px 0;display:inline-block;width:fit-content;border:1px solid;background:rgba(0,0,0,.25);margin-bottom:2px;line-height:1.6}.cat-badge.gm{color:var(--xp);border-color:var(--xp)}.cat-badge.ms{color:var(--cyan);border-color:var(--cyan)}.cat-badge.rd{color:var(--gold);border-color:var(--gold)}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:8px;background:#555;min-height:100px}
+.dash-tile{background:#373737;border:2px solid;border-color:#555 #ddd #ddd #555;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:28px 16px;cursor:pointer;transition:transform .12s steps(1),border-color .12s steps(1),box-shadow .12s steps(1);text-align:center;user-select:none}
+.dash-tile:hover{transform:scale(1.04);border-color:var(--gold) #555 #555 var(--gold);box-shadow:0 0 14px rgba(255,241,107,.2)}
+.dash-icon{font-size:32px}
+.dash-count{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--gold)}
+.dash-label{font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa}
+.og-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;padding:8px;background:#555;min-height:80px}
+.og-item{background:#1a1a22;border:2px solid;border-color:#333 #555 #555 #333;display:flex;flex-direction:column;overflow:hidden;cursor:pointer;transition:transform .15s steps(1),border-color .15s steps(1),box-shadow .15s steps(1)}
+.og-item:hover{transform:scale(1.03);border-color:var(--gold) #555 #555 var(--gold);box-shadow:0 0 12px rgba(255,241,107,.2)}
+.og-item-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:repeating-conic-gradient(#1a1a2e 0 25%,#0d0d1a 0 50%) 0 0/10px 10px}
+.og-item-fail{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:18px;color:#888;font-family:'Press Start 2P',monospace;background:repeating-conic-gradient(#1a1a2e 0 25%,#0d0d1a 0 50%) 0 0/10px 10px}
+.og-item-body{padding:8px;display:flex;flex-direction:column;gap:4px;flex:1;background:#15151d}
+.og-item-title{font-family:'Press Start 2P',monospace;font-size:6px;color:#ddd;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.og-item-desc{font-family:VT323;font-size:15px;color:#999;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.og-item-footer{display:flex;align-items:center;gap:6px;margin-top:auto;padding-top:4px}.og-item-fav{width:16px;height:16px;object-fit:contain;image-rendering:pixelated;border-radius:2px;flex-shrink:0}.og-item-site{font-family:VT323;font-size:14px;color:#777;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty-state{padding:20px;background:#333;border:2px solid #555;text-align:center;font-family:VT323;font-size:18px;color:#888;margin:8px}
 .badge-wall{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:rgba(0,0,0,.55);border:2px solid #777;flex-direction:column}.badge-link,.badge-embed{width:88px;min-width:88px;height:31px;display:block;border:1px solid #555;overflow:hidden;background:repeating-conic-gradient(#17102f 0 25%,#2c165b 0 50%) 0 0/8px 8px;image-rendering:pixelated;transition:transform .08s steps(1),filter .08s steps(1),border-color .08s steps(1)}.badge-link:hover,.badge-embed:hover{transform:translateY(-1px);filter:brightness(1.2);border-color:var(--gold)}.badge-link img,.badge-fallback,.badge-embed img{width:100%;height:100%;display:grid;place-items:center}.badge-link img,.badge-embed img{object-fit:cover;image-rendering:pixelated}.badge-embed a{width:88px;height:31px;display:block;overflow:hidden}.badge-embed a img{width:88px!important;height:31px!important;object-fit:cover!important;image-rendering:pixelated}.badge-fallback{font-family:'Press Start 2P',monospace;font-size:6px;color:#ccc;background:#111;text-shadow:1px 1px 0 #000}
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}.blog-post{background:rgba(0,0,0,.75);border:2px solid #555;padding:18px}.blog-post h3{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);margin-bottom:8px}.blog-post .date{font-family:'Press Start 2P',monospace;font-size:5px;color:#999;margin-bottom:10px}.blog-post .blog-img{max-width:100%;height:auto;border:2px solid var(--stone-dark);margin-bottom:10px;display:block}.blog-post p{font-size:20px;line-height:1.5}
 .album-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.album-item{background:rgba(0,0,0,.75);border:2px solid #555;padding:8px;display:block;text-decoration:none}.album-item img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid #333}.album-item .cap{font-family:'Press Start 2P',monospace;font-size:5px;color:#bbb;margin-top:6px;text-align:center}
 .footer{text-align:center;padding:34px 24px 48px;background:rgba(0,0,0,.55);border-top:2px solid #333;font-family:'Press Start 2P',monospace;font-size:7px;color:#888}.footer .note{margin-top:10px;color:var(--gold)}
 .tooltip{position:fixed;z-index:30;display:none;pointer-events:none;background:#100010;border:2px solid #2d0096;color:var(--gold);padding:8px 10px;font-size:18px;box-shadow:2px 2px 0 #000}
-.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center}.modal-overlay.open{display:flex}.modal-box{background:#0d0d12;border:3px solid var(--stone-dark);max-width:520px;width:92vw;max-height:85vh;overflow-y:auto;padding:0;position:relative}.modal-close{position:absolute;top:10px;right:12px;cursor:pointer;font-size:22px;color:#888;z-index:2;width:32px;height:32px;display:grid;place-items:center;background:rgba(0,0,0,.6);border:1px solid #555}.modal-close:hover{color:#fff;border-color:var(--gold)}.modal-box .m-img{widows:100%;width:100%;height:200px;object-fit:cover;display:block;border-bottom:3px solid var(--stone-dark)}.modal-box .m-body{padding:20px}.modal-box h3{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold);margin-bottom:12px;line-height:1.5}.modal-box .m-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #222;font-size:18px}.modal-box .m-row b{color:var(--cyan)}.modal-box .m-row span{color:#ccc}.modal-box .m-desc{font-size:17px;color:#999;line-height:1.6;margin-top:10px;max-height:100px;overflow-y:auto;padding:8px;background:rgba(0,0,0,.3);border-left:3px solid var(--stone-dark)}.modal-box .m-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.modal-box .m-tags span{background:#1a1a2a;border:1px solid #333;padding:4px 10px;font-size:13px;color:var(--gold);font-family:VT323}.modal-box .m-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}.modal-box .m-reqs{background:#0a0a0e;border:1px solid #333;padding:12px;margin-top:12px;max-height:140px;overflow-y:auto;font-size:15px;color:#aaa;line-height:1.5}.modal-box .m-reqs-title{display:block;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gold);margin-bottom:8px}.inv-item{cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;will-change:transform}.inv-item:hover{transform:scale(1.08);box-shadow:0 0 16px rgba(126,255,21,.4),0 0 4px rgba(126,255,21,.2);z-index:2;position:relative}.inv-item .label{transition:color .2s}.inv-item:hover .label{color:var(--gold)}.contact-anvil{background:#3a2a1a;border:6px solid #4a3a2a;box-shadow:inset 0 0 0 3px #2a1a0a,4px 4px 0 #1a0a00;padding:0;margin-bottom:10px}
+.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center}.modal-overlay.open{display:flex}.modal-box{background:#0d0d12;border:3px solid var(--stone-dark);max-width:520px;width:92vw;max-height:85vh;overflow-y:auto;padding:0;position:relative}.modal-close{position:absolute;top:10px;right:12px;cursor:pointer;font-size:22px;color:#888;z-index:2;width:32px;height:32px;display:grid;place-items:center;background:rgba(0,0,0,.6);border:1px solid #555}.modal-close:hover{color:#fff;border-color:var(--gold)}.modal-box .m-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-bottom:3px solid var(--stone-dark)}.modal-box .m-body{padding:20px}.modal-box h3{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold);margin-bottom:12px;line-height:1.5}.modal-box .m-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #222;font-size:18px}.modal-box .m-row b{color:var(--cyan)}.modal-box .m-row span{color:#ccc}.modal-box .m-desc{font-size:17px;color:#999;line-height:1.6;margin-top:10px;max-height:100px;overflow-y:auto;padding:8px;background:rgba(0,0,0,.3);border-left:3px solid var(--stone-dark)}.modal-box .m-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.modal-box .m-tags span{background:#1a1a2a;border:1px solid #333;padding:4px 10px;font-size:13px;color:var(--gold);font-family:VT323}.modal-box .m-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}.modal-box .m-reqs{background:#0a0a0e;border:1px solid #333;padding:12px;margin-top:12px;max-height:140px;overflow-y:auto;font-size:15px;color:#aaa;line-height:1.5}.modal-box .m-reqs-title{display:block;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gold);margin-bottom:8px}.inv-item{cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;will-change:transform}.inv-item:hover{transform:scale(1.08);box-shadow:0 0 16px rgba(126,255,21,.4),0 0 4px rgba(126,255,21,.2);z-index:2;position:relative}.inv-item .label{transition:color .2s}.inv-item:hover .label{color:var(--gold)}.contact-anvil{background:#3a2a1a;border:6px solid #4a3a2a;box-shadow:inset 0 0 0 3px #2a1a0a,4px 4px 0 #1a0a00;padding:0;margin-bottom:10px}
 .contact-anvil-head{background:#5a4a3a;border-bottom:4px solid #3a2a1a;padding:14px 20px;font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);display:flex;align-items:center;gap:10px}
 .contact-anvil-head span{color:#aaa;font-size:6px;margin-left:auto}
 .contact-table{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0;background:#5a4428;padding:3px}
@@ -151,7 +167,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
   <section id="projects"><h2 class="title">Projects / Crafting Bench</h2><div class="panel"><div class="project-grid" id="repo-grid"></div></div></section>
   <section id="blog"><h2 class="title">Blog / Reading</h2><div class="panel"><div class="blog-grid" id="blog-grid"></div></div></section>
   <section id="album"><h2 class="title">Album / Gallery</h2><div class="panel"><div class="album-grid" id="album-grid"></div></div></section>
-  <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div></div><div class="inv-grid tab-panel" id="tab-all"></div><div class="inv-grid tab-panel" id="tab-games" hidden></div><div class="inv-grid tab-panel" id="tab-music" hidden></div><div class="inv-grid tab-panel" id="tab-reading" hidden></div></div></section>
+  <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div><div class="tab" data-tab="proj">Projects</div></div><div class="tab-panel" id="tab-all"></div><div class="tab-panel" id="tab-games" hidden></div><div class="tab-panel" id="tab-music" hidden></div><div class="tab-panel" id="tab-reading" hidden></div><div class="tab-panel" id="tab-proj" hidden></div></div></section>
   <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall"><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:var(--gold);margin-bottom:4px">My Card</div><div id="my-card-preview-wrap" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;width:100%;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid #555"><button id="my-card-preview" class="badge-link" type="button" style="width:88px;height:31px;padding:0;border:1px solid #888;cursor:pointer"><img id="my-card-img" src="assets/button-88x31.webp" alt="REEF card"></button><div style="font-family:'Press Start 2P';font-size:5px;color:#888;line-height:1.6">Click card to copy embed code</div></div><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:#999;margin:4px 0">Friend Badges</div><div id="friends-badges" style="display:flex;flex-wrap:wrap;gap:8px;width:100%"></div></div></section>
   <section id="contact"><h2 class="title">Contact / Anvil</h2><div class="contact-anvil"><div class="contact-anvil-head">🔨 Contact<span>Right-click to use</span></div><div class="contact-table" id="contact-actions"></div></div></section>
   <footer class="footer"><div>(C) REEF 2026</div><div class="note" id="footer-note">Also try mining at sunset.</div></footer>
@@ -255,14 +271,24 @@ function playClick(kind='click'){
 const soundToggle=document.getElementById('sound-toggle');
 soundToggle.textContent=muted?'🔇':'🔊';
 soundToggle.addEventListener('click',()=>{muted=!muted;localStorage.setItem('reef-muted',String(muted));soundToggle.textContent=muted?'🔇':'🔊';playClick('click')});
-document.addEventListener('pointerdown',e=>{if(e.target.closest('a,button,.tab,.project,.inv-item,.badge-link,.book-sl'))playClick('click')},{passive:true});
-document.addEventListener('pointerenter',e=>{if(e.target.closest('a,button,.tab,.project,.inv-item,.badge-link,.book-sl'))playClick('hover')},true);
+document.addEventListener('pointerdown',e=>{if(e.target.closest('a,button,.tab,.project,.inv-item,.og-item,.dash-tile,.badge-link,.book-sl'))playClick('click')},{passive:true});
+document.addEventListener('pointerenter',e=>{if(e.target.closest('a,button,.tab,.project,.inv-item,.og-item,.dash-tile,.badge-link,.book-sl'))playClick('hover')},true);
 
 for(let i=0;i<28;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDuration=10+Math.random()*18+'s';p.style.animationDelay=-Math.random()*18+'s';document.getElementById('particles').appendChild(p)}
 
 document.querySelectorAll('[data-tip]').forEach(el=>{el.onmouseenter=()=>{tip.textContent=el.dataset.tip;tip.style.display='block'};el.onmousemove=e=>{tip.style.left=e.clientX+14+'px';tip.style.top=e.clientY+14+'px'};el.onmouseleave=()=>tip.style.display='none'});
 
-document.querySelector('.inventory')?.addEventListener('click',e=>{const el=e.target.closest('[data-item]');if(!el)return;if(el.tagName==='A')return;e.preventDefault();try{const d=JSON.parse(el.dataset.item);openLibModal(d,d._key||'all',d._idx||0)}catch(e){}});
+document.querySelector('.inventory')?.addEventListener('click',e=>{
+  const tile=e.target.closest('.dash-tile');
+  if(tile){const tab=tile.dataset.tab;const tabEl=document.querySelector(`.tab[data-tab="${tab}"]`);if(tabEl)tabEl.click();return}
+  const og=e.target.closest('.og-item');
+  if(og){try{const d=JSON.parse(og.dataset.item);openLibModal(d,d._key||'all',d._idx||0)}catch(e){}return}
+  const el=e.target.closest('[data-item]');
+  if(!el)return;
+  if(el.tagName==='A')return;
+  e.preventDefault();
+  try{const d=JSON.parse(el.dataset.item);openLibModal(d,d._key||'all',d._idx||0)}catch(e){}
+});
 document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{playClick('tab');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(p=>p.hidden=true);tab.classList.add('active');const id=tab.dataset.tab;document.getElementById('tab-'+id).hidden=false;renderTab(id);});
 
 function navUpdate(){const current=sections.find(s=>{const r=s.getBoundingClientRect();return r.top<=innerHeight*.35&&r.bottom>=innerHeight*.35});if(current)slots.forEach(a=>a.classList.toggle('active',a.hash==='#'+current.id))}
@@ -298,54 +324,44 @@ function loadBadges(){
 
 function renderAllTabContent(){
   const d=loadData();
-  const games=Array.isArray(d.games)?d.games:[];
+  const games=Array.isArray(d.games)?d.games.filter(g=>g.appid):[];
   const music=Array.isArray(d.library?.music)?d.library.music.filter(i=>!i.hidden):[];
   const reading=Array.isArray(d.library?.read||d.library?.reading)?(d.library.read||d.library.reading).filter(i=>!i.hidden):[];
   const projects=Array.isArray(d.library?.proj)?d.library.proj.filter(i=>!i.hidden):[];
   if(!games.length&&!music.length&&!reading.length&&!projects.length)
-    return '<div style="color:#555;padding:20px;text-align:center;font-family:VT323;font-size:18px">Nothing in your library yet. Add items from the admin panel.</div>';
-  let html='';
-  games.forEach(g=>{
-    const appId=String(g.appid||'').replace(/\D/g,'');
-    const title=esc(g.title||'Game #'+appId);
-    const status=g.status||'playing';
-    const hours=parseInt(g.hours)||0;
-    const cdn='https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/';
-    const imgSrc=g.img || (appId?cdn+appId+'/header.jpg':'');
-    const fbSrc=appId?cdn+appId+'/library_600x900.jpg':'';
-    const statusLabel={playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||'▶ Playing';
-    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">`:'<div class="game-card-img game-card-fail">☐</div>';
-    const itemJson=escAttr(JSON.stringify({type:'steam',name:g.title,url:'https://store.steampowered.com/app/'+appId,appid:appId}));
-    html+=`<div class="game-card" data-item='${itemJson}'><span class="cat-badge gm">GAME</span>${imgHtml}<div class="game-card-body"><span class="game-card-title">${title}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours">⏱ ${hours}h</span></div></div>`;
-  });
-  music.forEach((item,i)=>{const r=renderLibraryItem(item,'music',i);html+=`<div style="position:relative"><span class="cat-badge ms" style="position:absolute;top:2px;left:2px;z-index:1">MUSIC</span>${r}</div>`});
-  reading.forEach((item,i)=>{const r=renderLibraryItem(item,'reading',i);html+=`<div style="position:relative"><span class="cat-badge rd" style="position:absolute;top:2px;left:2px;z-index:1">READ</span>${r}</div>`});
-  projects.forEach((item,i)=>{const r=renderLibraryItem(item,'proj',i);html+=`<div style="position:relative"><span class="cat-badge rd" style="position:absolute;top:2px;left:2px;z-index:1;color:var(--gold);border-color:var(--gold)">PROJ</span>${r}</div>`});
-  return html;
+    return '<div class="empty-state">Nothing in your library yet. Add items from the admin panel.</div>';
+  const tiles=[
+    {icon:'🎮',label:'Games',count:games.length,tab:'games'},
+    {icon:'🎵',label:'Music',count:music.length,tab:'music'},
+    {icon:'📚',label:'Reading',count:reading.length,tab:'reading'},
+    {icon:'💻',label:'Projects',count:projects.length,tab:'proj'},
+  ];
+  return '<div class="dash-grid">'+tiles.map(t=>`<div class="dash-tile" data-tab="${t.tab}"><div class="dash-icon">${t.icon}</div><div class="dash-count">${t.count}</div><div class="dash-label">${t.label}</div></div>`).join('')+'</div>';
 }
 function renderAllTabs(){
-  const tabs=['all','games','music','reading'];
+  const tabs=['all','games','music','reading','proj'];
   tabs.forEach(id=>renderTab(id,true));
 }
 function renderTab(id,silent){
   const el=document.getElementById('tab-'+id);
   if(!el) return;
-  if(id==='all'){el.className='all-grid';el.innerHTML=renderAllTabContent();return}
-  if(id==='games'){el.className='tab-panel inv-grid';renderGamesTab(el);return}
-  el.className='tab-panel inv-grid';
+  el.className='tab-panel';
+  if(id==='all'){el.innerHTML=renderAllTabContent();return}
+  if(id==='games'){renderGamesTab(el);return}
   const d=loadData();
-  const fallback={music:[{icon:'i-note',name:'Playlists'},{icon:'i-note',name:'Ambient'}],reading:[{icon:'i-book',name:'Docs'},{icon:'i-sign',name:'Notes'}]};
-  const src=id==='music'?d.library?.music:(d.library?.read||d.library?.reading||[]);
-  const items=Array.isArray(src)&&src.length?src.filter(i=>!i.hidden&&i.type!=='steam'):fallback[id]||[];
-  el.innerHTML=items.map((item,idx)=>renderLibraryItem(item,id,idx)).join('');
+  const srcMap={music:d.library?.music,reading:d.library?.read||d.library?.reading||[],proj:d.library?.proj||[]};
+  const src=srcMap[id]||[];
+  const items=Array.isArray(src)?src.filter(i=>!i.hidden):[];
+  if(!items.length){el.innerHTML='<div class="empty-state">Nothing here yet. Import from the admin panel.</div>';return}
+  el.innerHTML='<div class="og-grid">'+items.map((item,idx)=>renderOGItem(item,id,idx)).join('')+'</div>';
 }
 
 // Render games tab — cover art cards from Steam App ID
 function renderGamesTab(el){
   const d=loadData();
-  const games=Array.isArray(d.games)&&d.games.length?d.games:[];
+  const games=Array.isArray(d.games)&&d.games.length?d.games.filter(g=>g.appid):[];
   if(!games.length){
-    el.innerHTML='<div style="color:#555;padding:20px;text-align:center;font-family:VT323;font-size:18px">No games yet. Add some in the admin panel.</div>';
+    el.innerHTML='<div class="empty-state">No games yet. Add some in the admin panel.</div>';
     return;
   }
   el.innerHTML='<div class="games-scroll">'+games.map(g=>{
@@ -354,36 +370,56 @@ function renderGamesTab(el){
     const status=g.status||'playing';
     const hours=parseInt(g.hours)||0;
     const cdn='https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/';
-    const imgSrc=g.img || (appId?cdn+appId+'/header.jpg':'');
+    const imgSrc=g.img||(appId?cdn+appId+'/header.jpg':'');
     const fbSrc=appId?cdn+appId+'/library_600x900.jpg':'';
     const statusLabel={playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||'▶ Playing';
-    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">`:'<div class="game-card-img game-card-fail">☐</div>';
-    const itemJson=escAttr(JSON.stringify({type:'steam',name:g.title,url:'https://store.steampowered.com/app/'+appId,appid:appId}));
+    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>☐</div>'}" loading="lazy">`:'<div class="game-card-img game-card-fail">☐</div>';
+    const itemJson=escAttr(JSON.stringify({type:'steam',name:g.title,url:'https://store.steampowered.com/app/'+appId,appid:appId,status:status,hours:hours}));
     return `<div class="game-card" data-item='${itemJson}'>${imgHtml}<div class="game-card-body"><span class="game-card-title">${title}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours">⏱ ${hours}h</span></div></div>`;
   }).join('')+'</div>';
 }
 
+function renderOGItem(item,key,idx){
+  const name=esc(item.name||item.og?.title||'Item');
+  const desc=esc(item.og?.description||'');
+  const img=item.og?.image||item.img||'';
+  const fav=item.og?.favicon||'';
+  let host='';try{if(item.url)host=new URL(item.url).hostname.replace('www.','')}catch(e){}  const site=esc(item.og?.siteName||host||'');
+  const href=item.url||'#';
+  const itemJson=escAttr(JSON.stringify({...item,_key:key,_idx:idx,og:item.og||null}));
+  const imgHtml=img?`<img class="og-item-img" src="${img}" alt="${name}" onerror="this.outerHTML='<div class=og-item-fail>☐</div>'" loading="lazy">`:'<div class="og-item-fail">☐</div>';
+  const favHtml=fav?`<img class="og-item-fav" src="${fav}" alt="" onerror="this.style.display='none'">`:'';
+  return `<div class="og-item" data-item='${itemJson}'>${imgHtml}<div class="og-item-body"><span class="og-item-title">${name}</span>${desc?`<span class="og-item-desc">${desc}</span>`:''}<div class="og-item-footer">${favHtml}<span class="og-item-site">${site}</span></div></div></div>`;
+}
 function openLibModal(item,key,idx){
   document.getElementById('lib-modal').classList.add('open');
   const c=document.getElementById('modal-content');
-  const name=(item.name||'Item').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const name=esc(item.name||item.og?.title||'Item');
   const href=item.url||'#';
   if((item.type||'basic')==='steam'){
     const appId=extractSteamAppId(item);
+    const status=item.status||'';
+    const hours=parseInt(item.hours)||0;
     c.innerHTML='<div class="m-body"><div style="text-align:center;padding:30px;font-family:VT323;font-size:22px;color:#888">Loading Steam details...</div></div>';
     (async()=>{
       try{
         const data=await fetchSteamApp(appId);
-        if(!data){c.innerHTML=modalErrorHtml(name,appId);return}
-        c.innerHTML=modalSteamHtml(data,name,appId);
-      }catch(e){c.innerHTML=modalErrorHtml(name,appId)}
+        if(!data){c.innerHTML=modalErrorHtml(name,appId,status,hours);return}
+        c.innerHTML=modalSteamHtml(data,name,appId,status,hours);
+      }catch(e){c.innerHTML=modalErrorHtml(name,appId,status,hours)}
     })();
     return;
   }
-  const body=item.icon?`<div style="font-size:48px;text-align:center;padding:30px;background:#111;border:2px solid var(--stone-dark);margin-bottom:14px"><span class="mc-item ${(item.icon||'i-book').replace(/[^a-z-]/g,'')}"></span></div>`:'';
-  c.innerHTML=`<div class="m-body"><h3>${name}</h3>${body}<div class="m-row"><b>Type</b><span>${(item.type||'basic').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span></div>${href&&href!=='#'?`<div class="m-row"><b>Link</b><span><a href="${href}" target="_blank" style="color:var(--cyan)">Open →</a></span></div>`:''}</div>`;
+  const og=item.og||{};
+  const img=og.image||item.img||'';
+  const desc=esc(og.description||'');
+  const site=esc(og.siteName||'');
+  const fav=og.favicon||'';
+  const imgHtml=img?`<img class="m-img" src="${img}" alt="${name}" onerror="this.style.display='none'">`:'';
+  const favHtml=fav?`<img src="${fav}" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;image-rendering:pixelated" alt="" onerror="this.style.display='none'">`:'';
+  c.innerHTML=`${imgHtml}<div class="m-body"><h3>${name}</h3>${desc?`<div class="m-desc">${desc}</div>`:''}<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #222">${favHtml}<span style="color:#888;font-family:VT323;font-size:18px">${site||'Link'}</span></div><div class="m-actions"><a class="mc-btn" href="${href}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🔗 Open Link</a></div></div>`;
 }
-function modalSteamHtml(data,name,appId){
+function modalSteamHtml(data,name,appId,status,hours){
   const label=data.name||name;
   const desc=(data.short_description||'').replace(/<[^>]*>/g,'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const price=data.price_overview?.final_formatted||(data.is_free?'Free':'N/A');
@@ -399,9 +435,12 @@ function modalSteamHtml(data,name,appId){
   const reqs=data.pc_requirements?.[0]||data.pc_requirements?.minimum||'';
   const reqsRec=data.pc_requirements?.[1]||data.pc_requirements?.recommended||'';
   const reqsHtml=reqs?`<div class="m-reqs"><b class="m-reqs-title">System Requirements</b><div class="m-reqs-content">${String(reqs).replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]*>/g,'')}</div>${reqsRec?`<div class="m-reqs-content" style="margin-top:6px">${String(reqsRec).replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]*>/g,'')}</div>`:''}</div>`:'';
-  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3><div class="m-row"><b>💰 Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>🖥 Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>👨‍💻 Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>📢 Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>📅 Release</b><span>${esc(release)}</span></div><div class="m-row"><b>⭐ Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>👍 Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`;
+  const statusLabel=status?{playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||status:'';
+  const statusRow=statusLabel?`<div class="m-row"><b>📌 Status</b><span style="color:var(--gold)">${esc(statusLabel)}</span></div>`:'';
+  const hoursRow=hours?`<div class="m-row"><b>⏱ Hours</b><span>${hours}h</span></div>`:'';
+  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3>${statusRow}${hoursRow}<div class="m-row"><b>💰 Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>🖥 Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>👨‍💻 Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>📢 Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>📅 Release</b><span>${esc(release)}</span></div><div class="m-row"><b>⭐ Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>👍 Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`;
 }
-function modalErrorHtml(name,appId){return `<div class="m-body"><h3>${esc(name)}</h3><div class="m-desc" style="color:#888">Steam data unavailable.</div><div class="m-actions"><a class="mc-btn" href="https://store.steampowered.com/app/${appId}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a><a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`}
+function modalErrorHtml(name,appId,status,hours){const statusLabel=status?{playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||status:'';const statusRow=statusLabel?`<div class="m-row"><b>📌 Status</b><span style="color:var(--gold)">${esc(statusLabel)}</span></div>`:'';const hoursRow=hours?`<div class="m-row"><b>⏱ Hours</b><span>${hours}h</span></div>`:'';return `<div class="m-body"><h3>${esc(name)}</h3>${statusRow}${hoursRow}<div class="m-desc" style="color:#888">Steam data unavailable.</div><div class="m-actions"><a class="mc-btn" href="https://store.steampowered.com/app/${appId}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a><a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`}
 function closeLibModal(e){if(e&&e.target!==e.currentTarget) return;document.getElementById('lib-modal').classList.remove('open')}
 
 function escAttr(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}

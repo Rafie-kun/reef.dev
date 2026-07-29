@@ -749,21 +749,8 @@ async function importFromUrl(tab){
   const input=document.getElementById('import-url-'+tab);if(!input)return;
   const url=input.value.trim();if(!url)return;
   const appId=url.match(/store\.steampowered\.com\/app\/(\d+)/i)?.[1]||url.match(/steamdb\.info\/app\/(\d+)/i)?.[1];
-  if(appId){
-    toast('Fetching Steam data...',true);
-    try{
-      const r=await fetch('/api/steam-lookup?'+new URLSearchParams({url}));
-      const data=await r.json();
-      if(r.ok&&data&&!data.error){
-        const item={type:'basic',icon:'i-link',name:data.name||'Steam Game',url:data.steam_appid?'https://store.steampowered.com/app/'+data.steam_appid:url,appid:'',hidden:false};
-        if(tab==='proj'){item.type='steam';item.icon='i-star';item.appid=appId;item.img=data.header_image||data.capsule_image||''}
-        libData[tab].push(item);
-        renderLibList(tab,libData[tab]);input.value='';toast('Imported: '+data.name);return;
-      }
-    }catch(e){}
-  }
   const name=url.split('/').filter(Boolean).pop()?.replace(/[-_]/g,' ')||'New Item';
-  libData[tab].push({type:'basic',icon:'i-link',name:name.charAt(0).toUpperCase()+name.slice(1),url:url,appid:'',hidden:false});
+  libData[tab].push({type:'basic',name:name.charAt(0).toUpperCase()+name.slice(1),url:url,hidden:false});
   renderLibList(tab,libData[tab]);input.value='';toast('Added from URL');
 }
 async function fetchSteamGame(tab,i){
@@ -780,7 +767,6 @@ async function fetchSteamGame(tab,i){
     libData[tab][i].appid=appId;
     libData[tab][i].url=data.steam_appid?`https://store.steampowered.com/app/${data.steam_appid}`:(url||'');
     libData[tab][i].img=data.header_image||data.capsule_image||'';
-    if(tab==='proj'){libData[tab][i].icon='i-star';libData[tab][i].type='steam'}
     renderLibList(tab,libData[tab]);
     toast('Imported: '+data.name);
   }catch(e){toast('Steam fetch failed: '+e.message,false)}
