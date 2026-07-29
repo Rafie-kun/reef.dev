@@ -304,7 +304,9 @@ function loadBadges(){
 }
 
 function renderInventory(library){
-  const allItems=[...Array.isArray(library?.games)?library.games.filter(i=>!i.hidden):[],...Array.isArray(library?.music)?library.music.filter(i=>!i.hidden):[],...Array.isArray(library?.reading)?library.reading.filter(i=>!i.hidden):[]];
+  const d=loadData();
+  const gameItems=Array.isArray(d.games)?d.games.map(g=>({type:'steam',icon:'i-star',name:g.title||'Game',url:g.appid?'https://store.steampowered.com/app/'+g.appid:'',appid:g.appid||'',hidden:false})):[];
+  const allItems=[...gameItems,...Array.isArray(library?.music)?library.music.filter(i=>!i.hidden):[],...Array.isArray(library?.reading)?library.reading.filter(i=>!i.hidden):[]];
   const fallback={music:[{icon:'i-note',name:'Playlists'},{icon:'i-note',name:'Ambient'}],reading:[{icon:'i-book',name:'Docs'},{icon:'i-sign',name:'Notes'}]};
   const normalize=(key)=>Array.isArray(library?.[key])&&library[key].length?library[key].filter(i=>!i.hidden):fallback[key];
   ['all','games','music','reading'].forEach(id=>{
@@ -399,8 +401,10 @@ function renderLibraryAll(){
   const el=document.getElementById('tab-all');
   if(!el) return;
   const lib=JSON.parse(localStorage.getItem('reef-library')||'{}');
-  const buckets=['games','music','reading'];
-  const items=buckets.flatMap(k=>Array.isArray(lib?.[k])?lib[k].map(it=>({...it,_bucket:k})) : []);
+  const d=loadData();
+  const gameItems=Array.isArray(d.games)?d.games.map(g=>({type:'steam',icon:'i-star',name:g.title||'Game',url:g.appid?'https://store.steampowered.com/app/'+g.appid:'',appid:g.appid||'',hidden:false,_bucket:'games'})):[];
+  const buckets=['music','reading'];
+  const items=[...gameItems,...buckets.flatMap(k=>Array.isArray(lib?.[k])?lib[k].map(it=>({...it,_bucket:k})):[])];
   el.innerHTML=items.map((item,idx)=>renderLibraryItem(item,'all',idx)).join('');
 }
 
