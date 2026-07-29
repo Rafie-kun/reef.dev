@@ -344,7 +344,7 @@ function renderInventory(){
     el.className='tab-panel inv-grid';
     const d=loadData();
     const items=id==='music'?d.library?.music||[]:(d.library?.read||d.library?.reading||[]);
-    const list=Array.isArray(items)&&items.length?items.filter(i=>!i.hidden):(id==='music'?fallbackMusic:fallbackReading);
+    const list=Array.isArray(items)&&items.length?items.filter(i=>!i.hidden&&i.type!=='steam'):(id==='music'?fallbackMusic:fallbackReading);
     el.innerHTML=list.map((item,idx)=>renderLibraryItem(item,id,idx)).join('');
   });
 }
@@ -377,10 +377,9 @@ function openLibModal(item,key,idx){
   const c=document.getElementById('modal-content');
   const name=(item.name||'Item').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const href=item.url||'#';
-  const steamAppId=extractSteamAppId(item);
-  if((item.type||'basic')==='steam'||steamAppId){
+  if((item.type||'basic')==='steam'){
+    const appId=extractSteamAppId(item);
     c.innerHTML='<div class="m-body"><div style="text-align:center;padding:30px;font-family:VT323;font-size:22px;color:#888">Loading Steam details...</div></div>';
-    const appId=steamAppId||extractSteamAppId(item);
     (async()=>{
       try{
         const data=await fetchSteamApp(appId);
@@ -420,8 +419,8 @@ function renderLibraryItem(item,key,idx){
   const name=(item.name||'Item').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const href=item.url||'#';
   const itemJson=escAttr(JSON.stringify({...item,_key:key,_idx:idx}));
-  const steamAppId=extractSteamAppId(item);
-  if((item.type||'basic')==='steam' || steamAppId){
+  if((item.type||'basic')==='steam'){
+    const steamAppId=extractSteamAppId(item);
     const slotId=`steam-slot-${key}-${idx}`;
     queueSteamRender(slotId,item,steamAppId,name,itemJson);
     const imgHtml=item.img?`<div class="inv-img-wrap"><img src="${item.img}" alt="${name}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item ${icon}"></span></div>';
@@ -441,7 +440,7 @@ function extractSteamAppId(item){
   const direct=String(item?.appid||'').match(/\d+/)?.[0];
   if(direct) return direct;
   const url=String(item?.url||'');
-  const m=url.match(/store\.steampowered\.com\/app\/(\d+)/i) || url.match(/steamdb\.info\/app\/(\d+)/i) || url.match(/app\/(\d+)/i);
+  const m=url.match(/store\.steampowered\.com\/app\/(\d+)/i) || url.match(/steamdb\.info\/app\/(\d+)/i);
   return m?.[1]||'';
 }
 

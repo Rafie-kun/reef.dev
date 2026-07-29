@@ -743,15 +743,16 @@ let libData = {music:[],proj:[],read:[]};
 async function importFromUrl(tab){
   const input=document.getElementById('import-url-'+tab);if(!input)return;
   const url=input.value.trim();if(!url)return;
-  const appId=url.match(/store\.steampowered\.com\/app\/(\d+)/i)?.[1]||url.match(/steamdb\.info\/app\/(\d+)/i)?.[1]||url.match(/app\/(\d+)/i)?.[1];
+  const appId=url.match(/store\.steampowered\.com\/app\/(\d+)/i)?.[1]||url.match(/steamdb\.info\/app\/(\d+)/i)?.[1];
   if(appId){
     toast('Fetching Steam data...',true);
     try{
-      const proxy='https://api.allorigins.win/raw?url=';
-      const res=await fetch(proxy+encodeURIComponent('https://store.steampowered.com/api/appdetails?appids='+appId+'&l=en&cc=us'));
-      const j=await res.json();const data=j?.[appId]?.data;
-      if(data){
-        libData[tab].push({type:'steam',icon:'i-star',name:data.name||'Steam Game',url:data.steam_appid?'https://store.steampowered.com/app/'+data.steam_appid:url,appid:appId,img:data.header_image||data.capsule_image||'',hidden:false});
+      const r=await fetch('/api/steam-lookup?'+new URLSearchParams({url}));
+      const data=await r.json();
+      if(r.ok&&data&&!data.error){
+        const item={type:'basic',icon:'i-link',name:data.name||'Steam Game',url:data.steam_appid?'https://store.steampowered.com/app/'+data.steam_appid:url,appid:'',hidden:false};
+        if(tab==='proj'){item.type='steam';item.icon='i-star';item.appid=appId;item.img=data.header_image||data.capsule_image||''}
+        libData[tab].push(item);
         renderLibList(tab,libData[tab]);input.value='';toast('Imported: '+data.name);return;
       }
     }catch(e){}
@@ -763,20 +764,18 @@ async function importFromUrl(tab){
 async function fetchSteamGame(tab,i){
   const item=libData[tab][i];if(!item) return;
   const url=item.url||'';const aid=item.appid||'';
-  const appId=aid.match(/\d+/)?.[0]||url.match(/store\.steampowered\.com\/app\/(\d+)/i)?.[1]||url.match(/steamdb\.info\/app\/(\d+)/i)?.[1]||url.match(/app\/(\d+)/i)?.[1];
+  const appId=aid.match(/\d+/)?.[0]||url.match(/store\.steampowered\.com\/app\/(\d+)/i)?.[1]||url.match(/steamdb\.info\/app\/(\d+)/i)?.[1];
   if(!appId){toast('No Steam App ID found in URL or App ID field',false);return}
   toast('Fetching Steam data...',true);
   try{
-    const proxy='https://api.allorigins.win/raw?url=';
-    const res=await fetch(proxy+encodeURIComponent(`https://store.steampowered.com/api/appdetails?appids=${appId}&l=en&cc=us`));
-    const json=await res.json();const data=json?.[appId]?.data;
-    if(!data){toast('Steam data not found',false);return}
+    const r=await fetch('/api/steam-lookup?'+new URLSearchParams({url}));
+    const data=await r.json();
+    if(!r.ok||!data||data.error){toast('Steam data not found',false);return}
     libData[tab][i].name=data.name||item.name;
-    libData[tab][i].icon='i-star';
-    libData[tab][i].type='steam';
     libData[tab][i].appid=appId;
     libData[tab][i].url=data.steam_appid?`https://store.steampowered.com/app/${data.steam_appid}`:(url||'');
     libData[tab][i].img=data.header_image||data.capsule_image||'';
+    if(tab==='proj'){libData[tab][i].icon='i-star';libData[tab][i].type='steam'}
     renderLibList(tab,libData[tab]);
     toast('Imported: '+data.name);
   }catch(e){toast('Steam fetch failed: '+e.message,false)}
