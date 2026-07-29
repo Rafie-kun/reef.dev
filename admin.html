@@ -841,7 +841,7 @@ function renderGamesList(list) {
       <div style="display:flex;flex-direction:column;gap:4px;align-items:center;cursor:grab;color:#555;font-size:14px;user-select:none" onclick="moveGame(${i},-1)" title="Move up">▲</div>
       ${thumbHtml}
       <div class="card-content" style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;gap:8px;align-items:center">
-        <input class="mc-input" type="number" value="${g.appid||''}" oninput="gamesData[${i}].appid=this.value.replace(/\\D/g,'');gamesData[${i}].img='';this.closest('.card-item').querySelector('.game-thumb').src='https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+this.value+'/header.jpg'" placeholder="App ID" style="width:90px;font-size:14px;padding:4px 6px" min="1">
+        <input class="mc-input" type="number" value="${g.appid||''}" oninput="gamesData[${i}].appid=this.value.replace(/\\D/g,'');var t=this.closest('.card-item').querySelector('.game-thumb');if(t)t.src='https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+this.value+'/header.jpg'" onchange="var a=this.value.replace(/\\D/g,'');if(a){gamesData[${i}].img='';fetch('/api/steam-lookup?appid='+encodeURIComponent(a)).then(r=>r.json()).then(d=>{if(d&&d.header_image){gamesData[${i}].img=d.header_image;var t=this.closest('.card-item').querySelector('.game-thumb');if(t)t.src=d.header_image}}).catch(()=>{})}" placeholder="App ID" style="width:90px;font-size:14px;padding:4px 6px" min="1">
         <input class="mc-input" value="${escAttr(g.title||'')}" oninput="gamesData[${i}].title=this.value" placeholder="Game title" style="font-size:14px;padding:4px 6px">
         <select class="mc-input" onchange="gamesData[${i}].status=this.value" style="font-size:14px;padding:4px 6px;width:auto">
           ${statusOptions.map(s => `<option value="${s}"${g.status===s?' selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
@@ -883,10 +883,33 @@ function saveGames() {
   toast('Games saved!');
 }
 // Load games on panel init — called from loadAllPanels/loadAllPanelsAsync
-function loadGamesPanel(d){
+async function loadGamesPanel(d){
   const list=Array.isArray(d.games)?d.games:[];
   gamesData=JSON.parse(JSON.stringify(list));
   renderGamesList(gamesData);
+  await fetchMissingGameImgs();
+}
+async function fetchMissingGameImgs() {
+  const pending = gamesData.filter(g => !g.img && g.appid && String(g.appid).replace(/\D/g,''));
+  if (!pending.length) return;
+  let changed = false;
+  for (const g of pending) {
+    const appid = String(g.appid).replace(/\D/g,'');
+    try {
+      const r = await fetch('/api/steam-lookup?appid=' + encodeURIComponent(appid));
+      const data = await r.json();
+      if (r.ok && data && data.header_image) {
+        g.img = data.header_image;
+        changed = true;
+      }
+    } catch(e) {}
+  }
+  if (changed) {
+    renderGamesList(gamesData);
+    const d = loadData();
+    d.games = JSON.parse(JSON.stringify(gamesData));
+    saveData(d);
+  }
 }
 
 // Import a game from a Steam URL via the serverless API

@@ -220,6 +220,7 @@ function applySiteData(){
   const bookSocials=document.getElementById('book-socials');
   bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('');
   renderInventory();
+  fetchMissingGameImgs();
   renderBlogPosts(siteData.blog||JSON.parse(localStorage.getItem('reef-blog')||'[]'));
   renderAlbumItems(siteData.album||JSON.parse(localStorage.getItem('reef-album')||'[]'));
   setupCardCopy(name);
@@ -472,6 +473,28 @@ async function fetchSteamApp(appId){
 
 function loadData(){
   try{return JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{}}catch(e){return{}}
+}
+async function fetchMissingGameImgs() {
+  const d = loadData();
+  const games = Array.isArray(d.games) ? d.games : [];
+  const pending = games.filter(g => !g.img && g.appid && String(g.appid).replace(/\D/g,''));
+  if (!pending.length) return;
+  let changed = false;
+  for (const g of pending) {
+    const appid = String(g.appid).replace(/\D/g,'');
+    try {
+      const r = await fetch('/api/steam-lookup?appid=' + encodeURIComponent(appid));
+      const data = await r.json();
+      if (r.ok && data && data.header_image) {
+        g.img = data.header_image;
+        changed = true;
+      }
+    } catch(e) {}
+  }
+  if (changed) {
+    try { localStorage.setItem(DATA_KEY, JSON.stringify(d)); } catch(e) {}
+    renderInventory();
+  }
 }
 const steamPending=new Map();
 function queueSteamRender(slotId,item,appId,name,itemJson){
