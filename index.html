@@ -80,6 +80,18 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .inv-img-wrap{width:100%;height:72px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#1a1a1e;border-bottom:2px solid #555;flex-shrink:0}
 .inv-img-wrap img{width:100%;height:100%;object-fit:contain;image-rendering:auto}
 .inv-img-wrap-empty{background:#2a2a2e}.inv-item .i-price{color:var(--xp)}.inv-item .i-sub{color:#888}
+.games-scroll{max-height:340px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;padding:6px;background:#111}
+.game-card{background:#1a1a22;border:2px solid;border-color:#333 #555 #555 #333;display:flex;flex-direction:column;overflow:hidden;transition:transform .12s steps(1),border-color .12s steps(1)}
+.game-card:hover{transform:scale(1.04);border-color:var(--gold) #555 #555 var(--gold)}
+.game-card-img{width:100%;height:66px;object-fit:cover;display:block;background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px}
+.game-card-fail{display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;font-family:'Press Start 2P',monospace;background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px}
+.game-card-body{padding:6px 8px;display:flex;flex-direction:column;gap:3px;flex:1}
+.game-card-title{font-family:'Press Start 2P',monospace;font-size:6px;color:#ddd;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game-card-status{font-family:'Press Start 2P',monospace;font-size:5px;padding:2px 6px;display:inline-block;width:fit-content;border:1px solid}
+.game-card-status.s-playing{color:var(--xp);border-color:var(--xp)}
+.game-card-status.s-completed{color:var(--cyan);border-color:var(--cyan)}
+.game-card-status.s-backlog{color:var(--yellow);border-color:var(--yellow)}
+.game-card-hours{font-family:VT323;font-size:16px;color:#888}
 .badge-wall{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:rgba(0,0,0,.55);border:2px solid #777;flex-direction:column}.badge-link,.badge-embed{width:88px;min-width:88px;height:31px;display:block;border:1px solid #555;overflow:hidden;background:repeating-conic-gradient(#17102f 0 25%,#2c165b 0 50%) 0 0/8px 8px;image-rendering:pixelated;transition:transform .08s steps(1),filter .08s steps(1),border-color .08s steps(1)}.badge-link:hover,.badge-embed:hover{transform:translateY(-1px);filter:brightness(1.2);border-color:var(--gold)}.badge-link img,.badge-fallback,.badge-embed img{width:100%;height:100%;display:grid;place-items:center}.badge-link img,.badge-embed img{object-fit:cover;image-rendering:pixelated}.badge-embed a{width:88px;height:31px;display:block;overflow:hidden}.badge-embed a img{width:88px!important;height:31px!important;object-fit:cover!important;image-rendering:pixelated}.badge-fallback{font-family:'Press Start 2P',monospace;font-size:6px;color:#ccc;background:#111;text-shadow:1px 1px 0 #000}
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}.blog-post{background:rgba(0,0,0,.75);border:2px solid #555;padding:18px}.blog-post h3{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);margin-bottom:8px}.blog-post .date{font-family:'Press Start 2P',monospace;font-size:5px;color:#999;margin-bottom:10px}.blog-post .blog-img{max-width:100%;height:auto;border:2px solid var(--stone-dark);margin-bottom:10px;display:block}.blog-post p{font-size:20px;line-height:1.5}
 .album-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.album-item{background:rgba(0,0,0,.75);border:2px solid #555;padding:8px;display:block;text-decoration:none}.album-item img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid #333}.album-item .cap{font-family:'Press Start 2P',monospace;font-size:5px;color:#bbb;margin-top:6px;text-align:center}
@@ -253,11 +265,12 @@ function renderTab(id){
   const el=document.getElementById('tab-'+id);
   if(!el) return;
   if(id==='all'){renderLibraryAll();return}
+  if(id==='games'){renderGamesTab(el);return}
   const lib=JSON.parse(localStorage.getItem('reef-library')||'{}');
   const items=Array.isArray(lib?.[id])?lib[id].filter(i=>!i.hidden):[];
   el.innerHTML=items.map((item,idx)=>renderLibraryItem(item,id,idx)).join('');
 }
-document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{playClick('tab');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(p=>p.hidden=true);tab.classList.add('active');document.getElementById('tab-'+tab.dataset.tab).hidden=false;renderTab(tab.dataset.tab);});
+document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{playClick('tab');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(p=>p.hidden=true);tab.classList.add('active');const id=tab.dataset.tab;document.getElementById('tab-'+id).hidden=false;renderTab(id);});
 
 function navUpdate(){const current=sections.find(s=>{const r=s.getBoundingClientRect();return r.top<=innerHeight*.35&&r.bottom>=innerHeight*.35});if(current)slots.forEach(a=>a.classList.toggle('active',a.hash==='#'+current.id))}
 addEventListener('scroll',navUpdate,{passive:true});addEventListener('resize',navUpdate);navUpdate();
@@ -298,8 +311,30 @@ function renderInventory(library){
     const el=document.getElementById('tab-'+id);
     if(!el) return;
     if(id==='all'){el.innerHTML=allItems.map((item,idx)=>renderLibraryItem(item,'all',idx)).join('');return}
+    if(id==='games'){renderGamesTab(el);return}
     el.innerHTML=normalize(id).map((item,idx)=>renderLibraryItem(item,id,idx)).join('');
   });
+}
+
+// Render games tab — cover art cards from Steam App ID
+function renderGamesTab(el){
+  const d=loadData();
+  const games=Array.isArray(d.games)&&d.games.length?d.games:[];
+  if(!games.length){
+    el.innerHTML='<div style="color:#555;padding:20px;text-align:center;font-family:VT323;font-size:18px">No games yet. Add some in the admin panel.</div>';
+    return;
+  }
+  el.innerHTML='<div class="games-scroll">'+games.map(g=>{
+    const appId=String(g.appid||'').replace(/\D/g,'');
+    const title=esc(g.title||'Game #'+appId);
+    const status=g.status||'playing';
+    const hours=parseInt(g.hours)||0;
+    const imgSrc=appId?'https://cdn.cloudflare.steamstatic.com/steam/apps/'+appId+'/header.jpg':'';
+    const fbSrc=appId?'https://cdn.cloudflare.steamstatic.com/steam/apps/'+appId+'/library_600x900.jpg':'';
+    const statusLabel={playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||'▶ Playing';
+    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" loading="lazy" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=game-card-img game-card-fail>☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">`:'<div class="game-card-img game-card-fail">☐</div>';
+    return `<div class="game-card">${imgHtml}<div class="game-card-body"><span class="game-card-title">${title}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours">⏱ ${hours}h</span></div></div>`;
+  }).join('')+'</div>';
 }
 
 function openLibModal(item,key,idx){
