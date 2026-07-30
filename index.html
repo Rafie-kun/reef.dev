@@ -683,9 +683,9 @@ function esc(s){return(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'
 function getActIcon(assets,appId){
   if(!assets||!assets.large_image) return null;
   let img=assets.large_image;
+  if(img.startsWith('http://')||img.startsWith('https://')) return img;
   if(img.startsWith('mp:external/')) return 'https://media.discordapp.net/external/'+img.slice(12);
   if(img.startsWith('spotify:')) return null;
-  // Some activities include "app_id/hash" as large_image
   const slashIdx=img.indexOf('/');
   if(slashIdx!==-1){
     if(!appId) appId=img.slice(0,slashIdx);
@@ -726,7 +726,7 @@ function applyDiscord(d){
   if(!acts.length){c.innerHTML='<div class="act-empty">No activity</div>';lastDiscordData=d;return}
   const now=Date.now();
   c.innerHTML=acts.map(a=>{
-    const icon=a.icon?`<img class="act-icon" src="${a.icon}" width="48" height="48" onerror="this.outerHTML='<div class=act-icon-fallback><span class=&quot;mc-item i-game&quot; style=&quot;width:28px;height:28px;filter:drop-shadow(0 0 3px rgba(126,255,21,.6))&quot;></span></div>'">`:'<div class="act-icon-fallback"><span class="mc-item i-game" style="width:28px;height:28px;filter:drop-shadow(0 0 3px rgba(126,255,21,.6))"></span></div>';
+    const icon=a.icon?`<img class="act-icon" src="${a.icon}" width="48" height="48" onerror="this.remove()">`:'';
     const pct=a.start&&a.end?Math.min(100,(now-a.start)/(a.end-a.start)*100):-1;
     const bar=pct>=0?`<div class="act-bar-wrap"><div class="act-bar" style="width:${pct}%"></div></div>`:'';
     const time=a.start?`<div class="act-time">${fmtElapsed(a.start,a.end)}</div>`:'';
