@@ -677,7 +677,7 @@ function loadProjects(){
   }catch(e){}
 }
 
-function fmtTime(ms){const s=Math.floor(ms/1000);if(s>=3600){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h+'h '+m+'m'}return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function fmtTime(ms){const s=Math.floor(ms/1000);if(s>=3600){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return h+'h '+m+'m '+sec+'s'}return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function fmtElapsed(start,end){const now=Date.now(),el=now-start;if(end){const t=end-start;return fmtTime(el)+' / '+fmtTime(t)}return fmtTime(el)}
 function esc(s){return(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
 const appIconCache={};
