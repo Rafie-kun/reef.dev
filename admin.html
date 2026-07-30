@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>REEF — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180x180.png">
 <style>
 :root {
   --stone:#8B8B8B; --stone-light:#C6C6C6; --stone-dark:#555;
@@ -81,7 +84,7 @@ body{font-family:'VT323',monospace;font-size:18px;color:var(--text);background:v
 }
 .nav-item:hover{background:#2a2a2a;color:var(--yellow);}
 .nav-item.active{background:#252525;border-left-color:var(--xp);color:var(--yellow);}
-.nav-item .ni{margin-right:8px;font-size:14px;}
+.nav-item .ni{margin-right:8px;display:flex;align-items:center}.nav-item .ni .mc-item{width:18px;height:18px}
 .sidebar-logout{
   margin-top:auto;padding:14px 18px;border-top:2px solid var(--stone-dark);
   font-family:'Press Start 2P',monospace;font-size:6px;color:var(--red);
@@ -209,6 +212,48 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
   .preview-bar a[target]{display:none}
   #main{padding:16px}
 }
+.mc-item{width:24px;height:24px;display:block;position:relative;image-rendering:pixelated;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.45))}
+.mc-item:before,.mc-item:after{content:"";position:absolute;inset:0}
+.i-grass:before{background:linear-gradient(#7ecb48 0 28%,#8b623e 28%);box-shadow:inset 0 5px 0 #a2dd6c,inset 0 -5px 0 #65422c,inset -4px 0 0 rgba(0,0,0,.18)}
+.i-book:before{background:#f4e2b7;box-shadow:inset 0 0 0 3px #78431e,inset 5px 0 0 #a2662f,inset -3px -3px 0 rgba(0,0,0,.18)}.i-book:after{inset:7px 5px 6px 9px;background:repeating-linear-gradient(#6b4628 0 2px,transparent 2px 5px)}
+.i-sword:before{width:8px;height:20px;left:9px;top:0;background:#d7d7d7;box-shadow:3px 3px 0 #777;transform:rotate(45deg)}.i-sword:after{width:18px;height:5px;left:3px;top:15px;background:#6b4522;box-shadow:0 5px 0 #3a2412}
+.i-chest:before{top:5px;height:16px;background:#a56f2b;box-shadow:inset 0 4px 0 #c79243,inset 0 -5px 0 #654019,inset 10px 0 0 #6b451d}.i-chest:after{inset:10px 8px 7px;background:#d3b461}
+.i-players:before{width:10px;height:10px;left:2px;top:2px;background:#d6b08a;box-shadow:12px 2px 0 #c69570,0 11px 0 #4e8c46,12px 12px 0 #457cb4}
+.i-sign:before{inset:3px 2px 8px;background:#b9853d;box-shadow:inset 0 3px 0 #d3a15a,inset 0 -3px 0 #6b431b}.i-sign:after{width:5px;height:8px;left:10px;bottom:1px;background:#6b431b}
+.i-pick:before{width:20px;height:7px;left:2px;top:2px;background:#a4aaad;box-shadow:inset 0 -3px 0 #5b6062}.i-pick:after{width:5px;height:18px;left:10px;top:6px;background:#80522b;transform:rotate(38deg)}
+.i-note:before{inset:3px 6px 6px 8px;background:#8d5cc2;box-shadow:inset 0 -4px 0 #5b3488}.i-note:after{width:12px;height:5px;left:7px;bottom:3px;background:#2f1f4d}
+.i-map:before{inset:2px;background:#d0bc83;box-shadow:inset 0 0 0 3px #6d4c25}.i-map:after{inset:7px;background:linear-gradient(90deg,#578b48 0 40%,#2f68b7 40% 56%,#7aa452 56%)}
+.i-star:before{left:9px;top:1px;width:6px;height:22px;background:var(--gold);box-shadow:-7px 7px 0 -1px var(--gold),7px 7px 0 -1px var(--gold)}.i-star:after{left:4px;top:9px;width:16px;height:6px;background:var(--gold)}
+.i-fork:before{left:5px;top:3px;width:4px;height:18px;background:#cfcfcf;box-shadow:9px 0 0 #cfcfcf}.i-fork:after{left:5px;top:12px;width:13px;height:4px;background:#cfcfcf}
+.i-sound:before{left:6px;top:7px;width:10px;height:10px;background:#eee;clip-path:polygon(0 33%,38% 33%,100% 0,100% 100%,38% 67%,0 67%)}.i-sound:after{left:15px;top:9px;width:6px;height:6px;border:2px solid #eee;border-radius:50%;border-left-color:transparent;border-bottom-color:transparent}
+.i-mute:before{left:6px;top:7px;width:10px;height:10px;background:#666;clip-path:polygon(0 33%,38% 33%,100% 0,100% 100%,38% 67%,0 67%)}.i-mute:after{left:12px;top:4px;width:12px;height:12px;border:2px solid #f55;border-radius:50%;border-left-color:transparent;border-bottom-color:transparent;transform:rotate(45deg)}
+.i-close:before,.i-close:after{left:6px;top:10px;width:12px;height:3px;background:#888;border-radius:1px}.i-close:before{transform:rotate(45deg)}.i-close:after{transform:rotate(-45deg)}
+.i-mail:before{inset:4px 3px 7px;background:#d4a86a;border-radius:2px;box-shadow:inset 0 2px 0 #e8c48a}.i-mail:after{left:4px;top:8px;width:16px;height:10px;border:2px solid #b08040;border-radius:2px;background:transparent;clip-path:polygon(0 0,100% 0,50% 60%)}
+.i-chat:before{inset:4px 3px 7px;background:#7289da;border-radius:3px 3px 3px 0;box-shadow:inset 0 2px 0 #8ea1e0}.i-chat:after{left:6px;bottom:4px;width:8px;height:8px;background:#7289da;clip-path:polygon(0 0,100% 0,0 100%)}
+.i-code:before{left:2px;top:6px;width:8px;height:12px;border:2px solid #d0d0d0;border-radius:3px;background:#222}.i-code:after{left:8px;top:5px;width:6px;height:6px;border:2px solid #f0c040;border-radius:50%;border-right-color:transparent;border-bottom-color:transparent}
+.i-hammer:before{left:8px;top:3px;width:15px;height:10px;background:#a08060;border-radius:2px 2px 0 0;transform:rotate(25deg);transform-origin:bottom right}.i-hammer:after{left:9px;top:12px;width:9px;height:6px;background:#6b4528;border-radius:0 0 2px 2px;transform:rotate(25deg);transform-origin:top right}
+.i-play:before{left:8px;top:5px;width:0;height:0;border:7px solid transparent;border-left:10px solid var(--xp);border-right:0}.i-play:after{display:none}
+.i-done:before{left:5px;top:8px;width:14px;height:8px;border:3px solid var(--cyan);border-top:0;border-left:0;transform:rotate(45deg);border-radius:2px}.i-done:after{display:none}
+.i-circle:before{left:4px;top:4px;width:16px;height:16px;border:3px solid var(--yellow);border-radius:50%;background:transparent}.i-circle:after{display:none}
+.i-clock:before{left:4px;top:4px;width:16px;height:16px;border:2px solid #999;border-radius:50%;background:transparent}.i-clock:after{left:11px;top:6px;width:5px;height:8px;border:2px solid #999;border-top:0;border-radius:0 0 2px 2px;transform:rotate(35deg);transform-origin:top}
+.i-game:before{left:4px;top:5px;width:16px;height:14px;background:#555;border-radius:4px;box-shadow:inset 0 -3px 0 #333,inset 3px 0 0 #444}.i-game:after{left:7px;top:9px;width:4px;height:4px;border-radius:50%;background:var(--xp);box-shadow:6px 0 0 var(--xp)}
+.i-music-note:before{left:11px;top:4px;width:4px;height:14px;background:#c855dc;border-radius:0 2px 0 0;transform:rotate(12deg)}.i-music-note:after{left:6px;top:12px;width:7px;height:7px;background:#c855dc;border-radius:50%;box-shadow:0 0 0 2px #60287a}
+.i-book2:before{inset:3px 5px 4px 3px;background:#e8d4a0;border-radius:1px 3px 3px 1px;box-shadow:inset 2px 0 0 #c4a870,inset -1px 0 0 #a08050}.i-book2:after{left:6px;top:10px;width:10px;height:2px;background:#a08050;box-shadow:0 3px 0 #a08050,0 6px 0 #a08050}
+.i-screen:before{inset:3px 2px 8px;background:#2a2a3e;border-radius:2px;border:2px solid #666}.i-screen:after{left:9px;bottom:4px;width:6px;height:4px;background:#666;border-radius:0 0 2px 2px;box-shadow:12px 0 0 #666}
+.i-cart:before{left:3px;top:6px;width:18px;height:12px;background:#6b8cae;border-radius:3px 3px 2px 2px;box-shadow:inset 0 -3px 0 #4a6a8a}.i-cart:after{left:5px;top:2px;width:14px;height:4px;border:2px solid #6b8cae;border-bottom:0;border-radius:2px 2px 0 0}
+.i-chart:before{left:4px;top:5px;width:16px;height:14px;background:#2a3a2a;border:2px solid #5a8a5a;border-radius:2px}.i-chart:after{left:7px;top:17px;width:3px;height:8px;background:var(--xp);box-shadow:5px 0 0 var(--gold),10px 0 0 var(--cyan)}
+.i-link:before{left:8px;top:6px;width:12px;height:5px;border:2px solid #8ab;border-bottom:0;border-radius:3px 3px 0 0;transform:rotate(35deg)}.i-link:after{left:5px;top:12px;width:12px;height:5px;border:2px solid #8ab;border-top:0;border-radius:0 0 3px 3px;transform:rotate(35deg)}
+.i-fail:before{inset:0;background:repeating-conic-gradient(#1a1a2e 0 25%,#0d0d1a 0 50%) 0 0/8px 8px}.i-fail:after{left:7px;top:7px;font:10px/1 monospace;content:"?";color:#555;text-align:center}
+.i-bullet:before{left:4px;top:8px;width:8px;height:8px;background:var(--cyan);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}.i-bullet:after{display:none}
+.i-arrow:before{left:4px;top:8px;width:16px;height:3px;background:#999;border-radius:2px}.i-arrow:after{left:16px;top:6px;width:0;height:0;border:5px solid transparent;border-left:6px solid #999;border-right:0}
+.i-save:before{inset:3px 4px 5px;background:#4682b4;border-radius:2px;box-shadow:inset 0 -10px 0 #2a5a7a,inset 4px 0 0 #357,inset -4px 0 0 #357}.i-save:after{left:7px;top:6px;width:10px;height:6px;background:#eee;border-radius:0 0 1px 1px}
+.i-door:before{inset:2px 5px 3px;background:#6b4522;border:2px solid #4a2e14;border-radius:2px;box-shadow:inset -5px 0 0 rgba(0,0,0,.2)}.i-door:after{left:8px;top:9px;width:4px;height:6px;background:#d4a86a;border-radius:1px}
+.i-pen:before{left:11px;top:5px;width:3px;height:14px;background:#ffd700;transform:rotate(-30deg);border-radius:0 2px 2px 0}.i-pen:after{left:9px;top:5px;width:7px;height:5px;background:#b8860b;clip-path:polygon(50% 0,100% 100%,0 100%);transform:rotate(-30deg)}
+.i-image:before{inset:3px;background:#1a1a2e;border:2px solid #6b4522;box-shadow:inset 0 0 0 3px #8b623e}.i-image:after{left:6px;top:8px;width:12px;height:8px;background:linear-gradient(135deg,#5a8a5a 0 40%,#2f68b7 40% 70%,#7aa452 70%)}
+.i-palette:before{left:4px;top:4px;width:16px;height:14px;background:#ddd;border-radius:50% 50% 50% 50%/60% 60% 40% 40%}.i-palette:after{left:7px;top:7px;width:4px;height:4px;border-radius:50%;background:#55f;box-shadow:5px 0 0 #f55,-3px 5px 0 #5f5,2px -2px 0 #ff5}
+.i-eye:before{left:3px;top:7px;width:18px;height:10px;border:2px solid #888;border-radius:50%;background:transparent}.i-eye:after{left:9px;top:11px;width:6px;height:6px;border:2px solid #888;border-radius:50%}
+.i-hamburger:before{left:4px;top:7px;width:16px;height:3px;background:#aaa;border-radius:1px;box-shadow:0 6px 0 #aaa,0 12px 0 #aaa}.i-hamburger:after{display:none}
+.mc-item.inline{display:inline-block;vertical-align:middle;width:16px;height:16px;margin-right:3px;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.45))}
 </style>
 </head>
 <body>
@@ -220,11 +265,11 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-title">⚙ REEF ADMIN</div>
+    <div class="login-title"><span class="mc-item i-hammer inline"></span> REEF ADMIN</div>
     <div class="login-sub">Authorized personnel only.</div>
     <input class="mc-input" type="password" id="pw-input" placeholder="Password..." autocomplete="current-password">
-    <div id="login-error">❌ Wrong password. Try again.</div>
-    <button class="mc-btn" onclick="doLogin()">▶ Enter</button>
+    <div id="login-error"><span class="mc-item i-close inline"></span> Wrong password. Try again.</div>
+    <button class="mc-btn" onclick="doLogin()"><span class="mc-item i-play inline"></span> Enter</button>
   </div>
 </div>
 
@@ -232,36 +277,36 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 <div id="dashboard">
 
   <nav id="sidebar">
-    <div class="sidebar-logo">⚙ REEF ADMIN<span>CMS Dashboard</span></div>
-    <div class="nav-item active" onclick="showPanel('bio',this)"><span class="ni">📖</span>Bio &amp; About</div>
-    <div class="nav-item" onclick="showPanel('socials',this)"><span class="ni">🔗</span>Social Links</div>
-    <div class="nav-item" onclick="showPanel('library',this)"><span class="ni">📦</span>Library</div>
-    <div class="nav-item" onclick="showPanel('friends',this)"><span class="ni">👾</span>Friends / Badges</div>
-    <div class="nav-item" onclick="showPanel('projects',this)"><span class="ni">⚔️</span>Projects</div>
-    <div class="nav-item" onclick="showPanel('blog',this)"><span class="ni">📝</span>Blog</div>
-    <div class="nav-item" onclick="showPanel('album',this)"><span class="ni">🖼️</span>Album</div>
-    <div class="nav-item" onclick="showPanel('phrases',this)"><span class="ni">💬</span>Easter Eggs</div>
-    <div class="nav-item" onclick="showPanel('appearance',this)"><span class="ni">🎨</span>Appearance</div>
-    <div class="nav-item" onclick="showPanel('settings',this)"><span class="ni">⚙</span>Settings</div>
-    <div class="sidebar-logout" onclick="doLogout()">🚪 Logout</div>
+    <div class="sidebar-logo"><span class="mc-item i-hammer inline"></span> REEF ADMIN<span>CMS Dashboard</span></div>
+    <div class="nav-item active" onclick="showPanel('bio',this)"><span class="ni"><span class="mc-item i-book2"></span></span>Bio &amp; About</div>
+    <div class="nav-item" onclick="showPanel('socials',this)"><span class="ni"><span class="mc-item i-link"></span></span>Social Links</div>
+    <div class="nav-item" onclick="showPanel('library',this)"><span class="ni"><span class="mc-item i-cart"></span></span>Library</div>
+    <div class="nav-item" onclick="showPanel('friends',this)"><span class="ni"><span class="mc-item i-game"></span></span>Friends / Badges</div>
+    <div class="nav-item" onclick="showPanel('projects',this)"><span class="ni"><span class="mc-item i-hammer"></span></span>Projects</div>
+    <div class="nav-item" onclick="showPanel('blog',this)"><span class="ni"><span class="mc-item i-pen"></span></span>Blog</div>
+    <div class="nav-item" onclick="showPanel('album',this)"><span class="ni"><span class="mc-item i-image"></span></span>Album</div>
+    <div class="nav-item" onclick="showPanel('phrases',this)"><span class="ni"><span class="mc-item i-chat"></span></span>Easter Eggs</div>
+    <div class="nav-item" onclick="showPanel('appearance',this)"><span class="ni"><span class="mc-item i-palette"></span></span>Appearance</div>
+    <div class="nav-item" onclick="showPanel('settings',this)"><span class="ni"><span class="mc-item i-hammer"></span></span>Settings</div>
+    <div class="sidebar-logout" onclick="doLogout()"><span class="mc-item i-door inline"></span> Logout</div>
   </nav>
 
   <main id="main">
 
     <div class="mobile-nav-bar" id="mobile-nav-bar">
-      <button class="mc-btn" id="mobile-nav-toggle" type="button" style="width:auto;padding:7px 14px;font-size:6px">☰ Panels</button>
-      <a href="/" target="_blank" class="mc-btn" style="margin-left:auto;width:auto;padding:7px 14px;font-size:6px;">👁 Preview</a>
+      <button class="mc-btn" id="mobile-nav-toggle" type="button" style="width:auto;padding:7px 14px;font-size:6px"><span class="mc-item i-hamburger inline"></span> Panels</button>
+      <a href="/" target="_blank" class="mc-btn" style="margin-left:auto;width:auto;padding:7px 14px;font-size:6px;"><span class="mc-item i-eye inline"></span> Preview</a>
     </div>
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileNav()"></div>
 
     <div class="preview-bar">
-      💾 Data persists to server via API.
-      <a href="/" target="_blank" class="mc-btn" style="margin-left:auto;width:auto;padding:7px 14px;font-size:6px;">👁 Preview Site</a>
+      <span class="mc-item i-save inline"></span> Data persists to server via API.
+      <a href="/" target="_blank" class="mc-btn" style="margin-left:auto;width:auto;padding:7px 14px;font-size:6px;"><span class="mc-item i-eye inline"></span> Preview Site</a>
     </div>
 
     <!-- BIO -->
     <div id="panel-bio" class="panel">
-      <div class="panel-title">📖 Bio &amp; About</div>
+      <div class="panel-title"><span class="mc-item i-book2 inline"></span> Bio &amp; About</div>
       <div class="field">
         <label>Display Name</label>
         <input class="mc-input" id="cfg-name" type="text" placeholder="Reef">
@@ -275,60 +320,60 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <input class="mc-input" id="cfg-email" type="email" placeholder="reef@example.com">
       </div>
       <div class="save-bar">
-        <button class="mc-btn green" onclick="saveBio()">💾 Save Bio</button>
+        <button class="mc-btn green" onclick="saveBio()"><span class="mc-item i-save inline"></span> Save Bio</button>
         <span class="save-msg" id="bio-msg"></span>
       </div>
     </div>
 
     <!-- SOCIALS -->
     <div id="panel-socials" class="panel" style="display:none">
-      <div class="panel-title">🔗 Social Links</div>
+      <div class="panel-title"><span class="mc-item i-link inline"></span> Social Links</div>
       <div class="field"><label>Discord User ID (for link)</label><input class="mc-input" id="cfg-discord" value="744808879036170272"></div>
       <div class="field"><label>GitHub Username</label><input class="mc-input" id="cfg-github" placeholder="Rafie-kun"></div>
       <div class="field"><label>Twitter / X URL</label><input class="mc-input" id="cfg-twitter" placeholder="https://twitter.com/..."></div>
       <div class="field"><label>Instagram URL</label><input class="mc-input" id="cfg-instagram" placeholder="https://instagram.com/..."></div>
       <div class="field"><label>Spotify Profile URL</label><input class="mc-input" id="cfg-spotify" placeholder="https://open.spotify.com/user/..."></div>
       <div style="margin-bottom:14px">
-        <div class="panel-title" style="font-size:7px;margin-top:10px">Extra Socials</div>
+        <div class="panel-title" style="font-size:7px;margin-top:10px"><span class="mc-item i-link inline"></span> Extra Socials</div>
         <div class="card-list" id="extra-socials-list"></div>
         <button class="mc-btn" onclick="addExtraSocial()" style="width:auto;padding:8px 16px">+ Add Social</button>
       </div>
       <div class="save-bar">
-        <button class="mc-btn green" onclick="saveSocials()">💾 Save Socials</button>
+        <button class="mc-btn green" onclick="saveSocials()"><span class="mc-item i-save inline"></span> Save Socials</button>
         <span class="save-msg" id="socials-msg"></span>
       </div>
     </div>
 
     <!-- LIBRARY -->
     <div id="panel-library" class="panel" style="display:none">
-      <div class="panel-title">📦 Library Items</div>
+      <div class="panel-title"><span class="mc-item i-cart inline"></span> Library Items</div>
       <div class="tab-bar">
-        <div class="tab-btn active" onclick="libTab(this,'lib-games')">🎮 Games</div>
-        <div class="tab-btn" onclick="libTab(this,'lib-music')">🎵 Music</div>
-        <div class="tab-btn" onclick="libTab(this,'lib-proj')">⚔️ Projects</div>
-        <div class="tab-btn" onclick="libTab(this,'lib-read')">📚 Reading</div>
+        <div class="tab-btn active" onclick="libTab(this,'lib-games')"><span class="mc-item i-game inline"></span> Games</div>
+        <div class="tab-btn" onclick="libTab(this,'lib-music')"><span class="mc-item i-music-note inline"></span> Music</div>
+        <div class="tab-btn" onclick="libTab(this,'lib-proj')"><span class="mc-item i-hammer inline"></span> Projects</div>
+        <div class="tab-btn" onclick="libTab(this,'lib-read')"><span class="mc-item i-book2 inline"></span> Reading</div>
       </div>
       <div id="lib-games" class="tab-content active">
-  <div class="import-bar"><input class="mc-input" id="import-url-games" placeholder="Paste Steam URL to auto-import..." style="flex:1"><button class="mc-btn" onclick="importGameUrl()" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div>
+  <div class="import-bar"><input class="mc-input" id="import-url-games" placeholder="Paste Steam URL to auto-import..." style="flex:1"><button class="mc-btn" onclick="importGameUrl()" style="width:auto;padding:6px 12px;font-size:7px"><span class="mc-item i-arrow inline"></span> Import</button></div>
   <div class="card-list" id="games-list"></div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
     <button class="mc-btn" onclick="addGame()" style="width:auto;padding:8px 16px">+ Add Game</button>
-    <button class="mc-btn green" onclick="saveGames()" style="width:auto;padding:8px 22px">💾 Save Games</button>
+    <button class="mc-btn green" onclick="saveGames()" style="width:auto;padding:8px 22px"><span class="mc-item i-save inline"></span> Save Games</button>
     <span class="save-msg" id="games-msg"></span>
   </div>
 </div>
-      <div id="lib-music" class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-music" placeholder="Paste song URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('music')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
-      <div id="lib-proj"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-proj" placeholder="Paste project URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('proj')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
-      <div id="lib-read"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-read" placeholder="Paste article URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('read')" style="width:auto;padding:6px 12px;font-size:7px">⬇ Import</button></div><div class="card-list" id="lib-read-list"></div><button class="mc-btn" onclick="addLibItem('read')" style="width:auto;padding:8px 14px">+ Add Item</button></div>
+      <div id="lib-music" class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-music" placeholder="Paste song URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('music')" style="width:auto;padding:6px 12px;font-size:7px"><span class="mc-item i-arrow inline"></span> Import</button></div><div class="card-list" id="lib-music-list"></div><button class="mc-btn" onclick="addLibItem('music')" style="width:auto;padding:8px 14px">+ Add Music</button></div>
+      <div id="lib-proj"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-proj" placeholder="Paste project URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('proj')" style="width:auto;padding:6px 12px;font-size:7px"><span class="mc-item i-arrow inline"></span> Import</button></div><div class="card-list" id="lib-proj-list"></div><button class="mc-btn" onclick="addLibItem('proj')" style="width:auto;padding:8px 14px">+ Add Project</button></div>
+      <div id="lib-read"  class="tab-content"><div class="import-bar"><input class="mc-input" id="import-url-read" placeholder="Paste article URL to import..." style="flex:1"><button class="mc-btn" onclick="importFromUrl('read')" style="width:auto;padding:6px 12px;font-size:7px"><span class="mc-item i-arrow inline"></span> Import</button></div><div class="card-list" id="lib-read-list"></div><button class="mc-btn" onclick="addLibItem('read')" style="width:auto;padding:8px 14px">+ Add Item</button></div>
       <div class="save-bar" style="margin-top:20px">
-        <button class="mc-btn green" onclick="saveLibrary()">💾 Save Library</button>
+        <button class="mc-btn green" onclick="saveLibrary()"><span class="mc-item i-save inline"></span> Save Library</button>
         <span class="save-msg" id="lib-msg"></span>
       </div>
     </div>
 
     <!-- FRIENDS -->
     <div id="panel-friends" class="panel" style="display:none">
-      <div class="panel-title">👾 Friends &amp; 88x31 Badges</div>
+      <div class="panel-title"><span class="mc-item i-game inline"></span> Friends &amp; 88x31 Badges</div>
 
       <div style="background:#1a1a2a;border:2px solid #2a2a4a;padding:16px;margin-bottom:20px;border-radius:0">
         <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
@@ -352,45 +397,45 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
       <div class="badge-grid" id="badge-grid"></div>
       <button class="mc-btn" onclick="addBadge()" style="width:auto;padding:8px 16px">+ Add Badge</button>
       <div class="save-bar" style="margin-top:20px">
-        <button class="mc-btn green" onclick="saveFriends()">💾 Save Badges</button>
+        <button class="mc-btn green" onclick="saveFriends()"><span class="mc-item i-save inline"></span> Save Badges</button>
         <span class="save-msg" id="friends-msg"></span>
       </div>
     </div>
 
     <!-- PROJECTS -->
     <div id="panel-projects" class="panel" style="display:none">
-      <div class="panel-title">⚔️ Projects</div>
+      <div class="panel-title"><span class="mc-item i-hammer inline"></span> Projects</div>
       <div class="card-list" id="projects-list"></div>
       <button class="mc-btn" onclick="addProject()" style="width:auto;padding:8px 14px">+ Add Project</button>
       <div class="save-bar" style="margin-top:18px">
-        <button class="mc-btn green" onclick="saveProjects()">💾 Save Projects</button>
+        <button class="mc-btn green" onclick="saveProjects()"><span class="mc-item i-save inline"></span> Save Projects</button>
         <span class="save-msg" id="proj-msg"></span>
       </div>
     </div>
 
     <div id="panel-blog" class="panel" style="display:none">
-      <div class="panel-title">📝 Blog / Reading</div>
+      <div class="panel-title"><span class="mc-item i-pen inline"></span> Blog / Reading</div>
       <div class="card-list" id="blog-list"></div>
       <button class="mc-btn" onclick="addBlogPost()" style="width:auto;padding:8px 14px">+ Add Post</button>
       <div class="save-bar" style="margin-top:18px">
-        <button class="mc-btn green" onclick="saveBlog()">💾 Save Blog</button>
+        <button class="mc-btn green" onclick="saveBlog()"><span class="mc-item i-save inline"></span> Save Blog</button>
         <span class="save-msg" id="blog-msg"></span>
       </div>
     </div>
 
     <div id="panel-album" class="panel" style="display:none">
-      <div class="panel-title">🖼️ Album</div>
+      <div class="panel-title"><span class="mc-item i-image inline"></span> Album</div>
       <div class="card-list" id="album-list"></div>
       <button class="mc-btn" onclick="addAlbumItem()" style="width:auto;padding:8px 14px">+ Add Image</button>
       <div class="save-bar" style="margin-top:18px">
-        <button class="mc-btn green" onclick="saveAlbum()">💾 Save Album</button>
+        <button class="mc-btn green" onclick="saveAlbum()"><span class="mc-item i-save inline"></span> Save Album</button>
         <span class="save-msg" id="album-msg"></span>
       </div>
     </div>
 
     <!-- PHRASES -->
     <div id="panel-phrases" class="panel" style="display:none">
-      <div class="panel-title">💬 "Also try..." Easter Egg Phrases</div>
+      <div class="panel-title"><span class="mc-item i-chat inline"></span> "Also try..." Easter Egg Phrases</div>
       <div class="phrase-list" id="phrase-list"></div>
       <div class="field" style="margin-top:10px">
         <label>Add new phrase</label>
@@ -400,14 +445,14 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         </div>
       </div>
       <div class="save-bar">
-        <button class="mc-btn green" onclick="savePhrases()">💾 Save Phrases</button>
+        <button class="mc-btn green" onclick="savePhrases()"><span class="mc-item i-save inline"></span> Save Phrases</button>
         <span class="save-msg" id="phrases-msg"></span>
       </div>
     </div>
 
     <!-- APPEARANCE -->
     <div id="panel-appearance" class="panel" style="display:none">
-      <div class="panel-title">🎨 Appearance</div>
+      <div class="panel-title"><span class="mc-item i-palette inline"></span> Appearance</div>
       <div class="field">
         <label>Background Image URL (overlays panorama at 35% opacity)</label>
         <input class="mc-input" id="cfg-bg" placeholder="https://... (leave blank for default panorama)">
@@ -419,14 +464,14 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <small style="color:#666;font-family:'VT323';font-size:16px;">This image appears as your 88x31 button on the Friends section.</small>
       </div>
       <div class="save-bar">
-        <button class="mc-btn green" onclick="saveAppearance()">💾 Apply Background</button>
+        <button class="mc-btn green" onclick="saveAppearance()"><span class="mc-item i-save inline"></span> Apply Background</button>
         <span class="save-msg" id="appearance-msg"></span>
       </div>
     </div>
 
     <!-- SETTINGS -->
     <div id="panel-settings" class="panel" style="display:none">
-      <div class="panel-title">⚙ Settings</div>
+      <div class="panel-title"><span class="mc-item i-hammer inline"></span> Settings</div>
       <div class="field">
         <label>Default Sound On/Off for visitors</label>
         <div class="toggle-wrap">
@@ -444,7 +489,7 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <input class="mc-input" id="new-pw2" type="password" placeholder="Confirm..." style="margin-top:6px">
       </div>
       <div class="save-bar">
-        <button class="mc-btn green" onclick="saveSettings()">💾 Save Settings</button>
+        <button class="mc-btn green" onclick="saveSettings()"><span class="mc-item i-save inline"></span> Save Settings</button>
         <span class="save-msg" id="settings-msg"></span>
       </div>
     </div>
@@ -535,7 +580,7 @@ function saveData(d) {
       if(r.ok){
         const j=await r.json();
         if(j&&j.stored===false)
-          toast('⚠ Save stored locally only — configure KV_URL or BLOB_READ_WRITE_TOKEN in Vercel env vars for server persistence',false);
+          toast('(!) Save stored locally only \u2014 configure KV_URL or BLOB_READ_WRITE_TOKEN in Vercel env vars for server persistence',false);
       }
     }).catch(()=>{});
 }
@@ -604,7 +649,7 @@ function showPanel(id, el) {
 let toastTimer;
 function toast(msg, ok=true) {
   const t = document.getElementById('toast');
-  t.textContent = (ok ? '✅ ' : '❌ ') + msg;
+  t.innerHTML = (ok ? '<span class="mc-item i-done inline" style="filter:drop-shadow(0 0 3px #5f5)"></span> ' : '<span class="mc-item i-close inline" style="filter:drop-shadow(0 0 3px #f55)"></span> ') + msg;
   t.className = ok ? 'ok' : 'err';
   t.style.display = 'block';
   clearTimeout(toastTimer);
@@ -710,18 +755,18 @@ function renderExtraSocials(list) {
   el.innerHTML = list.map((s,i) => `
     <div class="card-item">
       <div class="card-content">
-        <div class="card-name">${s.icon||'🔗'} ${s.name||'Social'}</div>
+        <div class="card-name">${s.icon||'<span class="mc-item i-link inline"></span>'} ${s.name||'Social'}</div>
         <input class="mc-input" value="${s.url||''}" oninput="extraSocials[${i}].url=this.value" placeholder="URL">
       </div>
       <div class="card-actions">
-        <button class="btn-sm del" onclick="rmExtraSocial(${i})">✕</button>
+        <button class="btn-sm del" onclick="rmExtraSocial(${i})"><span class="mc-item i-close inline"></span></button>
       </div>
     </div>
   `).join('');
 }
 function addExtraSocial() {
   const name = prompt('Social name (e.g. TikTok):'); if(!name) return;
-  const icon = prompt('Emoji icon (e.g. 🎵):') || '🔗';
+  const icon = prompt('Icon key (e.g. music):') || 'link';
   const url = prompt('URL:') || '';
   extraSocials.push({name, icon, url});
   renderExtraSocials(extraSocials);
@@ -779,10 +824,10 @@ function renderLibList(tab, list) {
     <div class="card-item">
       <div class="card-content">
         <div style="display:flex;gap:8px;align-items:center">
-          <span onclick="toggleLibHidden('${tab}',${i})" style="cursor:pointer;font-size:16px;color:${item.hidden?'#555':'var(--xp)'}" title="${item.hidden?'Hidden - click to show':'Visible - click to hide'}">${item.hidden?'⬜':'👁'}</span>
+          <span onclick="toggleLibHidden('${tab}',${i})" style="cursor:pointer;font-size:16px;color:${item.hidden?'#555':'var(--xp)'}" title="${item.hidden?'Hidden - click to show':'Visible - click to hide'}">${item.hidden?'<span class="mc-item i-circle" style="width:16px;height:16px;filter:drop-shadow(0 0 2px #555)"></span>':'<span class="mc-item i-eye" style="width:16px;height:16px;filter:drop-shadow(0 0 2px var(--xp))"></span>'}</span>
           <input class="mc-input" value="${item.type||'basic'}" oninput="libData['${tab}'][${i}].type=this.value" placeholder="Type basic or steam" style="width:120px">
           <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Icon" style="width:100px">
-          <button class="btn-sm" onclick="fetchSteamGame('${tab}',${i})" title="Auto-fetch from Steam" style="font-size:10px;padding:2px 6px">🔄 Steam</button>
+          <button class="btn-sm" onclick="fetchSteamGame('${tab}',${i})" title="Auto-fetch from Steam" style="font-size:10px;padding:2px 6px"><span class="mc-item i-link inline"></span> Steam</button>
         </div>
         ${item.img?`<img src="${item.img}" style="width:100%;height:42px;object-fit:cover;border:2px solid var(--stone-dark);margin-bottom:4px">`:''}
         <input class="mc-input" value="${item.name||''}" oninput="libData['${tab}'][${i}].name=this.value" placeholder="Name">
@@ -791,14 +836,14 @@ function renderLibList(tab, list) {
         <input class="mc-input" value="${item.appid||''}" oninput="libData['${tab}'][${i}].appid=this.value" placeholder="Steam App ID">
       </div>
       <div class="card-actions">
-        <button class="btn-sm del" onclick="rmLibItem('${tab}',${i})">✕</button>
+        <button class="btn-sm del" onclick="rmLibItem('${tab}',${i})"><span class="mc-item i-close inline"></span></button>
       </div>
     </div>
   `).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">Nothing here yet.</div>';
 }
 function toggleLibHidden(tab,i){libData[tab][i].hidden=!libData[tab][i].hidden;renderLibList(tab,libData[tab])}
 function addLibItem(tab) {
-  libData[tab].push({type:'basic',icon:'❓',name:'New Item',url:'',appid:'',hidden:false});
+  libData[tab].push({type:'basic',icon:'?',name:'New Item',url:'',appid:'',hidden:false});
   renderLibList(tab, libData[tab]);
 }
 function rmLibItem(tab, i) { libData[tab].splice(i,1); renderLibList(tab, libData[tab]); }
@@ -829,10 +874,10 @@ function renderGamesList(list) {
   if (!el) return;
   el.innerHTML = list.map((g, i) => {
     const thumbSrc = g.img || (g.appid ? 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+g.appid+'/header.jpg' : '');
-    const thumbHtml = thumbSrc ? `<img class="game-thumb" src="${thumbSrc}" alt="${esc(g.title||'')}" onerror="this.onerror=null;var fb=this.dataset.f?'':'${g.appid?'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+g.appid+'/library_600x900.jpg':''}';if(fb&&!this.dataset.f){this.dataset.f='1';this.src=fb}else{this.outerHTML='<div class=&quot;game-thumb-fail&quot;>☐</div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">` : '<div class="game-thumb-fail">☐</div>';
+    const thumbHtml = thumbSrc ? `<img class="game-thumb" src="${thumbSrc}" alt="${esc(g.title||'')}" onerror="this.onerror=null;var fb=this.dataset.f?'':'${g.appid?'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+g.appid+'/library_600x900.jpg':''}';if(fb&&!this.dataset.f){this.dataset.f='1';this.src=fb}else{this.outerHTML='<div class=&quot;game-thumb-fail&quot;><span class=&quot;mc-item i-fail&quot; style=&quot;display:flex;align-items:center;justify-content:center;width:100%;height:100%&quot;></span></div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">` : '<div class="game-thumb-fail"><span class="mc-item i-fail" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%"></span></div>';
     const statusOptions = ['playing','completed','backlog'];
     return `<div class="card-item">
-      <div style="display:flex;flex-direction:column;gap:4px;align-items:center;cursor:grab;color:#555;font-size:14px;user-select:none" onclick="moveGame(${i},-1)" title="Move up">▲</div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:center;cursor:grab;color:#555;font-size:14px;user-select:none" onclick="moveGame(${i},-1)" title="Move up">[^]</div>
       ${thumbHtml}
       <div class="card-content" style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;gap:8px;align-items:center">
         <input class="mc-input" type="number" value="${g.appid||''}" oninput="gamesData[${i}].appid=this.value.replace(/\\D/g,'');var t=this.closest('.card-item').querySelector('.game-thumb');if(t)t.src='https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+this.value+'/header.jpg'" onchange="var a=this.value.replace(/\\D/g,'');if(a){gamesData[${i}].img='';fetch('/api/steam-lookup?appid='+encodeURIComponent(a)).then(r=>r.json()).then(d=>{if(d&&d.header_image){gamesData[${i}].img=d.header_image;var t=this.closest('.card-item').querySelector('.game-thumb');if(t)t.src=d.header_image}}).catch(()=>{})}" placeholder="App ID" style="width:90px;font-size:14px;padding:4px 6px" min="1">
@@ -843,8 +888,8 @@ function renderGamesList(list) {
         <input class="mc-input" type="number" value="${g.hours||0}" oninput="gamesData[${i}].hours=Math.max(0,parseInt(this.value)||0)" placeholder="Hours" style="width:70px;font-size:14px;padding:4px 6px" min="0">
       </div>
       <div class="card-actions" style="flex-direction:column;gap:4px">
-        <button class="btn-sm del" onclick="moveGame(${i},1)" style="font-size:10px;padding:2px 6px">▼</button>
-        <button class="btn-sm del" onclick="rmGame(${i})">✕</button>
+        <button class="btn-sm del" onclick="moveGame(${i},1)" style="font-size:10px;padding:2px 6px">[v]</button>
+        <button class="btn-sm del" onclick="rmGame(${i})"><span class="mc-item i-close inline"></span></button>
       </div>
     </div>`;
   }).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">No games added yet.</div>';
@@ -948,7 +993,7 @@ function renderBadges(list) {
       <input class="mc-input" value="${escAttr(b.img||'')}" oninput="friendsData[${i}].img=this.value" placeholder="Badge image URL" style="width:110px;font-size:13px;padding:4px 6px">
       <input class="mc-input" value="${escAttr(b.url||'')}" oninput="friendsData[${i}].url=this.value" placeholder="Site URL" style="width:110px;font-size:13px;padding:4px 6px">
       <textarea class="mc-input" oninput="friendsData[${i}].code=this.value" placeholder="Paste embed HTML code here (e.g. &lt;a href=...&gt;&lt;img src=...&gt;&lt;/a&gt;)" style="width:160px;min-height:60px;font-size:12px;padding:4px 6px">${b.code||''}</textarea>
-      <button class="btn-sm del" onclick="rmBadge(${i})">✕ Remove</button>
+      <button class="btn-sm del" onclick="rmBadge(${i})"><span class="mc-item i-close inline"></span> Remove</button>
     </div>`;
   }).join('');
 }
@@ -981,7 +1026,7 @@ function renderProjects(list) {
         <input class="mc-input" value="${p.tags||''}" oninput="projectsData[${i}].tags=this.value" placeholder="Tags (comma separated)">
       </div>
       <div class="card-actions">
-        <button class="btn-sm del" onclick="rmProject(${i})">✕</button>
+        <button class="btn-sm del" onclick="rmProject(${i})"><span class="mc-item i-close inline"></span></button>
       </div>
     </div>
   `).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">No projects yet.</div>';
@@ -1014,7 +1059,7 @@ function renderBlog(list){
         ${p.img?`<img src="${p.img}" style="max-width:160px;height:auto;margin-bottom:6px;border:2px solid var(--stone-dark)">`:''}
         <textarea class="mc-input" oninput="blogData[${i}].body=this.value" placeholder="Blog post body">${p.body||''}</textarea>
       </div>
-      <div class="card-actions"><button class="btn-sm del" onclick="rmBlog(${i})">✕</button></div>
+      <div class="card-actions"><button class="btn-sm del" onclick="rmBlog(${i})"><span class="mc-item i-close inline"></span></button></div>
     </div>
   `).join('');
 }
@@ -1044,7 +1089,7 @@ function renderAlbum(list){
         ${p.img?`<img src="${p.img}" style="max-width:160px;height:auto;margin-bottom:6px;border:2px solid var(--stone-dark)">`:''}
         <input class="mc-input" value="${p.link||''}" oninput="albumData[${i}].link=this.value" placeholder="Optional link">
       </div>
-      <div class="card-actions"><button class="btn-sm del" onclick="rmAlbum(${i})">✕</button></div>
+      <div class="card-actions"><button class="btn-sm del" onclick="rmAlbum(${i})"><span class="mc-item i-close inline"></span></button></div>
     </div>
   `).join('');
 }
@@ -1063,7 +1108,7 @@ let phrasesData = [];
 function renderPhrases(list) {
   phrasesData = list;
   document.getElementById('phrase-list').innerHTML = list.map((p,i) => `
-    <div class="phrase-pill">${p}<span class="rm" onclick="rmPhrase(${i})">✕</span></div>
+    <div class="phrase-pill">${p}<span class="rm" onclick="rmPhrase(${i})"><span class="mc-item i-close inline"></span></span></div>
   `).join('');
 }
 function addPhrase() {

@@ -7,6 +7,9 @@
 <meta name="description" content="Reef's Minecraft-inspired portfolio world.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180x180.png">
 <style>
 :root{
   --stone:#8b8b8b;--stone-light:#c6c6c6;--stone-dark:#555;--slot:#373737;
@@ -48,6 +51,28 @@ a{color:inherit;text-decoration:none}
 .i-map:before{inset:2px;background:#d0bc83;box-shadow:inset 0 0 0 3px #6d4c25}.i-map:after{inset:7px;background:linear-gradient(90deg,#578b48 0 40%,#2f68b7 40% 56%,#7aa452 56%)}
 .i-star:before{left:9px;top:1px;width:6px;height:22px;background:var(--gold);box-shadow:-7px 7px 0 -1px var(--gold),7px 7px 0 -1px var(--gold)}.i-star:after{left:4px;top:9px;width:16px;height:6px;background:var(--gold)}
 .i-fork:before{left:5px;top:3px;width:4px;height:18px;background:#cfcfcf;box-shadow:9px 0 0 #cfcfcf}.i-fork:after{left:5px;top:12px;width:13px;height:4px;background:#cfcfcf}
+.i-sound:before{left:6px;top:7px;width:10px;height:10px;background:#eee;clip-path:polygon(0 33%,38% 33%,100% 0,100% 100%,38% 67%,0 67%)}.i-sound:after{left:15px;top:9px;width:6px;height:6px;border:2px solid #eee;border-radius:50%;border-left-color:transparent;border-bottom-color:transparent}
+.i-mute:before{left:6px;top:7px;width:10px;height:10px;background:#666;clip-path:polygon(0 33%,38% 33%,100% 0,100% 100%,38% 67%,0 67%)}.i-mute:after{left:12px;top:4px;width:12px;height:12px;border:2px solid #f55;border-radius:50%;border-left-color:transparent;border-bottom-color:transparent;transform:rotate(45deg)}
+.i-close:before,.i-close:after{left:6px;top:10px;width:12px;height:3px;background:#888;border-radius:1px}.i-close:before{transform:rotate(45deg)}.i-close:after{transform:rotate(-45deg)}
+.i-mail:before{inset:4px 3px 7px;background:#d4a86a;border-radius:2px;box-shadow:inset 0 2px 0 #e8c48a}.i-mail:after{left:4px;top:8px;width:16px;height:10px;border:2px solid #b08040;border-radius:2px;background:transparent;clip-path:polygon(0 0,100% 0,50% 60%)}
+.i-chat:before{inset:4px 3px 7px;background:#7289da;border-radius:3px 3px 3px 0;box-shadow:inset 0 2px 0 #8ea1e0}.i-chat:after{left:6px;bottom:4px;width:8px;height:8px;background:#7289da;clip-path:polygon(0 0,100% 0,0 100%)}
+.i-code:before{left:2px;top:6px;width:8px;height:12px;border:2px solid #d0d0d0;border-radius:3px;background:#222}.i-code:after{left:8px;top:5px;width:6px;height:6px;border:2px solid #f0c040;border-radius:50%;border-right-color:transparent;border-bottom-color:transparent}
+.i-hammer:before{left:8px;top:3px;width:15px;height:10px;background:#a08060;border-radius:2px 2px 0 0;transform:rotate(25deg);transform-origin:bottom right}.i-hammer:after{left:9px;top:12px;width:9px;height:6px;background:#6b4528;border-radius:0 0 2px 2px;transform:rotate(25deg);transform-origin:top right}
+.i-play:before{left:8px;top:5px;width:0;height:0;border:7px solid transparent;border-left:10px solid var(--xp);border-right:0}.i-play:after{display:none}
+.i-done:before{left:5px;top:8px;width:14px;height:8px;border:3px solid var(--cyan);border-top:0;border-left:0;transform:rotate(45deg);border-radius:2px}.i-done:after{display:none}
+.i-circle:before{left:4px;top:4px;width:16px;height:16px;border:3px solid var(--yellow);border-radius:50%;background:transparent}.i-circle:after{display:none}
+.i-clock:before{left:4px;top:4px;width:16px;height:16px;border:2px solid #999;border-radius:50%;background:transparent}.i-clock:after{left:11px;top:6px;width:5px;height:8px;border:2px solid #999;border-top:0;border-radius:0 0 2px 2px;transform:rotate(35deg);transform-origin:top}
+.i-game:before{left:4px;top:5px;width:16px;height:14px;background:#555;border-radius:4px;box-shadow:inset 0 -3px 0 #333,inset 3px 0 0 #444}.i-game:after{left:7px;top:9px;width:4px;height:4px;border-radius:50%;background:var(--xp);box-shadow:6px 0 0 var(--xp)}
+.i-music-note:before{left:11px;top:4px;width:4px;height:14px;background:#c855dc;border-radius:0 2px 0 0;transform:rotate(12deg)}.i-music-note:after{left:6px;top:12px;width:7px;height:7px;background:#c855dc;border-radius:50%;box-shadow:0 0 0 2px #60287a}
+.i-book2:before{inset:3px 5px 4px 3px;background:#e8d4a0;border-radius:1px 3px 3px 1px;box-shadow:inset 2px 0 0 #c4a870,inset -1px 0 0 #a08050}.i-book2:after{left:6px;top:10px;width:10px;height:2px;background:#a08050;box-shadow:0 3px 0 #a08050,0 6px 0 #a08050}
+.i-screen:before{inset:3px 2px 8px;background:#2a2a3e;border-radius:2px;border:2px solid #666}.i-screen:after{left:9px;bottom:4px;width:6px;height:4px;background:#666;border-radius:0 0 2px 2px;box-shadow:12px 0 0 #666}
+.i-cart:before{left:3px;top:6px;width:18px;height:12px;background:#6b8cae;border-radius:3px 3px 2px 2px;box-shadow:inset 0 -3px 0 #4a6a8a}.i-cart:after{left:5px;top:2px;width:14px;height:4px;border:2px solid #6b8cae;border-bottom:0;border-radius:2px 2px 0 0}
+.i-chart:before{left:4px;top:5px;width:16px;height:14px;background:#2a3a2a;border:2px solid #5a8a5a;border-radius:2px}.i-chart:after{left:7px;top:17px;width:3px;height:8px;background:var(--xp);box-shadow:5px 0 0 var(--gold),10px 0 0 var(--cyan)}
+.i-link:before{left:8px;top:6px;width:12px;height:5px;border:2px solid #8ab;border-bottom:0;border-radius:3px 3px 0 0;transform:rotate(35deg)}.i-link:after{left:5px;top:12px;width:12px;height:5px;border:2px solid #8ab;border-top:0;border-radius:0 0 3px 3px;transform:rotate(35deg)}
+.i-fail:before{inset:0;background:repeating-conic-gradient(#1a1a2e 0 25%,#0d0d1a 0 50%) 0 0/8px 8px}.i-fail:after{left:7px;top:7px;font:10px/1 monospace;content:"?";color:#555;text-align:center}
+.i-bullet:before{left:4px;top:8px;width:8px;height:8px;background:var(--cyan);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}.i-bullet:after{display:none}
+.i-arrow:before{left:4px;top:8px;width:16px;height:3px;background:#999;border-radius:2px}.i-arrow:after{left:16px;top:6px;width:0;height:0;border:5px solid transparent;border-left:6px solid #999;border-right:0}
+.mc-item.inline{display:inline-block;vertical-align:middle;width:16px;height:16px;margin-right:3px;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.45))}
 
 .hotbar{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:20;display:flex;gap:3px;padding:8px 10px 0;background:rgba(0,0,0,.74);border:3px solid #333;border-top:0}
 .hotbar a{width:58px;height:58px;background:var(--slot);border:2px solid;border-color:#555 #ddd #ddd #555;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:'Press Start 2P',monospace;font-size:6px;color:#ddd;text-align:center;position:relative}
@@ -96,7 +121,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:8px;background:#555;min-height:100px}
 .dash-tile{background:#373737;border:2px solid;border-color:#555 #ddd #ddd #555;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:28px 16px;cursor:pointer;transition:transform .12s steps(1),border-color .12s steps(1),box-shadow .12s steps(1);text-align:center;user-select:none}
 .dash-tile:hover{transform:scale(1.04);border-color:var(--gold) #555 #555 var(--gold);box-shadow:0 0 14px rgba(255,241,107,.2)}
-.dash-icon{font-size:32px}
+.dash-icon{font-size:32px;display:flex;align-items:center;justify-content:center}.dash-icon .mc-item{width:32px;height:32px;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.55))}
 .dash-count{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--gold)}
 .dash-label{font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa}
 .og-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;padding:8px;background:#555;min-height:80px}
@@ -120,7 +145,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .contact-table{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0;background:#5a4428;padding:3px}
 .contact-slot{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--slot);border:2px solid;border-color:#ddd #333 #333 #ddd;padding:16px 12px;text-align:center;transition:transform .12s steps(1),filter .12s steps(1);text-decoration:none;position:relative}
 .contact-slot:hover{transform:scale(1.06);filter:brightness(1.3);z-index:2;border-color:var(--gold) var(--stone-dark) var(--stone-dark) var(--gold)}
-.contact-slot .cs-icon{font-size:28px;width:40px;height:40px;display:grid;place-items:center;background:rgba(0,0,0,.3);border:2px solid;border-color:#555 #ddd #ddd #555}
+.contact-slot .cs-icon{width:40px;height:40px;display:grid;place-items:center;background:rgba(0,0,0,.3);border:2px solid;border-color:#555 #ddd #ddd #555}.contact-slot .cs-icon .mc-item{width:28px;height:28px;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.55))}
 .contact-slot .cs-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold)}
 .contact-slot .cs-line{font-family:VT323;font-size:16px;color:#aaa}
 .contact-slot .cs-hint{font-family:VT323;font-size:12px;color:#666;margin-top:2px}
@@ -132,7 +157,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 <div id="panorama-bg-overlay"></div>
 <div class="particles" id="particles"></div>
 <div class="tooltip" id="tooltip"></div>
-<button class="mc-btn sound-btn" id="sound-toggle" type="button">🔊</button>
+<button class="mc-btn sound-btn" id="sound-toggle" type="button"><span class="mc-item i-sound"></span></button>
 
 <nav class="hotbar">
   <a class="active" href="#home" data-tip="Spawn"><span class="mc-item i-grass"></span><span>Home</span></a>
@@ -162,16 +187,16 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
   </section>
   <section id="about">
     <h2 class="title">About / Book</h2>
-    <div class="book"><div class="book-pages"><div class="page"><h3>WHO IS REEF?</h3><p id="bio-copy">Hey, I'm Reef. I build things, break things, and occasionally sleep. This version is built around custom pixel items, a menu-style panorama, and Minecraft-like UI pieces.</p></div><div class="page"><h3>WORLD NOTES</h3><ul><li>Custom CSS item icons — no emoji dependency.</li><li>Blurred block panorama behind every section.</li><li>Live GitHub and Discord data via API.</li><li>The homepage keeps admin hidden.</li></ul><div class="book-socials" id="book-socials"><a class="book-sl" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer">💬 Discord</a><a class="book-sl" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer">🐙 GitHub</a></div></div></div></div>
+    <div class="book"><div class="book-pages"><div class="page"><h3>WHO IS REEF?</h3><p id="bio-copy">Hey, I'm Reef. I build things, break things, and occasionally sleep. This version is built around custom pixel items, a menu-style panorama, and Minecraft-like UI pieces.</p></div><div class="page"><h3>WORLD NOTES</h3><ul><li>Custom CSS item icons — no emoji dependency.</li><li>Blurred block panorama behind every section.</li><li>Live GitHub and Discord data via API.</li><li>The homepage keeps admin hidden.</li></ul><div class="book-socials" id="book-socials"><a class="book-sl" href="https://discord.com/users/744808879036170272" target="_blank" rel="noreferrer"><span class="mc-item i-chat inline"></span> Discord</a><a class="book-sl" href="https://github.com/Rafie-kun" target="_blank" rel="noreferrer"><span class="mc-item i-code inline"></span> GitHub</a></div></div></div></div>
   </section>
   <section id="projects"><h2 class="title">Projects / Crafting Bench</h2><div class="panel"><div class="project-grid" id="repo-grid"></div></div></section>
   <section id="blog"><h2 class="title">Blog / Reading</h2><div class="panel"><div class="blog-grid" id="blog-grid"></div></div></section>
   <section id="album"><h2 class="title">Album / Gallery</h2><div class="panel"><div class="album-grid" id="album-grid"></div></div></section>
   <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div><div class="tab" data-tab="proj">Projects</div></div><div class="tab-panel" id="tab-all"></div><div class="tab-panel" id="tab-games" hidden></div><div class="tab-panel" id="tab-music" hidden></div><div class="tab-panel" id="tab-reading" hidden></div><div class="tab-panel" id="tab-proj" hidden></div></div></section>
   <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall"><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:var(--gold);margin-bottom:4px">My Card</div><div id="my-card-preview-wrap" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;width:100%;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid #555"><button id="my-card-preview" class="badge-link" type="button" style="width:88px;height:31px;padding:0;border:1px solid #888;cursor:pointer"><img id="my-card-img" src="assets/button-88x31.webp" alt="REEF card"></button><div style="font-family:'Press Start 2P';font-size:5px;color:#888;line-height:1.6">Click card to copy embed code</div></div><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:#999;margin:4px 0">Friend Badges</div><div id="friends-badges" style="display:flex;flex-wrap:wrap;gap:8px;width:100%"></div></div></section>
-  <section id="contact"><h2 class="title">Contact / Anvil</h2><div class="contact-anvil"><div class="contact-anvil-head">🔨 Contact<span>Right-click to use</span></div><div class="contact-table" id="contact-actions"></div></div></section>
+  <section id="contact"><h2 class="title">Contact / Anvil</h2><div class="contact-anvil"><div class="contact-anvil-head"><span class="mc-item i-hammer inline"></span> Contact<span>Right-click to use</span></div><div class="contact-table" id="contact-actions"></div></div></section>
   <footer class="footer"><div>(C) REEF 2026</div><div class="note" id="footer-note">Also try mining at sunset.</div></footer>
-<div id="lib-modal" class="modal-overlay" onclick="closeLibModal(event)"><div class="modal-box"><div class="modal-close" onclick="closeLibModal()">✕</div><div id="modal-content"></div></div></div>
+<div id="lib-modal" class="modal-overlay" onclick="closeLibModal(event)"><div class="modal-box"><div class="modal-close" onclick="closeLibModal()"><span class="mc-item i-close"></span></div><div id="modal-content"></div></div></div>
 </main>
 <script>
 const DISCORD_ID='744808879036170272',GITHUB_USER='Rafie-kun',DATA_KEY='reef-cms';
@@ -224,6 +249,8 @@ function applySiteData(){
   if(socials.spotify) links.push({label:'Spotify',href:socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>s?.url&&links.push({label:s.icon||s.name||'Link',href:s.url}));
   socialActions.innerHTML=['<a class="mc-btn" href="#library">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`)].join('');
+  const iconMap={'💬':'i-chat','✉':'i-mail','🐙':'i-code','𝕏':'i-link','📷':'i-link','🎵':'i-music-note','🔗':'i-link','→':'i-arrow'};
+  const mapIcon=c=>`<span class="mc-item ${iconMap[c]||'i-link'}"></span>`;
   const contactAct=document.getElementById('contact-actions');
   const contactSlots=[{icon:'💬',label:'Discord',line:socials.discord?'@'+(socials.discord_label||socials.discord):'Click to chat',hint:'Active',href:`https://discord.com/users/${socials.discord||DISCORD_ID}`},
     {icon:'✉',label:'Email',line:email,hint:'Reply within 24h',href:'mailto:'+email},
@@ -232,7 +259,7 @@ function applySiteData(){
   if(socials.instagram) contactSlots.push({icon:'📷',label:'Instagram',line:socials.instagram.replace('https://',''),hint:'Photos',href:socials.instagram});
   if(socials.spotify) contactSlots.push({icon:'🎵',label:'Spotify',line:socials.spotify.replace('https://','').split('/').pop()||'Profile',hint:'Music',href:socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>{if(s?.url) contactSlots.push({icon:s.icon||'🔗',label:s.name||'Link',line:s.url.replace('https://',''),hint:'Extra',href:s.url})});
-  contactAct.innerHTML=contactSlots.map(s=>`<a class="contact-slot" href="${s.href}" target="_blank" rel="noreferrer"><span class="cs-icon">${s.icon}</span><span class="cs-label">${s.label}</span><span class="cs-line">${s.line}</span><span class="cs-hint">${s.hint||'→'}</span></a>`).join('');
+  contactAct.innerHTML=contactSlots.map(s=>`<a class="contact-slot" href="${s.href}" target="_blank" rel="noreferrer"><span class="cs-icon">${mapIcon(s.icon)}</span><span class="cs-label">${s.label}</span><span class="cs-line">${s.line}</span><span class="cs-hint">${s.hint||mapIcon('→')}</span></a>`).join('');
   const bookSocials=document.getElementById('book-socials');
   bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('');
   renderAllTabs();
@@ -269,8 +296,8 @@ function playClick(kind='click'){
   }catch(e){}
 }
 const soundToggle=document.getElementById('sound-toggle');
-soundToggle.textContent=muted?'🔇':'🔊';
-soundToggle.addEventListener('click',()=>{muted=!muted;localStorage.setItem('reef-muted',String(muted));soundToggle.textContent=muted?'🔇':'🔊';playClick('click')});
+soundToggle.innerHTML=muted?'<span class="mc-item i-mute"></span>':'<span class="mc-item i-sound"></span>';
+soundToggle.addEventListener('click',()=>{muted=!muted;localStorage.setItem('reef-muted',String(muted));soundToggle.innerHTML=muted?'<span class="mc-item i-mute"></span>':'<span class="mc-item i-sound"></span>';playClick('click')});
 document.addEventListener('pointerdown',e=>{if(e.target.closest('a,button,.tab,.project,.inv-item,.og-item,.dash-tile,.badge-link,.book-sl'))playClick('click')},{passive:true});
 document.addEventListener('pointerenter',e=>{if(e.target.closest('a,button,.tab,.project,.inv-item,.og-item,.dash-tile,.badge-link,.book-sl'))playClick('hover')},true);
 
@@ -331,12 +358,12 @@ function renderAllTabContent(){
   if(!games.length&&!music.length&&!reading.length&&!projects.length)
     return '<div class="empty-state">Nothing in your library yet. Add items from the admin panel.</div>';
   const tiles=[
-    {icon:'🎮',label:'Games',count:games.length,tab:'games'},
-    {icon:'🎵',label:'Music',count:music.length,tab:'music'},
-    {icon:'📚',label:'Reading',count:reading.length,tab:'reading'},
-    {icon:'💻',label:'Projects',count:projects.length,tab:'proj'},
+    {icon:'i-game',label:'Games',count:games.length,tab:'games'},
+    {icon:'i-music-note',label:'Music',count:music.length,tab:'music'},
+    {icon:'i-book2',label:'Reading',count:reading.length,tab:'reading'},
+    {icon:'i-screen',label:'Projects',count:projects.length,tab:'proj'},
   ];
-  return '<div class="dash-grid">'+tiles.map(t=>`<div class="dash-tile" data-tab="${t.tab}"><div class="dash-icon">${t.icon}</div><div class="dash-count">${t.count}</div><div class="dash-label">${t.label}</div></div>`).join('')+'</div>';
+  return '<div class="dash-grid">'+tiles.map(t=>`<div class="dash-tile" data-tab="${t.tab}"><div class="dash-icon"><span class="mc-item ${t.icon}"></span></div><div class="dash-count">${t.count}</div><div class="dash-label">${t.label}</div></div>`).join('')+'</div>';
 }
 function renderAllTabs(){
   const tabs=['all','games','music','reading','proj'];
@@ -372,10 +399,12 @@ function renderGamesTab(el){
     const cdn='https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/';
     const imgSrc=g.img||(appId?cdn+appId+'/header.jpg':'');
     const fbSrc=appId?cdn+appId+'/library_600x900.jpg':'';
-    const statusLabel={playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||'▶ Playing';
-    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>☐</div>'}" loading="lazy">`:'<div class="game-card-img game-card-fail">☐</div>';
+    const statusIcons={playing:'<span class="mc-item i-play inline"></span>',completed:'<span class="mc-item i-done inline"></span>',backlog:'<span class="mc-item i-circle inline"></span>'};
+    const statusLabel=(statusIcons[status]||'')+' '+{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status]||'Playing';
+    const failIcon='<span class="mc-item i-fail" style="display:flex;align-items:center;justify-content:center"></span>';
+    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>${failIcon}</div>'}" loading="lazy">`:`<div class="game-card-img game-card-fail">${failIcon}</div>`;
     const itemJson=escAttr(JSON.stringify({type:'steam',name:g.title,url:'https://store.steampowered.com/app/'+appId,appid:appId,status:status,hours:hours}));
-    return `<div class="game-card" data-item='${itemJson}'>${imgHtml}<div class="game-card-body"><span class="game-card-title">${title}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours">⏱ ${hours}h</span></div></div>`;
+    return `<div class="game-card" data-item='${itemJson}'>${imgHtml}<div class="game-card-body"><span class="game-card-title">${title}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours"><span class="mc-item i-clock inline"></span> ${hours}h</span></div></div>`;
   }).join('')+'</div>';
 }
 
@@ -387,7 +416,8 @@ function renderOGItem(item,key,idx){
   let host='';try{if(item.url)host=new URL(item.url).hostname.replace('www.','')}catch(e){}  const site=esc(item.og?.siteName||host||'');
   const href=item.url||'#';
   const itemJson=escAttr(JSON.stringify({...item,_key:key,_idx:idx,og:item.og||null}));
-  const imgHtml=img?`<img class="og-item-img" src="${img}" alt="${name}" onerror="this.outerHTML='<div class=og-item-fail>☐</div>'" loading="lazy">`:'<div class="og-item-fail">☐</div>';
+  const failIcon='<span class="mc-item i-fail" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%"></span>';
+  const imgHtml=img?`<img class="og-item-img" src="${img}" alt="${name}" onerror="this.outerHTML='<div class=og-item-fail>${failIcon}</div>'" loading="lazy">`:'<div class="og-item-fail">'+failIcon+'</div>';
   const favHtml=fav?`<img class="og-item-fav" src="${fav}" alt="" onerror="this.style.display='none'">`:'';
   return `<div class="og-item" data-item='${itemJson}'>${imgHtml}<div class="og-item-body"><span class="og-item-title">${name}</span>${desc?`<span class="og-item-desc">${desc}</span>`:''}<div class="og-item-footer">${favHtml}<span class="og-item-site">${site}</span></div></div></div>`;
 }
@@ -417,30 +447,33 @@ function openLibModal(item,key,idx){
   const fav=og.favicon||'';
   const imgHtml=img?`<img class="m-img" src="${img}" alt="${name}" onerror="this.style.display='none'">`:'';
   const favHtml=fav?`<img src="${fav}" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;image-rendering:pixelated" alt="" onerror="this.style.display='none'">`:'';
-  c.innerHTML=`${imgHtml}<div class="m-body"><h3>${name}</h3>${desc?`<div class="m-desc">${desc}</div>`:''}<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #222">${favHtml}<span style="color:#888;font-family:VT323;font-size:18px">${site||'Link'}</span></div><div class="m-actions"><a class="mc-btn" href="${href}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🔗 Open Link</a></div></div>`;
+  c.innerHTML=`${imgHtml}<div class="m-body"><h3>${name}</h3>${desc?`<div class="m-desc">${desc}</div>`:''}<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #222">${favHtml}<span style="color:#888;font-family:VT323;font-size:18px">${site||'Link'}</span></div><div class="m-actions"><a class="mc-btn" href="${href}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-link inline"></span> Open Link</a></div></div>`;
 }
 function modalSteamHtml(data,name,appId,status,hours){
   const label=data.name||name;
   const desc=(data.short_description||'').replace(/<[^>]*>/g,'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const price=data.price_overview?.final_formatted||(data.is_free?'Free':'N/A');
-  const platforms=[data.platforms?.windows&&'🪟 Win',data.platforms?.mac&&'🍏 Mac',data.platforms?.linux&&'🐧 Linux'].filter(Boolean).join(' ');
+      const platforms=[data.platforms?.windows&&'Win',data.platforms?.mac&&'Mac',data.platforms?.linux&&'Linux'].filter(Boolean).join(', ');
   const genres=(data.genres||[]).map(g=>'<span>'+esc(g.description)+'</span>').join('');
   const header=data.header_image||data.capsule_image||'';
   const rating=data.metacritic?.score?`<span>${data.metacritic.score}/100</span>`:'<span class="m-na">N/A</span>';
   const release=data.release_date?.date||'N/A';
-  const recs=data.recommendations?.total?`<span>${data.recommendations.total.toLocaleString()} 👍</span>`:'';
+  const recs=data.recommendations?.total?`<span>${data.recommendations.total.toLocaleString()}</span>`:'';
   const dev=Array.isArray(data.developers)?data.developers.join(', '):'';
   const pub=Array.isArray(data.publishers)?data.publishers.join(', '):'';
   const cats=Array.isArray(data.categories)?data.categories.map(c=>'<span>'+esc(c.description)+'</span>').join(''):'';
   const reqs=data.pc_requirements?.[0]||data.pc_requirements?.minimum||'';
   const reqsRec=data.pc_requirements?.[1]||data.pc_requirements?.recommended||'';
   const reqsHtml=reqs?`<div class="m-reqs"><b class="m-reqs-title">System Requirements</b><div class="m-reqs-content">${String(reqs).replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]*>/g,'')}</div>${reqsRec?`<div class="m-reqs-content" style="margin-top:6px">${String(reqsRec).replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]*>/g,'')}</div>`:''}</div>`:'';
-  const statusLabel=status?{playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||status:'';
-  const statusRow=statusLabel?`<div class="m-row"><b>📌 Status</b><span style="color:var(--gold)">${esc(statusLabel)}</span></div>`:'';
-  const hoursRow=hours?`<div class="m-row"><b>⏱ Hours</b><span>${hours}h</span></div>`:'';
-  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3>${statusRow}${hoursRow}<div class="m-row"><b>💰 Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>🖥 Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>👨‍💻 Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>📢 Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>📅 Release</b><span>${esc(release)}</span></div><div class="m-row"><b>⭐ Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>👍 Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`;
+  const bl='<span class="mc-item i-bullet inline"></span>';
+  const statusIcons={playing:'<span class="mc-item i-play inline"></span>',completed:'<span class="mc-item i-done inline"></span>',backlog:'<span class="mc-item i-circle inline"></span>'};
+  const statusIcon=statusIcons[status]||'';
+  const statusLabel=status?{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status]||status:'';
+  const statusRow=statusLabel?`<div class="m-row">${statusIcon}<b style="color:var(--gold);margin:0 4px">${esc(statusLabel)}</b></div>`:'';
+  const hoursRow=hours?`<div class="m-row"><b><span class="mc-item i-clock inline"></span> Hours</b><span>${hours}h</span></div>`:'';
+  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3>${statusRow}${hoursRow}<div class="m-row"><b>${bl} Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>${bl} Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>${bl} Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>${bl} Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>${bl} Release</b><span>${esc(release)}</span></div><div class="m-row"><b>${bl} Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>${bl} Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-cart inline"></span> Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-chart inline"></span> SteamDB</a></div></div>`;
 }
-function modalErrorHtml(name,appId,status,hours){const statusLabel=status?{playing:'▶ Playing',completed:'✓ Completed',backlog:'○ Backlog'}[status]||status:'';const statusRow=statusLabel?`<div class="m-row"><b>📌 Status</b><span style="color:var(--gold)">${esc(statusLabel)}</span></div>`:'';const hoursRow=hours?`<div class="m-row"><b>⏱ Hours</b><span>${hours}h</span></div>`:'';return `<div class="m-body"><h3>${esc(name)}</h3>${statusRow}${hoursRow}<div class="m-desc" style="color:#888">Steam data unavailable.</div><div class="m-actions"><a class="mc-btn" href="https://store.steampowered.com/app/${appId}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">🛒 Steam Store</a><a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px">📊 SteamDB</a></div></div>`}
+function modalErrorHtml(name,appId,status,hours){const bl='<span class="mc-item i-bullet inline"></span>';const statusIcons={playing:'<span class="mc-item i-play inline"></span>',completed:'<span class="mc-item i-done inline"></span>',backlog:'<span class="mc-item i-circle inline"></span>'};const statusIcon=statusIcons[status]||'';const statusLabel=status?{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status]||status:'';const statusRow=statusLabel?`<div class="m-row">${statusIcon}<b style="color:var(--gold);margin:0 4px">${esc(statusLabel)}</b></div>`:'';const hoursRow=hours?`<div class="m-row"><b><span class="mc-item i-clock inline"></span> Hours</b><span>${hours}h</span></div>`:'';return `<div class="m-body"><h3>${esc(name)}</h3>${statusRow}${hoursRow}<div class="m-desc" style="color:#888">Steam data unavailable.</div><div class="m-actions"><a class="mc-btn" href="https://store.steampowered.com/app/${appId}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-cart inline"></span> Steam Store</a><a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-chart inline"></span> SteamDB</a></div></div>`}
 function closeLibModal(e){if(e&&e.target!==e.currentTarget) return;document.getElementById('lib-modal').classList.remove('open')}
 
 function escAttr(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -545,7 +578,7 @@ function queueSteamRender(slotId,item,appId,name,itemJson){
       }
       const header=data.header_image || data.capsule_image || '';
       const price=data.price_overview?.final_formatted || (data.is_free ? 'Free' : 'Price unavailable');
-      const platforms=[data.platforms?.windows&&'🪟 Win',data.platforms?.mac&&'🍏 Mac',data.platforms?.linux&&'🐧 Linux'].filter(Boolean).join(' ');
+  const platforms=[data.platforms?.windows&&'Win',data.platforms?.mac&&'Mac',data.platforms?.linux&&'Linux'].filter(Boolean).join(', ');
       const genres=(data.genres||[]).slice(0,2).map(g=>g.description).join(', ') || 'Steam game';
       const label=(data.name||name||'Steam Game').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       const target=el();
@@ -617,7 +650,10 @@ function applyDiscord(d){
     img.src=url;img.hidden=false;document.getElementById('avatar-fallback').style.display='none';
   }
   const name=siteData.name||'Reef';
-  const lbl={online:'🟢 Online',idle:'🌙 Idle',dnd:'⛔ DND',offline:'🔴 Offline'}[st]||'🔴 Offline';
+  const statusDots={online:'<span style="color:var(--xp)">●</span>',idle:'<span style="color:var(--yellow)">●</span>',dnd:'<span style="color:var(--red)">●</span>',offline:'<span style="color:#666">●</span>'};
+  const dot=statusDots[st]||statusDots.offline;
+  const lbl={online:'Online',idle:'Idle',dnd:'DND',offline:'Offline'}[st]||'Offline';
+  document.getElementById('act-primary').innerHTML=name+' '+dot+' '+lbl;
   document.getElementById('act-primary').textContent=name+' '+lbl;
   const acts=[];
   if(d.spotify&&d.spotify.song) acts.push({
@@ -637,11 +673,11 @@ function applyDiscord(d){
   if(!acts.length){c.innerHTML='<div class="act-empty">No activity</div>';lastDiscordData=d;return}
   const now=Date.now();
   c.innerHTML=acts.map(a=>{
-    const icon=a.icon?`<img class="act-icon" src="${a.icon}" width="48" height="48" onerror="this.outerHTML='<div class=act-icon-fallback>&#127918;</div>'">`:'<div class="act-icon-fallback">🎮</div>';
+    const icon=a.icon?`<img class="act-icon" src="${a.icon}" width="48" height="48" onerror="this.outerHTML='<div class=act-icon-fallback><span class=&quot;mc-item i-game&quot; style=&quot;width:28px;height:28px;filter:drop-shadow(0 0 3px rgba(126,255,21,.6))&quot;></span></div>'">`:'<div class="act-icon-fallback"><span class="mc-item i-game" style="width:28px;height:28px;filter:drop-shadow(0 0 3px rgba(126,255,21,.6))"></span></div>';
     const pct=a.start&&a.end?Math.min(100,(now-a.start)/(a.end-a.start)*100):-1;
     const bar=pct>=0?`<div class="act-bar-wrap"><div class="act-bar" style="width:${pct}%"></div></div>`:'';
     const time=a.start?`<div class="act-time">${fmtElapsed(a.start,a.end)}</div>`:'';
-    const sc=a.controls?'<div class="act-controls"><span class="ac-btn">⏮</span><span class="ac-btn ac-play">⏸</span><span class="ac-btn">⏭</span></div>':'';
+    const sc=a.controls?'<div class="act-controls"><span class="ac-btn">|&lt;</span><span class="ac-btn ac-play">||</span><span class="ac-btn">&gt;|</span></div>':'';
     const inner=`<div class="act-row1">${icon}<div class="act-name">${esc(a.title)}</div></div>${a.line1?'<div class="act-line1">'+esc(a.line1)+'</div>':''}${bar}${time}${sc}${a.line2?'<div class="act-line2">'+esc(a.line2)+'</div>':''}`;
     const tag=a.url?'a':'div';
     return `<${tag} class="act-card${a.url?' act-card-link':''}"${a.url?` href="${a.url}" target="_blank" rel="noreferrer"`:''}>${inner}</${tag}>`;
@@ -661,7 +697,7 @@ function setupCardCopy(name){
   const copy=async()=>{
     try{await navigator.clipboard.writeText(code)}catch(e){const ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}
     playClick('click');
-    if(copyMsg){const orig=copyMsg.textContent;copyMsg.textContent='✅ Copied!';setTimeout(()=>copyMsg.textContent=orig,1500)}
+    if(copyMsg){const orig=copyMsg.textContent;copyMsg.textContent='[Copied]';setTimeout(()=>copyMsg.textContent=orig,1500)}
   };
   if(card) card.onclick=copy;
 }
