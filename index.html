@@ -681,7 +681,7 @@ function fmtTime(ms){const s=Math.floor(ms/1000);if(s>=3600){const h=Math.floor(
 function fmtElapsed(start,end){const now=Date.now(),el=now-start;if(end){const t=end-start;return fmtTime(el)+' / '+fmtTime(t)}return fmtTime(el)}
 function esc(s){return(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
 function getActIcon(assets,appId){
-  if(!assets||!assets.large_image) return null;
+  if(!assets||!assets.large_image){console.log('[act] no assets',assets,appId);return null}
   let img=assets.large_image;
   if(img.startsWith('http://')||img.startsWith('https://')) return img;
   if(img.startsWith('mp:external/')) return 'https://media.discordapp.net/external/'+img.slice(12);
@@ -691,8 +691,8 @@ function getActIcon(assets,appId){
     if(!appId) appId=img.slice(0,slashIdx);
     img=img.slice(slashIdx+1);
   }
-  if(appId&&img) return 'https://cdn.discordapp.com/app-assets/'+appId+'/'+img+'.png?size=128';
-  return null;
+  if(appId&&img){const url='https://cdn.discordapp.com/app-assets/'+appId+'/'+img.toLowerCase()+'.png?size=128';console.log('[act] url',url);return url}
+  console.log('[act] missing appId or img',appId,img);return null;
 }
 function applyDiscord(d){
   const st=d.discord_status||'offline';
@@ -717,6 +717,7 @@ function applyDiscord(d){
   (d.activities||[]).forEach(a=>{
     if(a.type===2||a.type===4) return;
     const iconUrl=getActIcon(a.assets,a.application_id);
+    console.log('[act]',a.name,a.type,a.application_id,JSON.stringify(a.assets),'→',iconUrl);
     acts.push({
       icon:iconUrl,title:a.name||'Activity',line1:a.details||'',line2:a.state||'',
       start:a.timestamps?.start,end:a.timestamps?.end,controls:false
@@ -726,7 +727,7 @@ function applyDiscord(d){
   if(!acts.length){c.innerHTML='<div class="act-empty">No activity</div>';lastDiscordData=d;return}
   const now=Date.now();
   c.innerHTML=acts.map(a=>{
-    const icon=a.icon?`<img class="act-icon" src="${a.icon}" width="48" height="48" onerror="this.outerHTML='<div class=act-icon-fallback>${esc(a.title||'?')[0]}</div>'">`:`<div class="act-icon-fallback">${esc(a.title||'?')[0]}</div>`;
+    const icon=a.icon?`<img class="act-icon" src="${a.icon}" width="48" height="48" onerror="var s=this.src.replace('?size=128','');if(s!==this.src){this.src=s;this.onerror=function(){this.outerHTML='<div class=act-icon-fallback>'+this.dataset.fb+'</div>'}}else{this.outerHTML='<div class=act-icon-fallback>'+this.dataset.fb+'</div>'}" data-fb="${esc(a.title||'?')[0]}">`:`<div class="act-icon-fallback">${esc(a.title||'?')[0]}</div>`;
     const pct=a.start&&a.end?Math.min(100,(now-a.start)/(a.end-a.start)*100):-1;
     const bar=pct>=0?`<div class="act-bar-wrap"><div class="act-bar" style="width:${pct}%"></div></div>`:'';
     const time=a.start?`<div class="act-time">${fmtElapsed(a.start,a.end)}</div>`:'';
