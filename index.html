@@ -155,6 +155,32 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .contact-slot .cs-line{font-family:VT323;font-size:16px;color:#aaa}
 .contact-slot .cs-hint{font-family:VT323;font-size:12px;color:#666;margin-top:2px}
 @media(max-width:900px){.hotbar{left:0;right:0;transform:none;justify-content:center;flex-wrap:wrap}.hero-grid,.book-pages{grid-template-columns:1fr}.hero{padding-top:150px}.logo{font-size:48px}.page:first-child{border-right:0;border-bottom:2px solid #a88458}.act-icon,.act-icon-fallback{width:32px;height:32px}.act-icon-fallback .mc-item{width:32px;height:32px}}
+
+.term-toggle{position:fixed;bottom:16px;left:16px;z-index:800;width:44px;height:44px;padding:0;font-size:18px;min-width:0;background:var(--panel-strong)}
+.term-toggle:hover{color:var(--xp)}
+.term-overlay{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:24px}
+.term-window{width:min(720px,94vw);height:min(480px,84vh);background:#0b0b10;border:3px solid var(--stone-dark);box-shadow:inset 3px 3px 0 rgba(255,255,255,.05),inset -3px -3px 0 rgba(0,0,0,.55),0 20px 60px rgba(0,0,0,.65);display:flex;flex-direction:column;font-family:'VT323',monospace}
+.term-head{display:flex;align-items:center;gap:10px;background:var(--stone-dark);padding:7px 10px;border-bottom:3px solid #000}
+.term-head .dots{display:flex;gap:6px}
+.term-head .dot{width:12px;height:12px;border-radius:50%;box-shadow:inset -2px -2px 0 rgba(0,0,0,.35)}
+.term-head .dot.r{background:#e04a3a}.term-head .dot.y{background:#eab64a}.term-head .dot.g{background:#5fae4a}
+.term-title{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.term-close{margin-left:auto;width:26px;height:26px;display:grid;place-items:center;background:#0a0a0a;border:2px solid var(--stone-dark);color:#999;cursor:pointer;font-size:14px;line-height:1}
+.term-close:hover{color:#fff;border-color:var(--gold)}
+.term-body{flex:1;overflow-y:auto;padding:12px 14px;color:var(--xp);font-size:18px;line-height:1.5;background:repeating-linear-gradient(rgba(126,255,21,.028) 0 2px,transparent 0 4px);cursor:text}
+.term-body::-webkit-scrollbar{width:12px}
+.term-body::-webkit-scrollbar-track{background:#050508}
+.term-body::-webkit-scrollbar-thumb{background:var(--stone);border:2px solid #050508}
+.term-line{white-space:pre-wrap;word-break:break-word}
+.term-line.term-cmd{color:#e8e1d4}
+.term-line.term-out{color:var(--xp)}
+.term-line.term-warn{color:var(--gold)}
+.term-line.term-err{color:#ff6b6b}
+.term-line.term-dim{color:#8b8b8b}
+.term-line.term-boot{color:#8b8b8b}
+.term-input-row{display:flex;align-items:center;gap:8px;padding:8px 12px;border-top:2px solid var(--stone-dark);background:#050509}
+.term-prompt{color:var(--gold);font-size:18px;white-space:nowrap}
+.term-input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--xp);font-family:'VT323',monospace;font-size:18px;caret-color:var(--xp)}
 </style>
 </head>
 <body>
@@ -724,6 +750,189 @@ function setupCardCopy(name){
 }
 
 loadSiteData();loadBadges();loadProjects();connectLanyard();actTimer=setInterval(updateActivityBars,1000);
+</script>
+
+<!-- ===== Terminal easter egg ===== -->
+<button class="mc-btn term-toggle" id="term-toggle" type="button" title="Terminal (press `)" aria-label="Open terminal"><span class="mc-item i-screen"></span></button>
+<div class="term-overlay" id="term-overlay" hidden>
+  <div class="term-window">
+    <div class="term-head">
+      <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+      <span class="term-title">reef@minecraft: ~</span>
+      <button class="term-close" id="term-close" type="button" aria-label="Close terminal">x</button>
+    </div>
+    <div class="term-body" id="term-body" onclick="document.getElementById('term-input').focus()"></div>
+    <div class="term-input-row"><span class="term-prompt">reef@minecraft:~$</span><input class="term-input" id="term-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+  </div>
+</div>
+<script>
+(function(){
+  const overlay=document.getElementById('term-overlay');
+  const body=document.getElementById('term-body');
+  const input=document.getElementById('term-input');
+  const toggle=document.getElementById('term-toggle');
+  const closeBtn=document.getElementById('term-close');
+  const SECTIONS=['home','about','projects','blog','album','library','friends','contact'];
+  const SECTIONS_MAP={home:['home','spawn'],about:['about'],projects:['projects','crafting'],blog:['blog'],album:['album','gallery'],library:['library','inventory'],friends:['friends'],contact:['contact']};
+  let history=[],hPos=0;
+  function esc(s){return String(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+  function add(html,cls){const d=document.createElement('div');d.className='term-line'+(cls?' '+cls:'');d.innerHTML=html;body.appendChild(d);body.scrollTop=body.scrollHeight}
+  function line(t,cls){add(esc(t),cls)}
+  function printCmd(cmd){add('<span style="color:#8fbc8f">reef@minecraft:~$</span> '+esc(cmd),'term-cmd')}
+  function boot(){
+    line('Minecraft Terminal v1.0 — reef.world', 'term-boot');
+    line('Type "help" to see available commands.', 'term-boot');
+    line('', 'term-boot');
+  }
+  function open(){overlay.hidden=false;boot();input.value='';input.focus()}
+  function close(){overlay.hidden=true;body.innerHTML=''}
+  function navTo(id){const sec=document.getElementById(id);if(sec){sec.scrollIntoView({behavior:'smooth'});if(window.playClick)playClick('nav')}}
+  function socialUrl(key){
+    const s=(typeof siteData!=='undefined'&&siteData.socials)||{};
+    if(key==='discord')return 'https://discord.com/users/'+(s.discord||window.DISCORD_ID);
+    if(key==='github')return 'https://github.com/'+(s.github||window.GITHUB_USER);
+    return '';
+  }
+  const HELP=[
+    ['help','show this help'],
+    ['ls','list sections'],
+    ['cd <section>','travel to a section (home, about, projects, blog, album, library, friends, contact)'],
+    ['whoami','who are you?'],
+    ['pwd','print working directory'],
+    ['neofetch','system info'],
+    ['echo <text>','print text'],
+    ['date','current time'],
+    ['sudo make me op','grant operator powers'],
+    ['open discord','open Discord profile'],
+    ['open github','open GitHub profile'],
+    ['clear','clear the terminal'],
+    ['exit','close the terminal'],
+  ];
+  function run(raw){
+    const cmd=String(raw||'').trim();
+    printCmd(cmd);
+    if(!cmd)return;
+    const parts=cmd.split(/\s+/);
+    const name=parts[0].toLowerCase();
+    const arg=parts.slice(1).join(' ').trim();
+    switch(name){
+      case 'help':
+        line('Available commands:', 'term-out');
+        HELP.forEach(pair=>add('<span style="color:#7eff15">'+esc(pair[0])+'</span> — '+esc(pair[1]),'term-out'));
+        break;
+      case 'ls':
+        line('Directories in /home/reef/minecraft_world:', 'term-out');
+        SECTIONS.forEach(s=>add('  '+esc(s),'term-out'));
+        break;
+      case 'cd':{
+        let target=(arg||'home').toLowerCase();
+        if(target==='~'||target==='.'||target==='/')target='home';
+        if(target==='..'){line('You cannot escape the world. Nice try.', 'term-warn');break}
+        let id=null;
+        for(const k in SECTIONS_MAP){if(SECTIONS_MAP[k].includes(target)){id=k;break}}
+        if(!id){line('cd: no such directory: '+arg,'term-err');break}
+        navTo(id);
+        line('Teleporting to /home/reef/minecraft_world/'+id+' ...', 'term-out');
+        break;
+      }
+      case 'whoami':
+        line('reef', 'term-out');
+        line('owner of this little block of the internet.', 'term-dim');
+        break;
+      case 'pwd':
+        line('/home/reef/minecraft_world', 'term-out');
+        break;
+      case 'neofetch':{
+        const s=(typeof siteData!=='undefined')?siteData:{};
+        add('<pre style="color:#7eff15;line-height:1.15">'+[
+          '   RRR   EEEE  EEEE  FFFF ',
+          '   R  R  E     E     F    ',
+          '   RRR   EE    EE    FFF  ',
+          '   R R   E     E     F    ',
+          '   R  R  EEEE  EEEE  F    '
+        ].join('\n')+'</pre>','term-out');
+        line((s.name||'Reef')+'@minecraft', 'term-out');
+        line('--------------------------', 'term-dim');
+        line('OS: BlockOS 1.21', 'term-out');
+        line('Host: grass_block', 'term-out');
+        line('Shell: creeper-bash', 'term-out');
+        line('Resolution: '+screen.width+'x'+screen.height, 'term-out');
+        line('GitHub: /'+(s.socials&&s.socials.github?esc(s.socials.github):(window.GITHUB_USER||'?')), 'term-out');
+        line('Biome: '+((typeof siteData!=='undefined'&&siteData.bg)?'custom':'overworld'), 'term-out');
+        line('Uptime: 20+ years, still going', 'term-out');
+        line('Uses: building, breaking, occasional sleeping', 'term-out');
+        break;
+      }
+      case 'echo':
+        line(arg||'', 'term-out');
+        break;
+      case 'date':
+        line(new Date().toString(), 'term-out');
+        break;
+      case 'sudo':
+        if(/make me op/.test(arg)){
+          line('[sudo] password for reef: ', 'term-warn');
+          setTimeout(()=>{
+            line('Access granted. You are now an Operator.', 'term-out');
+            line('Granting op level... 3... 2... 1...', 'term-out');
+            setTimeout(()=>line('Kidding. You broke the server. Fun 10 seconds.', 'term-warn'),900);
+          },500);
+        }else{
+          line('sudo: '+arg+' — reef is not in the sudoers file. This incident will be reported.', 'term-err');
+        }
+        break;
+      case 'open':
+        if(arg==='discord'||arg==='github'){
+          const u=socialUrl(arg);
+          if(u){window.open(u,'_blank','noreferrer');line('Opening '+arg+'...','term-out')}
+          else line('open: no '+arg+' link configured','term-err');
+        }else{
+          line('open: unknown target "'+arg+'" (try "open discord" or "open github")','term-err');
+        }
+        break;
+      case 'clear':
+        body.innerHTML='';
+        return;
+      case 'exit':
+        close();
+        return;
+      case 'who':
+        line('reef is logged in', 'term-out');
+        break;
+      default:
+        line('bash: '+name+': command not found','term-err');
+        line('Try "help" for available commands.', 'term-dim');
+    }
+  }
+  toggle.addEventListener('click',()=>{if(overlay.hidden)open();else close();if(window.playClick)playClick('click')});
+  closeBtn.addEventListener('click',()=>{close();if(window.playClick)playClick('click')});
+  overlay.addEventListener('click',e=>{if(e.target===overlay){close();if(window.playClick)playClick('click')}});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&!overlay.hidden){close();e.preventDefault();return}
+    if(e.target===input)return;
+    if(e.key==='`'||e.key==='~'){
+      e.preventDefault();
+      if(overlay.hidden)open();else close();
+    }
+  });
+  input.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){
+      const v=input.value;
+      input.value='';
+      history.push(v);
+      if(history.length>50)history.shift();
+      hPos=history.length;
+      run(v);
+    }else if(e.key==='ArrowUp'){
+      e.preventDefault();
+      if(hPos>0){hPos--;input.value=history[hPos]}
+    }else if(e.key==='ArrowDown'){
+      e.preventDefault();
+      if(hPos<history.length-1){hPos++;input.value=history[hPos]}
+      else{hPos=history.length;input.value=''}
+    }
+  });
+})();
 </script>
 </body>
 </html>

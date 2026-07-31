@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e88c8"/><stop offset="0.5" stop-color="#14598f"/><stop offset="1" stop-color="#0a2f52"/>
+    </linearGradient>
+    <linearGradient id="rays" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="rgba(255,255,255,.35)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#water)"/>
+  <path d="M0 60 L160 0 L220 44 L360 0 L460 38 L620 0 L800 54 V120 H0 Z" fill="#37a9dd"/>
+  <g fill="url(#rays)"><polygon points="260,0 340,0 300,600 200,600"/><polygon points="520,0 600,0 580,600 470,600"/><polygon points="40,0 120,0 90,600 -10,600"/></g>
+  <g fill="#ff9fb0"><rect x="120" y="470" width="70" height="130" rx="8"/><rect x="90" y="510" width="40" height="90" rx="6"/><rect x="170" y="500" width="36" height="100" rx="6"/></g>
+  <g fill="#f4c04a"><rect x="610" y="440" width="90" height="160" rx="8"/><rect x="570" y="500" width="40" height="100" rx="6"/><rect x="680" y="490" width="36" height="110" rx="6"/></g>
+  <g fill="#2a1a0a"><path d="M360 600 q10 -60 40 -90 q10 -14 12 -30 l0 30 q26 36 34 90 Z"/></g>
+  <g fill="rgba(255,255,255,.18)"><circle cx="240" cy="200" r="10"/><circle cx="500" cy="260" r="6"/><circle cx="660" cy="330" r="8"/><circle cx="180" cy="360" r="5"/><circle cx="420" cy="400" r="7"/></g>
+  <g fill="rgba(255,255,255,.12)"><rect x="0" y="130" width="800" height="2"/><rect x="0" y="230" width="800" height="2"/><rect x="0" y="350" width="800" height="2"/><rect x="0" y="460" width="800" height="2"/></g>
+</svg>

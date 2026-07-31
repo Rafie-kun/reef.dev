@@ -263,6 +263,21 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 /* i-hamburger: Three Lines — stacked horizontal bars */
 .i-hamburger:before{left:4px;top:6px;width:16px;height:3px;background:linear-gradient(90deg,#888 0 2px,#aaa 2px 15px,#888 15px);border-radius:1px;box-shadow:0 6px 0 0 #999,0 12px 0 0 #aaa,0 6px 0 0 #777,0 12px 0 0 #888,1px 0 0 #ccc,1px 6px 0 #ccc,1px 12px 0 #ccc}.i-hamburger:after{display:none}
 .mc-item.inline{display:inline-block;vertical-align:middle;width:16px;height:16px;margin-right:3px;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.45))}
+.bg-preview{width:100%;height:110px;border:2px solid var(--stone-dark);background:#0a0a0a center/cover no-repeat;display:none;margin-bottom:16px;position:relative}
+.bg-preview.show{display:block}
+.bg-preview .bp-tag{position:absolute;left:8px;top:8px;font-family:'Press Start 2P',monospace;font-size:5px;color:#000;background:var(--xp);padding:3px 6px}
+.bg-preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.bg-preset{border:2px solid var(--stone-dark);background:#1e1e1e;cursor:pointer;padding:6px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;transition:border-color .1s,transform .08s steps(1);color:var(--text);font-family:'Press Start 2P',monospace;font-size:5px}
+.bg-preset:hover{border-color:var(--yellow);transform:scale(1.03)}
+.bg-preset.active{border-color:var(--xp);box-shadow:0 0 8px rgba(126,255,21,.35)}
+.bg-preset img{width:100%;height:52px;object-fit:cover;border:1px solid #333}
+.bg-preset .bp-label{line-height:1.5;color:#aaa}
+.bg-preset.active .bp-label{color:var(--xp)}
+.bg-preset .bp-clear{line-height:1.5;color:#aaa;padding:20px 0}
+input[type="file"]{font-family:'VT323',monospace;font-size:15px;color:var(--text);background:var(--input-bg);border:2px solid var(--stone-dark);padding:8px 10px;width:100%;cursor:pointer}
+input[type="file"]::-webkit-file-upload-button{font-family:'Press Start 2P',monospace;font-size:6px;background:var(--stone);color:#eee;border:none;outline:none;padding:8px 12px;margin-right:10px;cursor:pointer;box-shadow:inset -2px -3px 0 var(--stone-dark),inset 2px 2px 0 var(--stone-light)}
+input[type="file"]::-webkit-file-upload-button:hover{filter:brightness(1.3);color:var(--yellow)}
+input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:6px;background:var(--stone);color:#eee;border:none;padding:8px 12px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -466,6 +481,27 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
         <label>Background Image URL (overlays panorama at 35% opacity)</label>
         <input class="mc-input" id="cfg-bg" placeholder="https://... (leave blank for default panorama)">
         <small style="color:#666;font-family:'VT323';font-size:16px;">Tip: Use a Minecraft screenshot. Paste any direct image URL.</small>
+      </div>
+      <div class="bg-preview" id="bg-preview"><span class="bp-tag">PREVIEW</span></div>
+      <div class="field">
+        <label>Upload Background Image</label>
+        <input type="file" id="bg-file" accept="image/*" onchange="uploadBackground(this)">
+        <small style="color:#666;font-family:'VT323';font-size:16px;">JPG/PNG/GIF/SVG up to 2MB. Converted to base64 and stored in the same field as the URL above.</small>
+      </div>
+      <div class="field">
+        <label>Background Presets</label>
+        <div class="bg-preset-grid" id="bg-presets">
+          <button type="button" class="bg-preset" data-bg="/assets/bg-plains.svg" onclick="pickBgPreset(this)"><img src="/assets/bg-plains.svg" alt="Plains"><span class="bp-label">Plains</span></button>
+          <button type="button" class="bg-preset" data-bg="/assets/bg-desert.svg" onclick="pickBgPreset(this)"><img src="/assets/bg-desert.svg" alt="Desert"><span class="bp-label">Desert</span></button>
+          <button type="button" class="bg-preset" data-bg="/assets/bg-ocean.svg" onclick="pickBgPreset(this)"><img src="/assets/bg-ocean.svg" alt="Ocean"><span class="bp-label">Ocean</span></button>
+          <button type="button" class="bg-preset" data-bg="/assets/bg-nether.svg" onclick="pickBgPreset(this)"><img src="/assets/bg-nether.svg" alt="Nether"><span class="bp-label">Nether</span></button>
+          <button type="button" class="bg-preset" data-bg="/assets/bg-end.svg" onclick="pickBgPreset(this)"><img src="/assets/bg-end.svg" alt="The End"><span class="bp-label">The End</span></button>
+          <button type="button" class="bg-preset" data-bg="/assets/bg-snow.svg" onclick="pickBgPreset(this)"><img src="/assets/bg-snow.svg" alt="Snowy Tundra"><span class="bp-label">Snowy Tundra</span></button>
+          <button type="button" class="bg-preset" data-bg="/assets/bg-cherry.svg" onclick="pickBgPreset(this)"><img src="/assets/bg-cherry.svg" alt="Cherry Grove"><span class="bp-label">Cherry Grove</span></button>
+          <button type="button" class="bg-preset" data-bg="/assets/bg-cave.svg" onclick="pickBgPreset(this)"><img src="/assets/bg-cave.svg" alt="Cave"><span class="bp-label">Cave</span></button>
+          <button type="button" class="bg-preset" data-bg="" onclick="pickBgPreset(this)"><span class="bp-clear">Default<br>Panorama</span></button>
+        </div>
+        <small style="color:#666;font-family:'VT323';font-size:16px;">Click a preset to fill the URL field above, then press Apply Background.</small>
       </div>
       <div class="field">
         <label>My Card Image URL (88x31 button image)</label>
@@ -696,6 +732,7 @@ function loadAllPanels() {
   tog.className = 'toggle' + (soundOn ? ' on' : '');
   document.getElementById('snd-label').textContent = soundOn ? 'Sound ON' : 'Sound OFF';
   document.getElementById('snd-label').style.color = soundOn ? 'var(--xp)' : '#888';
+  updateBgPreview();
 }
 
 // ============================================
@@ -738,6 +775,7 @@ async function loadAllPanelsAsync(){
       document.getElementById('snd-label').textContent=on?'Sound ON':'Sound OFF';
       document.getElementById('snd-label').style.color=on?'var(--xp)':'#888';
     }
+    updateBgPreview();
     toast('Synced from server!',true);
   }catch(e){}
 }
@@ -1146,6 +1184,49 @@ function saveAppearance() {
   saveData(d);
   toast('Appearance saved! Reload the site to see it.');
 }
+
+// ============================================
+// APPEARANCE — live preview + alt background methods
+// All three (URL, file upload, presets) write to the same d.bg field via cfg-bg.
+// ============================================
+function updateBgPreview() {
+  const val = (document.getElementById('cfg-bg').value || '').trim();
+  const pv = document.getElementById('bg-preview');
+  if (val) {
+    pv.style.backgroundImage = "url('" + val.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "')";
+    pv.classList.add('show');
+  } else {
+    pv.style.backgroundImage = '';
+    pv.classList.remove('show');
+  }
+  document.querySelectorAll('#bg-presets .bg-preset').forEach(b => b.classList.toggle('active', (b.dataset.bg || '') === val));
+}
+function uploadBackground(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  if (!/^image\//.test(file.type)) { toast('Please choose an image file', false); input.value = ''; return; }
+  if (file.size > 2 * 1024 * 1024) { toast('Image too large — max 2MB for base64 storage', false); input.value = ''; return; }
+  const r = new FileReader();
+  r.onload = () => {
+    const val = r.result;
+    document.getElementById('cfg-bg').value = val;
+    updateBgPreview();
+    const ov = document.getElementById('bg');
+    if (ov) ov.style.backgroundImage = "url('" + val + "')";
+    toast('Image loaded. Press Apply Background to save.');
+  };
+  r.onerror = () => toast('Could not read file', false);
+  r.readAsDataURL(file);
+}
+function pickBgPreset(btn) {
+  const val = (btn.dataset.bg || '').trim();
+  document.getElementById('cfg-bg').value = val;
+  updateBgPreview();
+  const ov = document.getElementById('bg');
+  if (ov) ov.style.backgroundImage = val ? "url('" + val + "')" : '';
+  toast(val ? 'Preset selected. Press Apply Background to save.' : 'Default panorama restored. Press Apply Background to save.');
+}
+document.getElementById('cfg-bg').addEventListener('input', updateBgPreview);
 
 // ============================================
 // SETTINGS

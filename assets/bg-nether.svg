@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="air" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a0f08"/><stop offset="1" stop-color="#701d0c"/>
+    </linearGradient>
+    <linearGradient id="lava" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffcf4a"/><stop offset="1" stop-color="#ff5a00"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#air)"/>
+  <g fill="rgba(255,90,0,.25)"><polygon points="520,0 620,0 560,600 460,600"/><polygon points="120,0 220,0 170,600 60,600"/></g>
+  <path d="M0 350 Q140 300 300 345 T600 330 T800 360 V600 H0 Z" fill="#4e1a0a"/>
+  <path d="M0 460 Q180 400 420 455 T800 440 V600 H0 Z" fill="#33100a"/>
+  <path d="M0 340 L90 360 L120 380 L200 340 L260 368 L330 336 L430 380 L520 348 L620 372 L700 344 L800 360 L800 408 L0 408 Z" fill="url(#lava)"/>
+  <path d="M0 540 L150 560 L260 528 L400 566 L540 538 L680 570 L800 544 L800 600 L0 600 Z" fill="url(#lava)" opacity=".8"/>
+  <g fill="#ffd24a"><circle cx="210" cy="120" r="5"/><circle cx="360" cy="180" r="4"/><circle cx="560" cy="110" r="5"/><circle cx="700" cy="200" r="4"/><circle cx="90" cy="230" r="3"/></g>
+  <g fill="#5a1a08"><rect x="140" y="470" width="30" height="60"/><rect x="600" y="440" width="30" height="90"/><rect x="380" y="500" width="30" height="40"/></g>
+  <g fill="rgba(255,150,40,.35)"><circle cx="150" cy="485" r="12"/><circle cx="615" cy="460" r="12"/><circle cx="395" cy="510" r="10"/></g>
+</svg>
