@@ -84,7 +84,7 @@ body{font-family:'VT323',monospace;font-size:18px;color:var(--text);background:v
 }
 .nav-item:hover{background:#2a2a2a;color:var(--yellow);}
 .nav-item.active{background:#252525;border-left-color:var(--xp);color:var(--yellow);}
-.nav-item .ni{margin-right:8px;display:flex;align-items:center}.nav-item .ni .mc-item{width:16px;height:16px}
+.nav-item .ni{margin-right:8px;display:inline-flex;align-items:center;vertical-align:middle}.nav-item .ni .mc-item{transform:scale(0.5);transform-origin:center}
 .sidebar-logout{
   margin-top:auto;padding:14px 18px;border-top:2px solid var(--stone-dark);
   font-family:'Press Start 2P',monospace;font-size:6px;color:var(--red);
@@ -262,7 +262,7 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 .i-eye:before{left:2px;top:6px;width:20px;height:12px;border:2px solid #888;border-radius:50%;background:#eee;box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 #ddd,1px 1px 0 #ddd,-1px 1px 0 #ddd,8px 3px 0 0 #222,8px 2px 0 1px #444,8px 4px 0 1px #111,9px 3px 0 1px #3a6a9a,10px 3px 0 0 #fff,14px 5px 0 0 #fff}.i-eye:after{display:none}
 /* i-hamburger: Three Lines — stacked horizontal bars */
 .i-hamburger:before{left:4px;top:6px;width:16px;height:3px;background:linear-gradient(90deg,#888 0 2px,#aaa 2px 15px,#888 15px);border-radius:1px;box-shadow:0 6px 0 0 #999,0 12px 0 0 #aaa,0 6px 0 0 #777,0 12px 0 0 #888,1px 0 0 #ccc,1px 6px 0 #ccc,1px 12px 0 #ccc}.i-hamburger:after{display:none}
-.mc-item.inline{display:inline-block;vertical-align:middle;width:16px;height:16px;margin-right:3px;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.45))}
+.mc-item.inline{display:inline-block;vertical-align:middle;margin-right:3px;transform:scale(0.5);transform-origin:center;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.45))}
 .bg-preview{width:100%;height:110px;border:2px solid var(--stone-dark);background:#0a0a0a center/cover no-repeat;display:none;margin-bottom:16px;position:relative}
 .bg-preview.show{display:block}
 .bg-preview .bp-tag{position:absolute;left:8px;top:8px;font-family:'Press Start 2P',monospace;font-size:5px;color:#000;background:var(--xp);padding:3px 6px}
@@ -302,7 +302,8 @@ input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:
 
   <nav id="sidebar">
     <div class="sidebar-logo"><span class="mc-item i-hammer inline"></span> REEF ADMIN<span>CMS Dashboard</span></div>
-    <div class="nav-item active" onclick="showPanel('bio',this)"><span class="ni"><span class="mc-item i-book2"></span></span>Bio &amp; About</div>
+    <a href="https://reef-dev.vercel.app/" target="_blank" rel="noopener noreferrer" class="mc-btn" style="margin:12px 14px;width:auto;padding:9px 14px;font-size:6px;justify-content:center"><span class="mc-item i-eye inline"></span> View Live Site</a>
+    <div class="nav-item active" onclick="showPanel('bio',this)"><span class="ni"><span class="mc-item i-book"></span></span>Bio &amp; About</div>
     <div class="nav-item" onclick="showPanel('socials',this)"><span class="ni"><span class="mc-item i-link"></span></span>Social Links</div>
     <div class="nav-item" onclick="showPanel('library',this)"><span class="ni"><span class="mc-item i-cart"></span></span>Library</div>
     <div class="nav-item" onclick="showPanel('friends',this)"><span class="ni"><span class="mc-item i-game"></span></span>Friends / Badges</div>
@@ -532,6 +533,15 @@ input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:
         <label>Change Admin Password</label>
         <input class="mc-input" id="new-pw" type="password" placeholder="New password...">
         <input class="mc-input" id="new-pw2" type="password" placeholder="Confirm..." style="margin-top:6px">
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Backup / Restore Site Data</label>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button class="mc-btn green" onclick="exportData()" style="width:auto;padding:8px 16px"><span class="mc-item i-save inline"></span> Export Data</button>
+          <button class="mc-btn" onclick="document.getElementById('import-file').click()" style="width:auto;padding:8px 16px"><span class="mc-item i-arrow inline"></span> Import Data</button>
+          <input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importData(this)">
+        </div>
+        <small style="color:#666;font-family:'VT323';font-size:16px;">Export downloads a JSON backup of all site data. Import overwrites everything (local + server copy) after confirmation.</small>
       </div>
       <div class="save-bar">
         <button class="mc-btn green" onclick="saveSettings()"><span class="mc-item i-save inline"></span> Save Settings</button>
@@ -789,6 +799,7 @@ function saveBio() {
   d.bio = document.getElementById('cfg-bio').value;
   d.email = document.getElementById('cfg-email').value;
   saveData(d);
+  savedOk('bio');
   toast('Bio saved!');
 }
 
@@ -830,6 +841,7 @@ function saveSocials() {
     extra: extraSocials,
   };
   saveData(d);
+  savedOk('socials');
   toast('Socials saved!');
 }
 
@@ -871,7 +883,7 @@ function renderLibList(tab, list) {
     <div class="card-item">
       <div class="card-content">
         <div style="display:flex;gap:8px;align-items:center">
-          <span onclick="toggleLibHidden('${tab}',${i})" style="cursor:pointer;font-size:16px;color:${item.hidden?'#555':'var(--xp)'}" title="${item.hidden?'Hidden - click to show':'Visible - click to hide'}">${item.hidden?'<span class="mc-item i-circle" style="width:16px;height:16px;filter:drop-shadow(0 0 2px #555)"></span>':'<span class="mc-item i-eye" style="width:16px;height:16px;filter:drop-shadow(0 0 2px var(--xp))"></span>'}</span>
+          <span onclick="toggleLibHidden('${tab}',${i})" style="cursor:pointer;font-size:16px;color:${item.hidden?'#555':'var(--xp)'}" title="${item.hidden?'Hidden - click to show':'Visible - click to hide'}">${item.hidden?'<span class="mc-item i-circle" style="transform:scale(0.5);transform-origin:center;filter:drop-shadow(0 0 2px #555)"></span>':'<span class="mc-item i-eye" style="transform:scale(0.5);transform-origin:center;filter:drop-shadow(0 0 2px var(--xp))"></span>'}</span>
           <input class="mc-input" value="${item.type||'basic'}" oninput="libData['${tab}'][${i}].type=this.value" placeholder="Type basic or steam" style="width:120px">
           <input class="mc-input" value="${item.icon||''}" oninput="libData['${tab}'][${i}].icon=this.value" placeholder="Icon" style="width:100px">
           <button class="btn-sm" onclick="fetchSteamGame('${tab}',${i})" title="Auto-fetch from Steam" style="font-size:10px;padding:2px 6px"><span class="mc-item i-link inline"></span> Steam</button>
@@ -908,6 +920,7 @@ function saveLibrary() {
   d.library.read = libData.read||[];
   delete d.library.reading;
   saveData(d);
+  savedOk('lib');
   toast('Library saved!');
 }
 
@@ -967,6 +980,7 @@ function saveGames() {
   d.games=JSON.parse(JSON.stringify(gamesData));
   d.library.games=JSON.parse(JSON.stringify(gamesData));
   saveData(d);
+  savedOk('games');
   toast('Games saved!');
 }
 // Load games on panel init — called from loadAllPanels/loadAllPanelsAsync
@@ -1053,6 +1067,7 @@ function saveFriends() {
   const d = loadData();
   d.friends = friendsData;
   saveData(d);
+  savedOk('friends');
   toast('Badges saved!');
 }
 
@@ -1084,6 +1099,7 @@ function saveProjects() {
   const d = loadData();
   d.projects = projectsData;
   saveData(d);
+  savedOk('proj');
   toast('Projects saved!');
 }
 
@@ -1116,7 +1132,7 @@ function uploadBlogImg(i,input){
 }
 function addBlogPost(){ blogData.push({title:'New Post',date:'',body:'',img:''}); renderBlog(blogData); }
 function rmBlog(i){ blogData.splice(i,1); renderBlog(blogData); }
-function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); toast('Blog saved!'); }
+function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); savedOk('blog'); toast('Blog saved!'); }
 
 // ============================================
 // ALBUM
@@ -1146,7 +1162,7 @@ function uploadAlbumImg(i,input){
 }
 function addAlbumItem(){ albumData.push({caption:'New Image',img:'',link:''}); renderAlbum(albumData); }
 function rmAlbum(i){ albumData.splice(i,1); renderAlbum(albumData); }
-function saveAlbum(){ const d=loadData(); d.album=albumData; saveData(d); toast('Album saved!'); }
+function saveAlbum(){ const d=loadData(); d.album=albumData; saveData(d); savedOk('album'); toast('Album saved!'); }
 
 // ============================================
 // PHRASES
@@ -1170,6 +1186,7 @@ function savePhrases() {
   const d = loadData();
   d.phrases = phrasesData;
   saveData(d);
+  savedOk('phrases');
   toast('Phrases saved!');
 }
 document.getElementById('new-phrase').addEventListener('keydown', e => { if(e.key==='Enter') addPhrase(); });
@@ -1182,6 +1199,7 @@ function saveAppearance() {
   d.bg = document.getElementById('cfg-bg').value.trim();
   d.cardImg = document.getElementById('cfg-card-img').value.trim() || '/assets/button-88x31.webp';
   saveData(d);
+  savedOk('appearance');
   toast('Appearance saved! Reload the site to see it.');
 }
 
@@ -1254,6 +1272,7 @@ function saveSettings() {
   }
   saveData(d);
   localStorage.setItem('reef-muted', d.soundDefault ? 'false' : 'true');
+  savedOk('settings');
   toast('Settings saved!');
 }
 
@@ -1302,6 +1321,93 @@ function admPlay(kind='click'){
 }
 document.addEventListener('pointerdown', e=>{ if(e.target.closest('button,a,.nav-item,.tab-btn,.badge-slot,.card-item,.phrase-pill,.toggle')) admPlay('click'); }, {passive:true});
 document.addEventListener('pointerenter', e=>{ if(e.target.closest('button,a,.nav-item,.tab-btn,.badge-slot,.card-item,.phrase-pill,.toggle')) admPlay('hover'); }, true);
+
+// ============================================
+// UNSAVED-CHANGES TRACKING + SAVED TIMESTAMP
+// ============================================
+const dirtyPanels = new Set();
+function panelOf(el){
+  if(!el || !el.closest) return null;
+  const p = el.closest('.panel');
+  return p ? p.id.replace('panel-','') : null;
+}
+function markDirty(id){
+  if(!id) return;
+  dirtyPanels.add(id);
+  const m = document.getElementById(id + '-msg');
+  if(m){ m.textContent = '* Unsaved changes'; m.className = 'save-msg err'; m.style.display = 'inline-block'; }
+}
+function clearDirty(id){
+  dirtyPanels.delete(id);
+  const m = document.getElementById(id + '-msg');
+  if(m){ m.textContent = ''; m.className = 'save-msg'; m.style.display = 'none'; }
+}
+function savedOk(id){
+  clearDirty(id);
+  const m = document.getElementById(id + '-msg');
+  if(!m) return;
+  const now = new Date();
+  const t = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  m.textContent = 'Saved ' + t;
+  m.className = 'save-msg ok';
+  m.style.display = 'inline-block';
+}
+function clearAllDirty(){
+  dirtyPanels.clear();
+  document.querySelectorAll('.save-msg').forEach(m => { m.textContent=''; m.className='save-msg'; m.style.display='none'; });
+}
+document.addEventListener('input', e => markDirty(panelOf(e.target)), true);
+document.addEventListener('change', e => markDirty(panelOf(e.target)), true);
+document.addEventListener('pointerdown', e => {
+  const t = e.target.closest ? e.target.closest('button,.toggle') : null;
+  if(!t) return;
+  if(/^(save|import|export)/i.test(t.getAttribute('onclick') || '')) return;
+  markDirty(panelOf(t));
+}, true);
+window.addEventListener('beforeunload', e => {
+  if(dirtyPanels.size){ e.preventDefault(); e.returnValue = ''; }
+});
+
+// ============================================
+// BACKUP / RESTORE (Settings > Export/Import)
+// ============================================
+function exportData(){
+  const d = loadData();
+  const blob = new Blob([JSON.stringify(d, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'reef-cms-backup.json';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 100);
+  toast('Data exported!');
+}
+function importData(input){
+  const file = input.files && input.files[0];
+  if(!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    let d;
+    try{ d = JSON.parse(r.result); }
+    catch(e){ toast('Invalid JSON file', false); input.value=''; return; }
+    if(!d || typeof d !== 'object' || !d.name){
+      toast('Not a valid site data backup', false); input.value=''; return;
+    }
+    if(!confirm('Import this backup? This will overwrite all current site data (local + server copy).')){
+      input.value=''; return;
+    }
+    try{
+      localStorage.setItem(DATA_KEY, JSON.stringify(d));
+      saveData(d);
+      loadAllPanels();
+      clearAllDirty();
+      toast('Data imported!');
+    }catch(e){ toast('Import failed: ' + e.message, false); }
+    input.value = '';
+  };
+  r.onerror = () => toast('Could not read file', false);
+  r.readAsText(file);
+}
 </script>
 </body>
 </html>
