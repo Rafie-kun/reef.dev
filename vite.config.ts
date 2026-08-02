@@ -1,8 +1,11 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
+import {fileURLToPath} from 'node:url';
 import {defineConfig, Plugin} from 'vite';
+
+const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
 function apiServerPlugin(): Plugin {
   return {
@@ -20,7 +23,7 @@ function apiServerPlugin(): Plugin {
             pathname += '.js';
           }
 
-          const filePath = path.join(__dirname, pathname);
+          const filePath = path.join(rootDir, pathname);
           if (!fs.existsSync(filePath)) {
             return next();
           }
@@ -86,19 +89,29 @@ function apiServerPlugin(): Plugin {
   };
 }
 
+function copyStaticAssets(): Plugin {
+  return {
+    name: 'copy-static-assets',
+    apply: 'build',
+    closeBundle() {
+      fs.cpSync(path.resolve(rootDir, 'assets'), path.resolve(rootDir, 'dist/assets'), { recursive: true });
+    },
+  };
+}
+
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss(), apiServerPlugin()],
+    plugins: [react(), tailwindcss(), apiServerPlugin(), copyStaticAssets()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(rootDir, '.'),
       },
     },
     build: {
       rollupOptions: {
         input: {
-          main: path.resolve(__dirname, 'index.html'),
-          admin: path.resolve(__dirname, 'admin.html'),
+          main: path.resolve(rootDir, 'index.html'),
+          admin: path.resolve(rootDir, 'admin.html'),
         },
       },
     },
