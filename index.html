@@ -277,6 +277,7 @@ function applySiteData(){
   if(socials.github||GITHUB_USER) links.push({label:'GitHub',href:`https://github.com/${socials.github||GITHUB_USER}`});
   if(socials.twitter) links.push({label:'X',href:socials.twitter});
   if(socials.instagram) links.push({label:'Instagram',href:socials.instagram});
+  if(socials.guns) links.push({label:'Guns.lol',href:socials.guns});
   if(socials.spotify) links.push({label:'Spotify',href:socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>s?.url&&links.push({label:s.icon||s.name||'Link',href:s.url}));
   socialActions.innerHTML=['<a class="mc-btn" href="#library">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`)].join('');
@@ -288,6 +289,7 @@ function applySiteData(){
     {icon:'🐙',label:'GitHub',line:'/'+(socials.github||GITHUB_USER),hint:'Open source',href:`https://github.com/${socials.github||GITHUB_USER}`}];
   if(socials.twitter) contactSlots.push({icon:'𝕏',label:'X',line:socials.twitter.replace('https://',''),hint:'Social',href:socials.twitter});
   if(socials.instagram) contactSlots.push({icon:'📷',label:'Instagram',line:socials.instagram.replace('https://',''),hint:'Photos',href:socials.instagram});
+  if(socials.guns) contactSlots.push({icon:'🔗',label:'Guns.lol',line:socials.guns.replace('https://',''),hint:'Link',href:socials.guns});
   if(socials.spotify) contactSlots.push({icon:'🎵',label:'Spotify',line:socials.spotify.replace('https://','').split('/').pop()||'Profile',hint:'Music',href:socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>{if(s?.url) contactSlots.push({icon:s.icon||'🔗',label:s.name||'Link',line:s.url.replace('https://',''),hint:'Extra',href:s.url})});
   contactAct.innerHTML=contactSlots.map(s=>`<a class="contact-slot" href="${s.href}" target="_blank" rel="noreferrer"><span class="cs-icon">${mapIcon(s.icon)}</span><span class="cs-label">${s.label}</span><span class="cs-line">${s.line}</span><span class="cs-hint">${s.hint||mapIcon('→')}</span></a>`).join('');

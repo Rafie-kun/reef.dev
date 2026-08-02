@@ -357,6 +357,7 @@ input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:
       <div class="field"><label>GitHub Username</label><input class="mc-input" id="cfg-github" placeholder="Rafie-kun"></div>
       <div class="field"><label>Twitter / X URL</label><input class="mc-input" id="cfg-twitter" placeholder="https://twitter.com/..."></div>
       <div class="field"><label>Instagram URL</label><input class="mc-input" id="cfg-instagram" placeholder="https://instagram.com/..."></div>
+      <div class="field"><label>Guns.lol URL</label><input class="mc-input" id="cfg-guns" placeholder="https://guns.lol/username"></div>
       <div class="field"><label>Spotify Profile URL</label><input class="mc-input" id="cfg-spotify" placeholder="https://open.spotify.com/user/..."></div>
       <div style="margin-bottom:14px">
         <div class="panel-title" style="font-size:7px;margin-top:10px"><span class="mc-item i-link inline"></span> Extra Socials</div>
@@ -575,6 +576,7 @@ const DEFAULT_DATA = {
     github: 'Rafie-kun',
     twitter: '',
     instagram: '',
+    guns: '',
     spotify: '',
     extra: [],
   },
@@ -723,6 +725,7 @@ function loadAllPanels() {
   document.getElementById('cfg-github').value = d.socials?.github || '';
   document.getElementById('cfg-twitter').value = d.socials?.twitter || '';
   document.getElementById('cfg-instagram').value = d.socials?.instagram || '';
+  document.getElementById('cfg-guns').value = d.socials?.guns || '';
   document.getElementById('cfg-spotify').value = d.socials?.spotify || '';
   renderExtraSocials(d.socials?.extra || []);
   ['music','proj','read'].forEach(tab => renderLibList(tab, d.library?.[tab] || []));
@@ -760,6 +763,7 @@ async function loadAllPanelsAsync(){
       document.getElementById('cfg-github').value=d.socials.github||'';
       document.getElementById('cfg-twitter').value=d.socials.twitter||'';
       document.getElementById('cfg-instagram').value=d.socials.instagram||'';
+      document.getElementById('cfg-guns').value=d.socials.guns||'';
       document.getElementById('cfg-spotify').value=d.socials.spotify||'';
       renderExtraSocials(d.socials.extra||[]);
     }
@@ -837,6 +841,7 @@ function saveSocials() {
     github: document.getElementById('cfg-github').value,
     twitter: document.getElementById('cfg-twitter').value,
     instagram: document.getElementById('cfg-instagram').value,
+    guns: document.getElementById('cfg-guns').value,
     spotify: document.getElementById('cfg-spotify').value,
     extra: extraSocials,
   };
