@@ -478,7 +478,7 @@ function applySiteData(){
   if(socials.guns) links.push({label:'Guns.lol',href:socials.guns.startsWith('http')?socials.guns:'https://guns.lol/'+socials.guns});
   if(socials.spotify) links.push({label:'Spotify',href:socials.spotify.startsWith('http')?socials.spotify:'https://open.spotify.com/user/'+socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>s?.url&&links.push({label:s.icon||s.name||'Link',href:s.url}));
-  socialActions.innerHTML=['<a class="mc-btn" href="#library">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`)].join('');
+  socialActions.innerHTML=['<a class="mc-btn" href="#library">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${escAttr(l.href)}" target="_blank" rel="noreferrer">${escAttr(l.label)}</a>`)].join('');
   const iconMap={'💬':'i-discord','✉':'i-email','🐙':'i-github','𝕏':'i-twitter','📷':'i-instagram','🎯':'i-guns','🎵':'i-sound','🔗':'i-link','→':'i-arrow'};
   const mapIcon=c=>`<span class="mc-item ${c&&c.startsWith('i-')?c:(iconMap[c]||'i-link')}"></span>`;
   const contactAct=document.getElementById('contact-actions');
@@ -490,9 +490,9 @@ function applySiteData(){
   if(socials.guns) contactSlots.push({icon:'i-guns',label:'Guns.lol',line:socials.guns.replace(/^https?:\/\//,''),hint:'Bio Link',href:socials.guns.startsWith('http')?socials.guns:'https://guns.lol/'+socials.guns});
   if(socials.spotify) contactSlots.push({icon:'i-sound',label:'Spotify',line:socials.spotify.replace(/^https?:\/\//,'').split('/').pop()||'Profile',hint:'Music',href:socials.spotify.startsWith('http')?socials.spotify:'https://open.spotify.com/user/'+socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>{if(s?.url) contactSlots.push({icon:s.icon||'i-link',label:s.name||'Link',line:s.url.replace(/^https?:\/\//,''),hint:'Extra',href:s.url})});
-  contactAct.innerHTML=contactSlots.map(s=>`<a class="contact-slot" href="${s.href}" target="_blank" rel="noreferrer"><span class="cs-icon">${mapIcon(s.icon)}</span><span class="cs-label">${s.label}</span><span class="cs-line">${s.line}</span><span class="cs-hint">${s.hint||mapIcon('i-arrow')}</span></a>`).join('');
+  contactAct.innerHTML=contactSlots.map(s=>`<a class="contact-slot" href="${escAttr(s.href)}" target="_blank" rel="noreferrer"><span class="cs-icon">${mapIcon(s.icon)}</span><span class="cs-label">${escAttr(s.label)}</span><span class="cs-line">${escAttr(s.line)}</span><span class="cs-hint">${escAttr(s.hint)||mapIcon('i-arrow')}</span></a>`).join('');
   const bookSocials=document.getElementById('book-socials');
-  bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('');
+  bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${escAttr(l.href)}" target="_blank" rel="noreferrer">${escAttr(l.label)}</a>`).join('');
   renderAllTabs();
   fetchMissingGameImgs();
   renderBlogPosts(siteData.blog||JSON.parse(localStorage.getItem('reef-blog')||'[]'));
@@ -756,12 +756,16 @@ function loadBadges(){
   }catch(e){}
   if(!list.length) list=DEFAULT_FRIENDS;
   friendsEl.innerHTML=list.map(item=>{
-    const href=item.url||'#',label=(item.name||'Friend').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const href=item.url||'#';
+    const hrefAttr=escAttr(href);
+    const label=(item.name||'Friend').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const labelAttr=escAttr(item.name||'Friend');
+    const handleJs=String(item.name||'Friend').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/</g,'&lt;').replace(/>/g,'&gt;');
     if(item.code && String(item.code).trim()){
-      return `<div class="badge-embed" data-tip="${label}" title="${label}">${String(item.code)}</div>`;
+      return `<div class="badge-embed" data-tip="${labelAttr}" title="${labelAttr}">${String(item.code)}</div>`;
     }
-    const img=item.img?`<img src="${item.img}" alt="${label}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'badge-fallback',textContent:'${label}'}))">`:`<div class="badge-fallback">${label}</div>`;
-    return `<a class="badge-link" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer" data-tip="${label}">${img}</a>`;
+    const img=item.img?`<img src="${escAttr(item.img)}" alt="${labelAttr}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'badge-fallback',textContent:'${handleJs}'}))">`:`<div class="badge-fallback">${label}</div>`;
+    return `<a class="badge-link" href="${hrefAttr}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer" data-tip="${labelAttr}">${img}</a>`;
   }).join('');
   friendsEl.querySelectorAll('.badge-link,.badge-embed').forEach(el=>{el.addEventListener('click',()=>playClick('click'));el.addEventListener('mouseenter',()=>playClick('hover'))});
 }
@@ -810,39 +814,46 @@ function renderGamesTab(el){
   }
   el.innerHTML='<div class="games-scroll">'+games.map(g=>{
     const appId=String(g.appid||'').replace(/\D/g,'');
-    const title=esc(g.title||'Game #'+appId);
-    const status=g.status||'playing';
+    const titleText=esc(g.title||'Game #'+appId);
+    const titleAttr=escAttr(g.title||'Game #'+appId);
+    const status=['playing','completed','backlog'].includes(g.status)?g.status:'playing';
     const hours=parseInt(g.hours)||0;
     const cdn='https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/';
-    const imgSrc=g.img||(appId?cdn+appId+'/header.jpg':'');
+    const imgSrcAttr=escAttr(g.img||(appId?cdn+appId+'/header.jpg':''));
     const fbSrc=appId?cdn+appId+'/library_600x900.jpg':'';
     const statusIcons={playing:'<span class="mc-item i-play inline"></span>',completed:'<span class="mc-item i-done inline"></span>',backlog:'<span class="mc-item i-circle inline"></span>'};
-    const statusLabel=(statusIcons[status]||'')+' '+{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status]||'Playing';
+    const statusLabel=(statusIcons[status]||'')+' '+{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status];
     const failIcon='<span class="mc-item i-fail" style="display:flex;align-items:center;justify-content:center"></span>';
-    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>${failIcon}</div>'}" loading="lazy">`:`<div class="game-card-img game-card-fail">${failIcon}</div>`;
+    const imgHtml=appId?`<img class="game-card-img" src="${imgSrcAttr}" alt="${titleAttr}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>${failIcon}</div>'}" loading="lazy">`:`<div class="game-card-img game-card-fail">${failIcon}</div>`;
     const itemJson=escAttr(JSON.stringify({type:'steam',name:g.title,url:'https://store.steampowered.com/app/'+appId,appid:appId,status:status,hours:hours}));
-    return `<div class="game-card" data-item='${itemJson}'>${imgHtml}<div class="game-card-body"><span class="game-card-title">${title}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours"><span class="mc-item i-clock inline"></span> ${hours}h</span></div></div>`;
+    return `<div class="game-card" data-item='${itemJson}'>${imgHtml}<div class="game-card-body"><span class="game-card-title">${titleText}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours"><span class="mc-item i-clock inline"></span> ${hours}h</span></div></div>`;
   }).join('')+'</div>';
 }
 
 function renderOGItem(item,key,idx){
   const name=esc(item.name||item.og?.title||'Item');
+  const nameAttr=escAttr(item.name||item.og?.title||'Item');
   const desc=esc(item.og?.description||'');
   const img=item.og?.image||item.img||'';
+  const imgAttr=escAttr(img);
   const fav=item.og?.favicon||'';
+  const favAttr=escAttr(fav);
   let host='';try{if(item.url)host=new URL(item.url).hostname.replace('www.','')}catch(e){}  const site=esc(item.og?.siteName||host||'');
   const href=item.url||'#';
+  const hrefAttr=escAttr(href);
   const itemJson=escAttr(JSON.stringify({...item,_key:key,_idx:idx,og:item.og||null}));
   const failIcon='<span class="mc-item i-fail" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%"></span>';
-  const imgHtml=img?`<img class="og-item-img" src="${img}" alt="${name}" onerror="this.outerHTML='<div class=og-item-fail>${failIcon}</div>'" loading="lazy">`:'<div class="og-item-fail">'+failIcon+'</div>';
-  const favHtml=fav?`<img class="og-item-fav" src="${fav}" alt="" onerror="this.style.display='none'">`:'';
+  const imgHtml=img?`<img class="og-item-img" src="${imgAttr}" alt="${nameAttr}" onerror="this.outerHTML='<div class=og-item-fail>${failIcon}</div>'" loading="lazy">`:'<div class="og-item-fail">'+failIcon+'</div>';
+  const favHtml=fav?`<img class="og-item-fav" src="${favAttr}" alt="" onerror="this.style.display='none'">`:'';
   return `<div class="og-item" data-item='${itemJson}'>${imgHtml}<div class="og-item-body"><span class="og-item-title">${name}</span>${desc?`<span class="og-item-desc">${desc}</span>`:''}<div class="og-item-footer">${favHtml}<span class="og-item-site">${site}</span></div></div></div>`;
 }
 function openLibModal(item,key,idx){
   document.getElementById('lib-modal').classList.add('open');
   const c=document.getElementById('modal-content');
   const name=esc(item.name||item.og?.title||'Item');
+  const nameAttr=escAttr(item.name||item.og?.title||'Item');
   const href=item.url||'#';
+  const hrefAttr=escAttr(href);
   if((item.type||'basic')==='steam'){
     const appId=extractSteamAppId(item);
     const status=item.status||'';
@@ -859,12 +870,14 @@ function openLibModal(item,key,idx){
   }
   const og=item.og||{};
   const img=og.image||item.img||'';
+  const imgAttr=escAttr(img);
   const desc=esc(og.description||'');
   const site=esc(og.siteName||'');
   const fav=og.favicon||'';
-  const imgHtml=img?`<img class="m-img" src="${img}" alt="${name}" onerror="this.style.display='none'">`:'';
-  const favHtml=fav?`<img src="${fav}" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;image-rendering:pixelated" alt="" onerror="this.style.display='none'">`:'';
-  c.innerHTML=`${imgHtml}<div class="m-body"><h3>${name}</h3>${desc?`<div class="m-desc">${desc}</div>`:''}<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #222">${favHtml}<span style="color:#888;font-family:VT323;font-size:18px">${site||'Link'}</span></div><div class="m-actions"><a class="mc-btn" href="${href}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-link inline"></span> Open Link</a></div></div>`;
+  const favAttr=escAttr(fav);
+  const imgHtml=img?`<img class="m-img" src="${imgAttr}" alt="${nameAttr}" onerror="this.style.display='none'">`:'';
+  const favHtml=fav?`<img src="${favAttr}" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;image-rendering:pixelated" alt="" onerror="this.style.display='none'">`:'';
+  c.innerHTML=`${imgHtml}<div class="m-body"><h3>${name}</h3>${desc?`<div class="m-desc">${desc}</div>`:''}<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #222">${favHtml}<span style="color:#888;font-family:VT323;font-size:18px">${site||'Link'}</span></div><div class="m-actions"><a class="mc-btn" href="${hrefAttr}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-link inline"></span> Open Link</a></div></div>`;
 }
 function modalSteamHtml(data,name,appId,status,hours){
   const label=data.name||name;
@@ -888,7 +901,7 @@ function modalSteamHtml(data,name,appId,status,hours){
   const statusLabel=status?{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status]||status:'';
   const statusRow=statusLabel?`<div class="m-row">${statusIcon}<b style="color:var(--gold);margin:0 4px">${esc(statusLabel)}</b></div>`:'';
   const hoursRow=hours?`<div class="m-row"><b><span class="mc-item i-clock inline"></span> Hours</b><span>${hours}h</span></div>`:'';
-  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3>${statusRow}${hoursRow}<div class="m-row"><b>${bl} Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>${bl} Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>${bl} Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>${bl} Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>${bl} Release</b><span>${esc(release)}</span></div><div class="m-row"><b>${bl} Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>${bl} Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-cart inline"></span> Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-chart inline"></span> SteamDB</a></div></div>`;
+  return `${header?`<img class="m-img" src="${escAttr(header)}" alt="${escAttr(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3>${statusRow}${hoursRow}<div class="m-row"><b>${bl} Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>${bl} Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>${bl} Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>${bl} Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>${bl} Release</b><span>${esc(release)}</span></div><div class="m-row"><b>${bl} Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>${bl} Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${escAttr(data.steam_appid)}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-cart inline"></span> Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${escAttr(appId)}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-chart inline"></span> SteamDB</a></div></div>`;
 }
 function modalErrorHtml(name,appId,status,hours){const bl='<span class="mc-item i-bullet inline"></span>';const statusIcons={playing:'<span class="mc-item i-play inline"></span>',completed:'<span class="mc-item i-done inline"></span>',backlog:'<span class="mc-item i-circle inline"></span>'};const statusIcon=statusIcons[status]||'';const statusLabel=status?{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status]||status:'';const statusRow=statusLabel?`<div class="m-row">${statusIcon}<b style="color:var(--gold);margin:0 4px">${esc(statusLabel)}</b></div>`:'';const hoursRow=hours?`<div class="m-row"><b><span class="mc-item i-clock inline"></span> Hours</b><span>${hours}h</span></div>`:'';return `<div class="m-body"><h3>${esc(name)}</h3>${statusRow}${hoursRow}<div class="m-desc" style="color:#888">Steam data unavailable.</div><div class="m-actions"><a class="mc-btn" href="https://store.steampowered.com/app/${appId}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-cart inline"></span> Steam Store</a><a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-chart inline"></span> SteamDB</a></div></div>`}
 function closeLibModal(e){if(e&&e.target!==e.currentTarget) return;document.getElementById('lib-modal').classList.remove('open')}
@@ -896,17 +909,21 @@ function closeLibModal(e){if(e&&e.target!==e.currentTarget) return;document.getE
 function escAttr(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function renderLibraryItem(item,key,idx){
   const icon=(item.icon||'i-book').replace(/[^a-z-]/g,'');
+  const rawName=String(item.name||'Item');
   const name=(item.name||'Item').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const nameAttr=escAttr(rawName);
   const href=item.url||'#';
+  const hrefAttr=escAttr(href);
+  const imgSrc=item.img?escAttr(item.img):'';
   const itemJson=escAttr(JSON.stringify({...item,_key:key,_idx:idx}));
   if((item.type||'basic')==='steam'){
     const steamAppId=extractSteamAppId(item);
     const slotId=`steam-slot-${key}-${idx}`;
     queueSteamRender(slotId,item,steamAppId,name,itemJson);
-    const imgHtml=item.img?`<div class="inv-img-wrap"><img src="${item.img}" alt="${name}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item ${icon}"></span></div>';
+    const imgHtml=item.img?`<div class="inv-img-wrap"><img src="${imgSrc}" alt="${nameAttr}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item ${icon}"></span></div>';
     return `<div class="inv-item" data-item='${itemJson}' id="${slotId}">${imgHtml}<span class="label">${name}</span><span class="label i-price">—</span></div>`;
   }
-  const img=item.img||item.og?.image||'';const imgHtml=img?`<div class="inv-img-wrap"><img src="${img}" alt="${name}" onerror="this.outerHTML='<div class=inv-img-wrap-empty><span class=mc-item ${icon}></span></div>'"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item ${icon}"></span></div>';
+  const img=item.img||item.og?.image||'';const imgAttr=escAttr(img);const imgHtml=img?`<div class="inv-img-wrap"><img src="${imgAttr}" alt="${nameAttr}" onerror="this.outerHTML='<div class=inv-img-wrap-empty><span class=mc-item ${icon}></span></div>'"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item ${icon}"></span></div>';
   return `<div class="inv-item" data-item='${itemJson}'>${imgHtml}<span class="label">${name}</span></div>`;
 }
 
@@ -920,8 +937,11 @@ function extractSteamAppId(item){
 
 function steamStoreFallback(item,name,appId,reason,itemJson){
   const href=item?.url && item.url.startsWith('http') ? item.url : (appId ? `https://store.steampowered.com/app/${appId}` : '#');
-  const imgHtml=item?.img?`<div class="inv-img-wrap"><img src="${item.img}" alt="${name}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item i-star"></span></div>';
-  return `<a class="inv-item" data-item='${itemJson||''}' href="${href}" target="_blank" rel="noreferrer">${imgHtml}<span class="label">${name}</span><span class="label i-price">${reason||'Steam game'}</span></a>`;
+  const hrefAttr=escAttr(href);
+  const imgAttr=item?.img?escAttr(item.img):'';
+  const nameAttr=escAttr(name||'Steam game');
+  const imgHtml=item?.img?`<div class="inv-img-wrap"><img src="${imgAttr}" alt="${nameAttr}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item i-star"></span></div>';
+  return `<a class="inv-item" data-item='${itemJson||''}' href="${hrefAttr}" target="_blank" rel="noreferrer">${imgHtml}<span class="label">${name}</span><span class="label i-price">${esc(reason||'Steam game')}</span></a>`;
 }
 
 const STEAM_CACHE_KEY='reef-steam-cache',STEAM_CACHE_TTL=10*60*60*1000;
@@ -999,9 +1019,12 @@ function queueSteamRender(slotId,item,appId,name,itemJson){
   const platforms=[data.platforms?.windows&&'Win',data.platforms?.mac&&'Mac',data.platforms?.linux&&'Linux'].filter(Boolean).join(', ');
       const genres=(data.genres||[]).slice(0,2).map(g=>g.description).join(', ') || 'Steam game';
       const label=(data.name||name||'Steam Game').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const labelAttr=escAttr(data.name||name||'Steam Game');
+      const headerAttr=escAttr(header);
+      const hrefAttr=escAttr(href);
       const target=el();
       if(target){
-        target.outerHTML=`<a class="inv-item" data-item='${itemJson||''}' href="${href}" target="_blank" rel="noreferrer" title="SteamDB: ${steamdb}">${header?`<div class="inv-img-wrap"><img src="${header}" alt="${label}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item i-star"></span></div>'}<span class="label">${label}</span><span class="label i-price">${price}</span><span class="label i-sub">${platforms||genres}</span></a>`;
+        target.outerHTML=`<a class="inv-item" data-item='${itemJson||''}' href="${hrefAttr}" target="_blank" rel="noreferrer" title="SteamDB: ${escAttr(steamdb)}">${header?`<div class="inv-img-wrap"><img src="${headerAttr}" alt="${labelAttr}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item i-star"></span></div>'}<span class="label">${label}</span><span class="label i-price">${esc(price)}</span><span class="label i-sub">${esc(platforms||genres)}</span></a>`;
       }
     }catch(e){
       const target=el();
@@ -1016,7 +1039,7 @@ function renderBlogPosts(posts){
   const el=document.getElementById('blog-grid');
   if(!el) return;
   const list=Array.isArray(posts)&&posts.length?posts:[{title:'No posts yet',date:'',body:'Nothing published yet. Check back later!'}];
-  el.innerHTML=list.map(p=>`<article class="blog-post"><h3>${esc(p.title||'Untitled')}</h3><div class="date">${esc(p.date||'')}</div>${p.img?`<img class="blog-img" src="${p.img}" alt="${esc(p.title||'')}">`:''}<p>${esc(p.body||'').replace(/\n/g,'<br>')}</p></article>`).join('');
+  el.innerHTML=list.map(p=>`<article class="blog-post"><h3>${esc(p.title||'Untitled')}</h3><div class="date">${esc(p.date||'')}</div>${p.img?`<img class="blog-img" src="${escAttr(p.img)}" alt="${escAttr(p.title||'')}">`:''}<p>${esc(p.body||'').replace(/\n/g,'<br>')}</p></article>`).join('');
 }
 
 function renderAlbumItems(items){
@@ -1025,8 +1048,11 @@ function renderAlbumItems(items){
   const list=Array.isArray(items)&&items.length?items:[{caption:'No images yet. Check back soon!',img:'',link:''}];
   el.innerHTML=list.map(item=>{
     const caption=String(item.caption||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const inner=item.img?`<img src="${item.img}" alt="${caption}" onerror="this.style.display='none'"><div class="cap">${caption}</div>`:`<div class="cap">${caption||'No image yet'}</div>`;
-    return item.link?`<a class="album-item" href="${item.link}" target="_blank" rel="noreferrer">${inner}</a>`:`<div class="album-item">${inner}</div>`;
+    const captionAttr=escAttr(item.caption||'');
+    const imgAttr=item.img?escAttr(item.img):'';
+    const linkAttr=item.link?escAttr(item.link):'';
+    const inner=item.img?`<img src="${imgAttr}" alt="${captionAttr}" onerror="this.style.display='none'"><div class="cap">${caption}</div>`:`<div class="cap">${caption||'No image yet'}</div>`;
+    return item.link?`<a class="album-item" href="${linkAttr}" target="_blank" rel="noreferrer">${inner}</a>`:`<div class="album-item">${inner}</div>`;
   }).join('');
 }
 
@@ -1039,8 +1065,9 @@ function loadProjects(){
     if(Array.isArray(list)&&list.length){
       repoGrid.innerHTML=list.map(p=>{
         const href=p.url||p.repo||'#';
+        const hrefAttr=escAttr(href);
         const tags=(p.tags||'').split(',').map(s=>s.trim()).filter(Boolean);
-        return `<a class="project" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><h3>${p.name||'Untitled Project'}</h3><p>${p.desc||'No description provided.'}</p><div class="meta">${tags.map(t=>`<span>${t}</span>`).join('')||'<span>Custom build</span>'}</div></a>`;
+        return `<a class="project" href="${hrefAttr}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><h3>${esc(p.name||'Untitled Project')}</h3><p>${esc(p.desc||'No description provided.')}</p><div class="meta">${tags.length?tags.map(t=>`<span>${esc(t)}</span>`).join(''):'<span>Custom build</span>'}</div></a>`;
       }).join('');
     } else {
       repoGrid.innerHTML='<div class="project" style="background:#2a2a2a;border-color:#444"><h3 style="color:#888">No projects yet</h3><p style="color:#666">Add projects from the admin panel.</p></div>';
