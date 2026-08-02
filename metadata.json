@@ -1,0 +1,6 @@
+{
+  "name": "reef.dev",
+  "description": "Minecraft-themed portfolio website and admin interface",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
