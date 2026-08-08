@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5fb6e8"/><stop offset="1" stop-color="#bfe8f7"/>
+    </linearGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6fb43f"/><stop offset="1" stop-color="#4e8630"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <circle cx="625" cy="118" r="52" fill="#fff3b0"/>
+  <g fill="rgba(255,255,255,.6)">
+    <rect x="90" y="90" width="150" height="26" rx="13"/><rect x="160" y="72" width="90" height="26" rx="13"/>
+    <rect x="420" y="150" width="180" height="26" rx="13"/><rect x="520" y="132" width="80" height="26" rx="13"/>
+  </g>
+  <path d="M0 380 Q200 300 400 362 T800 345 V600 H0 Z" fill="url(#hill)"/>
+  <path d="M0 470 Q260 398 520 455 T800 428 V600 H0 Z" fill="#4e8630"/>
+  <rect y="560" width="800" height="40" fill="#8b623e"/>
+  <g fill="#4a2e14"><rect x="96" y="470" width="14" height="46"/><rect x="672" y="458" width="14" height="52"/></g>
+  <g fill="#3f7d28"><rect x="76" y="452" width="54" height="10" rx="4"/><rect x="652" y="438" width="54" height="10" rx="4"/></g>
+  <g fill="#fff"><rect x="452" y="520" width="10" height="10"/><rect x="486" y="508" width="10" height="10"/><rect x="520" y="522" width="10" height="10"/><rect x="260" y="516" width="10" height="10"/><rect x="560" y="540" width="10" height="10"/></g>
+  <g fill="#ffd24a"><rect x="330" y="480" width="12" height="12"/><rect x="178" y="500" width="12" height="12"/><rect x="610" y="492" width="12" height="12"/></g>
+</svg>

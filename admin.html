@@ -6,8 +6,8 @@
 <title>REEF — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180x180.svg">
 <style>
 :root {
   --stone:#8B8B8B; --stone-light:#C6C6C6; --stone-dark:#555;
@@ -21,7 +21,7 @@ html,body{height:100%}
 body{font-family:'VT323',monospace;font-size:18px;color:var(--text);background:var(--bg);display:flex;flex-direction:column;}
 ::selection{background:var(--xp);color:#000}
 #bg{
-  position:fixed;inset:0;z-index:-1;background:url('assets/mc-panorama.svg') center/cover no-repeat;filter:blur(6px) saturate(1.05) brightness(.75);transform:scale(1.04);
+  position:fixed;inset:0;z-index:-1;background:url('/assets/mc-panorama.svg') center/cover no-repeat;filter:blur(6px) saturate(1.05) brightness(.75);transform:scale(1.04);
 }
 #bg:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.65))}
 
@@ -181,32 +181,26 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 
 .mc-item{width:32px;height:32px;display:block;position:relative;image-rendering:pixelated;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.45))}
 .mc-item:before,.mc-item:after{content:"";position:absolute;inset:0}
-.i-grass:before{background:url("/assets/mc/grass_block.png") center/contain no-repeat;image-rendering:pixelated}.i-grass:after{display:none}
-.i-book:before,.i-book2:before,.i-enchant:before,.i-note:before{background:url("/assets/mc/book.png") center/contain no-repeat;image-rendering:pixelated}.i-book:after,.i-book2:after,.i-enchant:after,.i-note:after{display:none}
-.i-pick:before,.i-hammer:before{background:url("/assets/mc/diamond_pickaxe.png") center/contain no-repeat;image-rendering:pixelated}.i-pick:after,.i-hammer:after{display:none}
-.i-map:before{background:url("/assets/mc/map.png") center/contain no-repeat;image-rendering:pixelated}.i-map:after{display:none}
-.i-chest:before,.i-cart:before{background:url("/assets/mc/chest.png") center/contain no-repeat;image-rendering:pixelated}.i-chest:after,.i-cart:after{display:none}
-.i-friends:before,.i-players:before{background:url("/assets/mc/steve.png") center/contain no-repeat;image-rendering:pixelated}.i-friends:after,.i-players:after{display:none}
-.i-sign:before{background:url("/assets/mc/oak_sign.png") center/contain no-repeat;image-rendering:pixelated}.i-sign:after{display:none}
-.i-crafting-table:before{background:url("/assets/mc/crafting_table.png") center/contain no-repeat;image-rendering:pixelated}.i-crafting-table:after{display:none}
-.i-dirt:before{background:url("/assets/mc/dirt.png") center/contain no-repeat;image-rendering:pixelated}.i-dirt:after{display:none}
-.i-log:before{background:url("/assets/mc/oak_log.png") center/contain no-repeat;image-rendering:pixelated}.i-log:after{display:none}
-.i-tnt:before{background:url("/assets/mc/tnt.png") center/contain no-repeat;image-rendering:pixelated}.i-tnt:after{display:none}
-.i-diamond:before{background:url("/assets/mc/diamond.png") center/contain no-repeat;image-rendering:pixelated}.i-diamond:after{display:none}
-.i-sword:before{background:url("/assets/mc/diamond_sword.png") center/contain no-repeat;image-rendering:pixelated}.i-sword:after{display:none}
-.i-furnace:before{background:url("/assets/mc/furnace.png") center/contain no-repeat;image-rendering:pixelated}.i-furnace:after{display:none}
-.i-anvil:before{background:url("/assets/mc/anvil.png") center/contain no-repeat;image-rendering:pixelated}.i-anvil:after{display:none}
-.i-totem:before{background:url("/assets/mc/totem.png") center/contain no-repeat;image-rendering:pixelated}.i-totem:after{display:none}
-.i-potion:before{background:url("/assets/mc/potion.png") center/contain no-repeat;image-rendering:pixelated}.i-potion:after{display:none}
-.i-star:before{background:url("/assets/mc/nether_star.png") center/contain no-repeat;image-rendering:pixelated}.i-star:after{display:none}
-.i-clock:before{background:url("/assets/mc/clock.png") center/contain no-repeat;image-rendering:pixelated}.i-clock:after{display:none}
-.i-arrow:before{background:url("/assets/mc/arrow.png") center/contain no-repeat;image-rendering:pixelated}.i-arrow:after{display:none}
-.i-terminal:before,.i-cmd:before{background:url("/assets/mc/command_block.png") center/contain no-repeat;image-rendering:pixelated}.i-terminal:after,.i-cmd:after{display:none}
-.i-sound:before{background:url("/assets/mc/jukebox.png") center/contain no-repeat;image-rendering:pixelated}.i-sound:after{display:none}
-.i-mute:before{background:url("/assets/mc/note_block.png") center/contain no-repeat;image-rendering:pixelated;filter:grayscale(1) opacity(0.5)}.i-mute:after{display:none}
-.i-screen:before{background:url("/assets/mc/comparator.png") center/contain no-repeat;image-rendering:pixelated}.i-screen:after{display:none}
-.i-xp-bottle:before{background:url("/assets/mc/experience_bottle.png") center/contain no-repeat;image-rendering:pixelated}.i-xp-bottle:after{display:none}
-.i-game:before,.i-games:before{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20shape-rendering%3D'crispEdges'%20viewBox%3D'0%200%2016%2016'%3E%3Crect%20fill%3D'%232d2d3f'%20x%3D'1'%20y%3D'4'%20width%3D'14'%20height%3D'8'%20rx%3D'1'%2F%3E%3Crect%20fill%3D'%234a4a68'%20x%3D'2'%20y%3D'5'%20width%3D'12'%20height%3D'6'%2F%3E%3Crect%20fill%3D'%2355ffff'%20x%3D'4'%20y%3D'6'%20width%3D'1'%20height%3D'3'%2F%3E%3Crect%20fill%3D'%2355ffff'%20x%3D'3'%20y%3D'7'%20width%3D'3'%20height%3D'1'%2F%3E%3Crect%20fill%3D'%23ff5555'%20x%3D'10'%20y%3D'6'%20width%3D'1'%20height%3D'1'%2F%3E%3Crect%20fill%3D'%2355ff55'%20x%3D'12'%20y%3D'7'%20width%3D'1'%20height%3D'1'%2F%3E%3Crect%20fill%3D'%23ffff55'%20x%3D'11'%20y%3D'8'%20width%3D'1'%20height%3D'1'%2F%3E%3Crect%20fill%3D'%23ffaa00'%20x%3D'7'%20y%3D'7'%20width%3D'2'%20height%3D'2'%2F%3E%3Crect%20fill%3D'%2311111a'%20x%3D'3'%20y%3D'11'%20width%3D'2'%20height%3D'2'%2F%3E%3Crect%20fill%3D'%2311111a'%20x%3D'11'%20y%3D'11'%20width%3D'2'%20height%3D'2'%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;image-rendering:pixelated}.i-game:after,.i-games:after{display:none}
+.i-grass:before{background:url("/assets/mc/grass_block.svg") center/contain no-repeat;image-rendering:pixelated}.i-grass:after{display:none}
+.i-book:before,.i-book2:before,.i-enchant:before,.i-note:before{background:url("/assets/mc/book.svg") center/contain no-repeat;image-rendering:pixelated}.i-book:after,.i-book2:after,.i-enchant:after,.i-note:after{display:none}
+.i-pick:before,.i-hammer:before{background:url("/assets/mc/diamond_pickaxe.svg") center/contain no-repeat;image-rendering:pixelated}.i-pick:after,.i-hammer:after{display:none}
+.i-map:before{background:url("/assets/mc/map.svg") center/contain no-repeat;image-rendering:pixelated}.i-map:after{display:none}
+.i-chest:before,.i-cart:before{background:url("/assets/mc/chest.svg") center/contain no-repeat;image-rendering:pixelated}.i-chest:after,.i-cart:after{display:none}
+.i-friends:before,.i-players:before{background:url("/assets/mc/steve.svg") center/contain no-repeat;image-rendering:pixelated}.i-friends:after,.i-players:after{display:none}
+.i-sign:before{background:url("/assets/mc/oak_sign.svg") center/contain no-repeat;image-rendering:pixelated}.i-sign:after{display:none}
+.i-crafting-table:before{background:url("/assets/mc/crafting_table.svg") center/contain no-repeat;image-rendering:pixelated}.i-crafting-table:after{display:none}
+.i-dirt:before{background:url("/assets/mc/dirt.svg") center/contain no-repeat;image-rendering:pixelated}.i-dirt:after{display:none}
+.i-log:before{background:url("/assets/mc/oak_log.svg") center/contain no-repeat;image-rendering:pixelated}.i-log:after{display:none}
+.i-tnt:before{background:url("/assets/mc/tnt.svg") center/contain no-repeat;image-rendering:pixelated}.i-tnt:after{display:none}
+.i-diamond:before{background:url("/assets/mc/diamond.svg") center/contain no-repeat;image-rendering:pixelated}.i-diamond:after{display:none}
+.i-sword:before{background:url("/assets/mc/diamond_sword.svg") center/contain no-repeat;image-rendering:pixelated}.i-sword:after{display:none}
+.i-furnace:before{background:url("/assets/mc/furnace.svg") center/contain no-repeat;image-rendering:pixelated}.i-furnace:after{display:none}
+.i-anvil:before{background:url("/assets/mc/anvil.svg") center/contain no-repeat;image-rendering:pixelated}.i-anvil:after{display:none}
+.i-totem:before{background:url("/assets/mc/totem.svg") center/contain no-repeat;image-rendering:pixelated}.i-totem:after{display:none}
+.i-potion:before{background:url("/assets/mc/potion.svg") center/contain no-repeat;image-rendering:pixelated}.i-potion:after{display:none}
+.i-star:before{background:url("/assets/mc/nether_star.svg") center/contain no-repeat;image-rendering:pixelated}.i-star:after{display:none}
+.i-clock:before{background:url("/assets/mc/clock.svg") center/contain no-repeat;image-rendering:pixelated}.i-clock:after{display:none}
+.i-arrow:before{background:url("/assets/mc/arrow.svg") center/contain no-repeat;image-rendering:pixelated}.i-arrow:after{display:none}
 .i-discord:before,.i-chat:before{background:url("/assets/mc/discord.svg") center/contain no-repeat;image-rendering:pixelated}.i-discord:after,.i-chat:after{display:none}
 .i-github:before,.i-code:before{background:url("/assets/mc/github.svg") center/contain no-repeat;image-rendering:pixelated}.i-github:after,.i-code:after{display:none}
 .i-email:before,.i-mail:before{background:url("/assets/mc/email.svg") center/contain no-repeat;image-rendering:pixelated}.i-email:after,.i-mail:after{display:none}
@@ -250,38 +244,53 @@ textarea.mc-input{resize:vertical;min-height:110px;line-height:1.5;}
 }
 .mc-item{width:32px;height:32px;display:block;position:relative;image-rendering:pixelated;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.45))}
 .mc-item:before,.mc-item:after{content:"";position:absolute;inset:0}
-/* ---- NAV BAR ICONS (Minecraft-style pixel art) ---- */
-.i-grass:before{background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20shape-rendering='crispEdges'%3E%3Crect%20x='6'%20y='1'%20width='4'%20height='1'%20fill='%237ecb48'/%3E%3Crect%20x='5'%20y='2'%20width='6'%20height='1'%20fill='%237ecb48'/%3E%3Crect%20x='4'%20y='3'%20width='8'%20height='1'%20fill='%237ecb48'/%3E%3Crect%20x='3'%20y='4'%20width='10'%20height='1'%20fill='%237ecb48'/%3E%3Crect%20x='2'%20y='5'%20width='12'%20height='1'%20fill='%237ecb48'/%3E%3Crect%20x='2'%20y='6'%20width='6'%20height='7'%20fill='%238b623e'/%3E%3Crect%20x='3'%20y='13'%20width='5'%20height='1'%20fill='%238b623e'/%3E%3Crect%20x='4'%20y='14'%20width='4'%20height='1'%20fill='%238b623e'/%3E%3Crect%20x='5'%20y='15'%20width='3'%20height='1'%20fill='%238b623e'/%3E%3Crect%20x='8'%20y='6'%20width='6'%20height='7'%20fill='%2365422c'/%3E%3Crect%20x='8'%20y='13'%20width='5'%20height='1'%20fill='%2365422c'/%3E%3Crect%20x='8'%20y='14'%20width='4'%20height='1'%20fill='%2365422c'/%3E%3Crect%20x='8'%20y='15'%20width='3'%20height='1'%20fill='%2365422c'/%3E%3Crect%20x='7'%20y='2'%20width='1'%20height='1'%20fill='%23a2dd6c'/%3E%3Crect%20x='9'%20y='3'%20width='1'%20height='1'%20fill='%23a2dd6c'/%3E%3Crect%20x='6'%20y='4'%20width='1'%20height='1'%20fill='%23a2dd6c'/%3E%3Crect%20x='10'%20y='4'%20width='1'%20height='1'%20fill='%23a2dd6c'/%3E%3Crect%20x='12'%20y='5'%20width='1'%20height='1'%20fill='%23a2dd6c'/%3E%3Crect%20x='4'%20y='5'%20width='1'%20height='1'%20fill='%23a2dd6c'/%3E%3Crect%20x='3'%20y='7'%20width='1'%20height='1'%20fill='%234a2e14'/%3E%3Crect%20x='5'%20y='9'%20width='1'%20height='1'%20fill='%234a2e14'/%3E%3Crect%20x='4'%20y='11'%20width='1'%20height='1'%20fill='%234a2e14'/%3E%3Crect%20x='5'%20y='13'%20width='1'%20height='1'%20fill='%234a2e14'/%3E%3Crect%20x='3'%20y='15'%20width='1'%20height='1'%20fill='%234a2e14'/%3E%3Crect%20x='9'%20y='7'%20width='1'%20height='1'%20fill='%237a5230'/%3E%3Crect%20x='11'%20y='9'%20width='1'%20height='1'%20fill='%237a5230'/%3E%3Crect%20x='10'%20y='11'%20width='1'%20height='1'%20fill='%237a5230'/%3E%3Crect%20x='12'%20y='10'%20width='1'%20height='1'%20fill='%237a5230'/%3E%3Crect%20x='9'%20y='5'%20width='1'%20height='1'%20fill='%237a5230'/%3E%3Crect%20x='4'%20y='10'%20width='1'%20height='1'%20fill='%235a4a3a'/%3E%3Crect%20x='10'%20y='15'%20width='1'%20height='1'%20fill='%235a4a3a'/%3E%3C/svg%3E") center/contain no-repeat;image-rendering:pixelated}.i-grass:after{display:none}
-.i-book:before{background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20shape-rendering='crispEdges'%3E%3Crect%20x='2'%20y='1'%20width='12'%20height='13'%20fill='%238b4e22'/%3E%3Crect%20x='1'%20y='0'%20width='14'%20height='1'%20fill='%236b3410'/%3E%3Crect%20x='1'%20y='0'%20width='1'%20height='14'%20fill='%236b3410'/%3E%3Crect%20x='14'%20y='0'%20width='1'%20height='14'%20fill='%236b3410'/%3E%3Crect%20x='1'%20y='13'%20width='14'%20height='1'%20fill='%236b3410'/%3E%3Crect%20x='2'%20y='1'%20width='1'%20height='12'%20fill='%23c4a870'/%3E%3Crect%20x='13'%20y='1'%20width='1'%20height='12'%20fill='%23c4a870'/%3E%3Crect%20x='2'%20y='1'%20width='12'%20height='1'%20fill='%23c4a870'/%3E%3Crect%20x='2'%20y='12'%20width='12'%20height='1'%20fill='%23c4a870'/%3E%3Crect%20x='3'%20y='11'%20width='10'%20height='1'%20fill='%23e8dcc8'/%3E%3Crect%20x='4'%20y='12'%20width='8'%20height='1'%20fill='%23d4c8b0'/%3E%3Crect%20x='4'%20y='3'%20width='1'%20height='1'%20fill='%23a06030'/%3E%3Crect%20x='10'%20y='3'%20width='1'%20height='1'%20fill='%23a06030'/%3E%3Crect%20x='4'%20y='9'%20width='1'%20height='1'%20fill='%23a06030'/%3E%3Crect%20x='11'%20y='4'%20width='1'%20height='1'%20fill='%236b3410'/%3E%3Crect%20x='11'%20y='8'%20width='1'%20height='1'%20fill='%236b3410'/%3E%3Crect%20x='7'%20y='13'%20width='2'%20height='1'%20fill='%23c04040'/%3E%3Crect%20x='8'%20y='14'%20width='1'%20height='2'%20fill='%23c04040'/%3E%3Crect%20x='7'%20y='13'%20width='1'%20height='1'%20fill='%23d06060'/%3E%3C/svg%3E") center/contain no-repeat;image-rendering:pixelated}.i-book:after{display:none}
-.i-sword:before{left:8px;top:1px;width:8px;height:12px;background:linear-gradient(90deg,#a0a0a0 0 1px,#c8c8c8 1px 4px,#e0e0e0 4px 5px,#c0c0c0 5px 7px,#888 7px);transform:rotate(45deg)}.i-sword:after{left:8px;top:12px;width:8px;height:10px;background:linear-gradient(90deg,#5a3a1a 0 1px,#80522b 1px 4px,#6b3d1a 4px 7px,#4a2e14 7px);box-shadow:0 -2px 0 #4a2e14}
-.i-chest:before{background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20shape-rendering='crispEdges'%3E%3Crect%20x='4'%20y='1'%20width='8'%20height='1'%20fill='%238b6538'/%3E%3Crect%20x='3'%20y='2'%20width='10'%20height='1'%20fill='%237a5530'/%3E%3Crect%20x='2'%20y='3'%20width='12'%20height='1'%20fill='%237a5530'/%3E%3Crect%20x='2'%20y='4'%20width='12'%20height='1'%20fill='%236b451d'/%3E%3Crect%20x='2'%20y='5'%20width='7'%20height='9'%20fill='%236b451d'/%3E%3Crect%20x='3'%20y='14'%20width='6'%20height='1'%20fill='%236b451d'/%3E%3Crect%20x='4'%20y='15'%20width='5'%20height='1'%20fill='%236b451d'/%3E%3Crect%20x='9'%20y='5'%20width='5'%20height='9'%20fill='%234a2a10'/%3E%3Crect%20x='9'%20y='14'%20width='4'%20height='1'%20fill='%234a2a10'/%3E%3Crect%20x='9'%20y='15'%20width='3'%20height='1'%20fill='%234a2a10'/%3E%3Crect%20x='3'%20y='2'%20width='2'%20height='1'%20fill='%238b6538'/%3E%3Crect%20x='2'%20y='3'%20width='2'%20height='1'%20fill='%238b6538'/%3E%3Crect%20x='6'%20y='3'%20width='4'%20height='2'%20fill='%23d4a040'/%3E%3Crect%20x='6'%20y='3'%20width='4'%20height='1'%20fill='%23e8c060'/%3E%3Crect%20x='7'%20y='4'%20width='2'%20height='1'%20fill='%23b08030'/%3E%3Crect%20x='2'%20y='8'%20width='12'%20height='1'%20fill='%237a7a7a'/%3E%3Crect%20x='9'%20y='8'%20width='5'%20height='1'%20fill='%235a5a5a'/%3E%3Crect%20x='3'%20y='8'%20width='1'%20height='1'%20fill='%238a8a8a'/%3E%3Crect%20x='14'%20y='8'%20width='1'%20height='1'%20fill='%236a6a6a'/%3E%3Crect%20x='3'%20y='6'%20width='1'%20height='1'%20fill='%235a3a18'/%3E%3Crect%20x='5'%20y='9'%20width='1'%20height='1'%20fill='%235a3a18'/%3E%3Crect%20x='4'%20y='11'%20width='1'%20height='1'%20fill='%235a3a18'/%3E%3Crect%20x='7'%20y='13'%20width='1'%20height='1'%20fill='%235a3a18'/%3E%3Crect%20x='10'%20y='7'%20width='1'%20height='1'%20fill='%233a1a08'/%3E%3Crect%20x='12'%20y='10'%20width='1'%20height='1'%20fill='%233a1a08'/%3E%3Crect%20x='11'%20y='12'%20width='1'%20height='1'%20fill='%233a1a08'/%3E%3Crect%20x='3'%20y='12'%20width='6'%20height='1'%20fill='%235a3a18'/%3E%3C/svg%3E") center/contain no-repeat;image-rendering:pixelated}.i-chest:after{display:none}
-.i-players:before{background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20shape-rendering='crispEdges'%3E%3Crect%20x='2'%20y='2'%20width='5'%20height='5'%20fill='%23d6b08a'/%3E%3Crect%20x='2'%20y='1'%20width='5'%20height='1'%20fill='%234a3020'/%3E%3Crect%20x='1'%20y='2'%20width='1'%20height='5'%20fill='%234a3020'/%3E%3Crect%20x='6'%20y='2'%20width='1'%20height='3'%20fill='%234a3020'/%3E%3Crect%20x='3'%20y='3'%20width='1'%20height='1'%20fill='%23222'/%3E%3Crect%20x='5'%20y='3'%20width='1'%20height='1'%20fill='%23222'/%3E%3Crect%20x='3'%20y='5'%20width='3'%20height='1'%20fill='%234a3020'/%3E%3Crect%20x='4'%20y='4'%20width='1'%20height='1'%20fill='%23c69570'/%3E%3Crect%20x='4'%20y='2'%20width='2'%20height='1'%20fill='%23c69570'/%3E%3Crect%20x='9'%20y='2'%20width='5'%20height='5'%20fill='%23c69570'/%3E%3Crect%20x='9'%20y='1'%20width='5'%20height='1'%20fill='%23e8c040'/%3E%3Crect%20x='8'%20y='2'%20width='1'%20height='5'%20fill='%23e8c040'/%3E%3Crect%20x='14'%20y='2'%20width='1'%20height='3'%20fill='%23e8c040'/%3E%3Crect%20x='10'%20y='3'%20width='1'%20height='1'%20fill='%23222'/%3E%3Crect%20x='12'%20y='3'%20width='1'%20height='1'%20fill='%23222'/%3E%3Crect%20x='10'%20y='5'%20width='3'%20height='1'%20fill='%238a6040'/%3E%3Crect%20x='11'%20y='4'%20width='1'%20height='1'%20fill='%23a08060'/%3E%3Crect%20x='11'%20y='2'%20width='2'%20height='1'%20fill='%23a08060'/%3E%3Crect%20x='2'%20y='7'%20width='5'%20height='3'%20fill='%234e8c46'/%3E%3Crect%20x='3'%20y='7'%20width='3'%20height='1'%20fill='%235e9c56'/%3E%3Crect%20x='9'%20y='7'%20width='5'%20height='3'%20fill='%23457cb4'/%3E%3Crect%20x='10'%20y='7'%20width='3'%20height='1'%20fill='%23558cc4'/%3E%3Crect%20x='1'%20y='7'%20width='1'%20height='3'%20fill='%23d6b08a'/%3E%3Crect%20x='7'%20y='7'%20width='1'%20height='3'%20fill='%23d6b08a'/%3E%3Crect%20x='8'%20y='7'%20width='1'%20height='3'%20fill='%23c69570'/%3E%3Crect%20x='14'%20y='7'%20width='1'%20height='3'%20fill='%23c69570'/%3E%3C/svg%3E") center/contain no-repeat;image-rendering:pixelated}.i-players:after{display:none}
-.i-sign:before{background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20shape-rendering='crispEdges'%3E%3Crect%20x='7'%20y='8'%20width='2'%20height='7'%20fill='%236b431b'/%3E%3Crect%20x='7'%20y='7'%20width='2'%20height='1'%20fill='%238b5e2a'/%3E%3Crect%20x='8'%20y='8'%20width='1'%20height='7'%20fill='%234a2e10'/%3E%3Crect%20x='2'%20y='2'%20width='12'%20height='6'%20fill='%23b9853d'/%3E%3Crect%20x='1'%20y='1'%20width='14'%20height='1'%20fill='%238b5e2a'/%3E%3Crect%20x='1'%20y='1'%20width='1'%20height='7'%20fill='%238b5e2a'/%3E%3Crect%20x='14'%20y='1'%20width='1'%20height='7'%20fill='%238b5e2a'/%3E%3Crect%20x='1'%20y='7'%20width='14'%20height='1'%20fill='%238b5e2a'/%3E%3Crect%20x='3'%20y='3'%20width='10'%20height='3'%20fill='%23c8954a'/%3E%3Crect%20x='2'%20y='2'%20width='12'%20height='1'%20fill='%23d3a15a'/%3E%3Crect%20x='2'%20y='2'%20width='1'%20height='5'%20fill='%23d3a15a'/%3E%3Crect%20x='4'%20y='4'%20width='1'%20height='1'%20fill='%236b431b'/%3E%3Crect%20x='8'%20y='4'%20width='1'%20height='1'%20fill='%236b431b'/%3E%3Crect%20x='12'%20y='4'%20width='1'%20height='1'%20fill='%236b431b'/%3E%3Crect%20x='3'%20y='6'%20width='10'%20height='1'%20fill='%23a67030'/%3E%3Crect%20x='4'%20y='3'%20width='1'%20height='1'%20fill='%238b5e2a'/%3E%3Crect%20x='8'%20y='3'%20width='1'%20height='1'%20fill='%238b5e2a'/%3E%3Crect%20x='12'%20y='3'%20width='1'%20height='1'%20fill='%238b5e2a'/%3E%3Crect%20x='7'%20y='14'%20width='2'%20height='2'%20fill='%233a2010'/%3E%3Crect%20x='6'%20y='15'%20width='2'%20height='1'%20fill='%233a2010'/%3E%3C/svg%3E") center/contain no-repeat;image-rendering:pixelated}.i-sign:after{display:none}
-.i-pick:before{background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20shape-rendering='crispEdges'%3E%3Crect%20x='2'%20y='1'%20width='12'%20height='1'%20fill='%23b0b5b8'/%3E%3Crect%20x='1'%20y='2'%20width='14'%20height='1'%20fill='%23c0c5c8'/%3E%3Crect%20x='1'%20y='3'%20width='8'%20height='1'%20fill='%23a4aaad'/%3E%3Crect%20x='2'%20y='4'%20width='6'%20height='1'%20fill='%23a4aaad'/%3E%3Crect%20x='3'%20y='5'%20width='4'%20height='1'%20fill='%23a4aaad'/%3E%3Crect%20x='2'%20y='1'%20width='3'%20height='1'%20fill='%23d0d5d8'/%3E%3Crect%20x='2'%20y='2'%20width='4'%20height='1'%20fill='%23d0d5d8'/%3E%3Crect%20x='11'%20y='1'%20width='3'%20height='1'%20fill='%23888'/%3E%3Crect%20x='12'%20y='2'%20width='3'%20height='1'%20fill='%23888'/%3E%3Crect%20x='10'%20y='3'%20width='5'%20height='1'%20fill='%23888a8c'/%3E%3Crect%20x='6'%20y='7'%20width='4'%20height='10'%20fill='%2380522b'/%3E%3Crect%20x='8'%20y='7'%20width='2'%20height='10'%20fill='%23603a18'/%3E%3Crect%20x='6'%20y='7'%20width='1'%20height='10'%20fill='%239a6a3a'/%3E%3Crect%20x='5'%20y='14'%20width='6'%20height='2'%20fill='%235a3a1a'/%3E%3Crect%20x='6'%20y='13'%20width='4'%20height='1'%20fill='%236b4528'/%3E%3Crect%20x='4'%20y='6'%20width='8'%20height='1'%20fill='%23a4aaad'/%3E%3Crect%20x='5'%20y='5'%20width='6'%20height='1'%20fill='%23b0b5b8'/%3E%3Crect%20x='10'%20y='6'%20width='2'%20height='1'%20fill='%23888'/%3E%3C/svg%3E") center/contain no-repeat;image-rendering:pixelated}.i-pick:after{display:none}
-.i-note:before{background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20shape-rendering='crispEdges'%3E%3Crect%20x='2'%20y='1'%20width='12'%20height='13'%20fill='%237a4aaa'/%3E%3Crect%20x='1'%20y='0'%20width='14'%20height='1'%20fill='%235a308a'/%3E%3Crect%20x='1'%20y='0'%20width='1'%20height='14'%20fill='%235a308a'/%3E%3Crect%20x='14'%20y='0'%20width='1'%20height='14'%20fill='%235a308a'/%3E%3Crect%20x='1'%20y='13'%20width='14'%20height='1'%20fill='%235a308a'/%3E%3Crect%20x='2'%20y='1'%20width='12'%20height='1'%20fill='%23c4a870'/%3E%3Crect%20x='2'%20y='12'%20width='12'%20height='1'%20fill='%23c4a870'/%3E%3Crect%20x='2'%20y='1'%20width='1'%20height='12'%20fill='%239a6aca'/%3E%3Crect%20x='13'%20y='1'%20width='1'%20height='12'%20fill='%239a6aca'/%3E%3Crect%20x='4'%20y='3'%20width='8'%20height='1'%20fill='%239a6aca'/%3E%3Crect%20x='4'%20y='5'%20width='6'%20height='1'%20fill='%239a6aca'/%3E%3Crect%20x='4'%20y='7'%20width='4'%20height='1'%20fill='%239a6aca'/%3E%3Crect%20x='10'%20y='4'%20width='3'%20height='1'%20fill='%235a308a'/%3E%3Crect%20x='10'%20y='8'%20width='3'%20height='1'%20fill='%235a308a'/%3E%3Crect%20x='7'%20y='1'%20width='2'%20height='1'%20fill='%23c04040'/%3E%3Crect%20x='7'%20y='2'%20width='2'%20height='1'%20fill='%23e06060'/%3E%3Crect%20x='8'%20y='1'%20width='1'%20height='3'%20fill='%23f08080'/%3E%3Crect%20x='10'%20y='13'%20width='2'%20height='1'%20fill='%23c04040'/%3E%3Crect%20x='11'%20y='14'%20width='1'%20height='2'%20fill='%23c04040'/%3E%3C/svg%3E") center/contain no-repeat;image-rendering:pixelated}.i-note:after{display:none}
-.i-map:before{background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20shape-rendering='crispEdges'%3E%3Crect%20x='1'%20y='1'%20width='14'%20height='14'%20fill='%23d0bc83'/%3E%3Crect%20x='0'%20y='0'%20width='16'%20height='1'%20fill='%236d4c25'/%3E%3Crect%20x='0'%20y='0'%20width='1'%20height='16'%20fill='%236d4c25'/%3E%3Crect%20x='15'%20y='0'%20width='1'%20height='16'%20fill='%236d4c25'/%3E%3Crect%20x='0'%20y='15'%20width='16'%20height='1'%20fill='%236d4c25'/%3E%3Crect%20x='1'%20y='1'%20width='14'%20height='1'%20fill='%23d8c490'/%3E%3Crect%20x='1'%20y='1'%20width='1'%20height='14'%20fill='%23c8b478'/%3E%3Crect%20x='3'%20y='4'%20width='4'%20height='3'%20fill='%237a9e5a'/%3E%3Crect%20x='3'%20y='4'%20width='4'%20height='1'%20fill='%238aae6a'/%3E%3Crect%20x='8'%20y='6'%20width='5'%20height='4'%20fill='%235a8a4a'/%3E%3Crect%20x='8'%20y='6'%20width='5'%20height='1'%20fill='%236a9a5a'/%3E%3Crect%20x='8'%20y='3'%20width='5'%20height='2'%20fill='%234a8ab4'/%3E%3Crect%20x='8'%20y='3'%20width='5'%20height='1'%20fill='%235a9ac4'/%3E%3Crect%20x='3'%20y='8'%20width='4'%20height='4'%20fill='%233a7aa4'/%3E%3Crect%20x='10'%20y='9'%20width='2'%20height='2'%20fill='%23c04040'/%3E%3Crect%20x='11'%20y='9'%20width='1'%20height='1'%20fill='%23d06060'/%3E%3Crect%20x='2'%20y='12'%20width='6'%20height='2'%20fill='%238b623e'/%3E%3Crect%20x='2'%20y='12'%20width='6'%20height='1'%20fill='%239b724e'/%3E%3Crect%20x='12'%20y='11'%20width='2'%20height='1'%20fill='%236b4528'/%3E%3Crect%20x='6'%20y='3'%20width='1'%20height='1'%20fill='%236b4528'/%3E%3Crect%20x='4'%20y='6'%20width='1'%20height='1'%20fill='%235a7e3a'/%3E%3Crect%20x='13'%20y='7'%20width='1'%20height='1'%20fill='%235a7e3a'/%3E%3Crect%20x='7'%20y='1'%20width='2'%20height='2'%20fill='%236d4c25'/%3E%3Crect%20x='8'%20y='1'%20width='1'%20height='1'%20fill='%238b623e'/%3E%3C/svg%3E") center/contain no-repeat;image-rendering:pixelated}.i-map:after{display:none}
-/* ---- SITE/FUNCTION ICONS ---- */
-.i-star:before{left:4px;top:4px;width:16px;height:16px;background:linear-gradient(#ffd700,#d4a800);box-shadow:-5px -5px 0 -2px var(--gold),5px -5px 0 -2px var(--gold),-5px 5px 0 -2px var(--gold),5px 5px 0 -2px var(--gold),0 -8px 0 -1px var(--gold),0 8px 0 -1px var(--gold),-8px 0 0 -1px var(--gold),8px 0 0 -1px var(--gold);background-color:var(--gold)}.i-star:after{left:6px;top:6px;width:12px;height:12px;background:#fff8a0;box-shadow:0 0 3px -1px #fff8a0}
-.i-fork:before{left:4px;top:4px;width:5px;height:5px;border-radius:50%;background:#e0e0e0;box-shadow:11px 0 0 #e0e0e0,0 11px 0 #e0e0e0,6px 6px 0 -3px #e0e0e0,6px 6px 0 -1px #cfcfcf,1px 3px 0 #cfcfcf,10px 3px 0 #cfcfcf,4px 8px 0 #cfcfcf,14px 8px 0 #cfcfcf,1px 14px 0 #cfcfcf,10px 14px 0 #cfcfcf;background-color:#e0e0e0}.i-fork:after{display:none}
-.i-sound:before{left:4px;top:6px;width:8px;height:12px;background:linear-gradient(90deg,#c0c0c0 0 2px,#e0e0e0 2px 6px,#d0d0d0 6px 8px);clip-path:polygon(0 0,100% 20%,100% 80%,0 100%)}.i-sound:after{left:14px;top:8px;width:1px;height:8px;box-shadow:2px 0 0 0 #e0e0e0,5px 1px 0 0 #d0d0d0,8px 2px 0 0 #c0c0c0,2px 1px 0 0 #f0f0f0;background:#e0e0e0}
-.i-mute:before{left:4px;top:6px;width:8px;height:12px;background:linear-gradient(90deg,#666 0 2px,#888 2px 6px,#777 6px 8px);clip-path:polygon(0 0,100% 20%,100% 80%,0 100%)}.i-mute:after{left:12px;top:4px;width:8px;height:8px;background:linear-gradient(45deg,transparent 0 40%,#e04040 40% 60%,transparent 60%),linear-gradient(-45deg,transparent 0 40%,#e04040 40% 60%,transparent 60%);box-shadow:0 0 0 2px #c03030}
-.i-close:before{left:5px;top:5px;width:14px;height:14px;background:linear-gradient(45deg,transparent 0 40%,#888 40% 60%,transparent 60%),linear-gradient(-45deg,transparent 0 40%,#888 40% 60%,transparent 60%);box-shadow:inset 0 1px 0 #999,inset 0 -1px 0 #777,inset 1px 0 0 #999,inset -1px 0 0 #777}.i-close:after{display:none}
-.i-mail:before{inset:4px 3px 6px;background:linear-gradient(135deg,#e8c48a 0 40%,#d4a86a 40% 60%,#c8a060 60%);box-shadow:inset 0 1px 0 #f0d0a0,inset 0 -1px 0 #b08040,inset 1px 0 0 #b08040,inset -1px 0 0 #b08040,14px 1px 0 0 #c04040,15px 2px 0 #c04040,18px 2px 0 #c04040,14px 3px 0 0 #c04040,15px 3px 0 #d06060;background-color:#d4a86a}.i-mail:after{display:none}
-.i-chat:before{inset:4px 3px 6px 4px;background:#7289da;border-radius:4px;box-shadow:inset 0 1px 0 #8ea1e0,inset 0 -1px 0 #5a6db0,inset 1px 0 0 #5a6db0,inset -1px 0 0 #5a6db0,3px 2px 0 #c0c8f0,8px 2px 0 #c0c8f0,13px 2px 0 #c0c8f0,3px 6px 0 #c0c8f0,8px 6px 0 #c0c8f0,13px 6px 0 #c0c8f0,4px 10px 0 #c0c8f0,8px 10px 0 #c0c8f0}.i-chat:after{left:4px;bottom:2px;width:5px;height:5px;background:#7289da;clip-path:polygon(0 0,100% 0,0 100%)}
-.i-code:before{left:3px;top:4px;width:5px;height:16px;border:2px solid #d0d0d0;border-right:0;border-radius:3px 0 0 3px;background:transparent;box-shadow:10px 0 0 0 #d0d0d0 inset,13px 0 0 0px #d0d0d0,-1px 8px 0 -2px #222,1px 8px 0 -2px #f0c040,1px 8px 0 2px #f8d860,1px 8px 0 0px #222;border-radius:3px}.i-code:after{display:none}
-.i-hammer:before{left:4px;top:2px;width:16px;height:8px;background:linear-gradient(90deg,#a08060 0 3px,#c0a080 3px 8px,#b09070 8px 13px,#806040 13px);box-shadow:inset 0 1px 0 #d0b090,inset 0 -1px 0 #806040,2px 2px 0 #b0b0b0,6px 2px 0 #c8c8c8,10px 2px 0 #b0b0b0;background-color:#a08060}.i-hammer:after{left:9px;top:10px;width:6px;height:10px;background:linear-gradient(90deg,#5a3a1a 0 2px,#6b4528 2px 5px,#4a2e14 5px);box-shadow:0 2px 0 #4a2e14,0 5px 0 #4a2e14}
-.i-play:before{left:7px;top:5px;width:0;height:0;border:7px solid transparent;border-left:10px solid var(--xp);border-right:0;filter:drop-shadow(1px 0 0 #5a9e32)}.i-play:after{display:none}
-.i-done:before{left:6px;top:9px;width:12px;height:7px;border:3px solid var(--cyan);border-top:0;border-left:0;transform:rotate(45deg);border-radius:2px;filter:drop-shadow(0 0 2px rgba(69,208,208,.5))}.i-done:after{display:none}
-.i-circle:before{left:4px;top:4px;width:16px;height:16px;border:3px solid var(--yellow);border-radius:50%;background:transparent;box-shadow:inset 1px 1px 2px rgba(255,255,85,.15)}.i-circle:after{display:none}
-.i-clock:before{left:3px;top:3px;width:18px;height:18px;border:2px solid #777;border-radius:50%;background:radial-gradient(circle,#1a1a2e 0 80%,#2a2a3e 80%);box-shadow:inset 0 0 0 1px #555,9px 0 0 -6px #ccc,0 9px 0 -6px #ccc,-9px 0 0 -6px #ccc,0 -9px 0 -6px #ccc,12px 3px 0 -4px #ccc,-12px 3px 0 -4px #ccc,3px 12px 0 -4px #ccc,-3px 12px 0 -4px #ccc}.i-clock:after{left:10px;top:7px;width:2px;height:8px;background:#ffd700;border-radius:1px;transform:rotate(35deg);box-shadow:4px 4px 0 0 #ffd700;transform-origin:bottom center}
-.i-game:before{left:3px;top:5px;width:18px;height:14px;background:linear-gradient(90deg,#444 0 2px,#666 2px 16px,#444 16px);border-radius:4px;box-shadow:inset 0 1px 0 #777,inset 0 -1px 0 #333,4px 4px 0 #333,8px 4px 0 #333,4px 8px 0 #333,8px 8px 0 #333,14px 4px 0 #7eff15,14px 8px 0 #7eff15,12px 6px 0 #ff5555,16px 6px 0 #5555ff,14px 3px 0 #a0ff55,14px 7px 0 #a0ff55,12px 5px 0 #ff8888,16px 5px 0 #8888ff;background-color:#555}.i-game:after{display:none}
-.i-music-note:before{left:10px;top:3px;width:4px;height:14px;background:linear-gradient(#e080f0 0 2px,#c855dc 2px 12px,#a040b0 12px);border-radius:2px 0 0 2px;transform:rotate(12deg)}.i-music-note:after{left:5px;top:11px;width:8px;height:8px;background:radial-gradient(circle at 30% 30%,#e080f0,#c855dc 50%,#a040b0);border-radius:50%;box-shadow:0 0 0 1px #60287a,2px -11px 0 0 #c855dc,5px -13px 0 0 #c855dc,6px -15px 0 0 #e080f0}
-.i-book2:before{inset:3px 4px 4px 3px;background:linear-gradient(90deg,#6b4522 0 2px,#c4a870 2px 4px,#e8d4a0 4px 10px,#a08050 10px 12px,#e8d4a0 12px 18px,#c4a870 18px 20px,#6b4522 20px);box-shadow:inset 0 1px 0 #f4e2b7,inset 0 -1px 0 #a08050;border-radius:1px}.i-book2:after{display:none}
-.i-screen:before{inset:2px 3px 7px;background:linear-gradient(90deg,#2a2a3e 0 2px,#3a3a4e 2px 18px,#2a2a3e 18px);border:2px solid #555;border-radius:2px;box-shadow:inset 0 0 0 1px #5a5a6e inset,inset 0 0 0 6px #1a1a3e,6px 4px 0 0 #4a8a3e,10px 4px 0 0 #4a8a3e,6px 6px 0 0 #5a5aaa,10px 6px 0 0 #5a5aaa,6px 8px 0 0 #7a7a3e,10px 8px 0 0 #7a7a3e,6px 10px 0 0 #8a4a4a,10px 10px 0 0 #8a4a4a,8px 12px 0 0 #7eff15,inset 0 -65% 0 0 #0a0a2e}.i-screen:after{left:8px;bottom:2px;width:8px;height:4px;background:#4a4a5e;box-shadow:-2px 0 0 #6a6a7e,2px 0 0 #3a3a4e,0 3px 0 #2a2a3e}
-.i-cart:before{left:3px;top:5px;width:18px;height:10px;background:linear-gradient(90deg,#3a5a7a 0 2px,#5a7a9a 2px 16px,#3a5a7a 16px);border-radius:3px 3px 1px 1px;box-shadow:inset 0 1px 0 #7a9aba,inset 0 -1px 0 #3a5a7a,1px -2px 0 0 #7a9aba,5px -2px 0 0 #7a9aba,9px -2px 0 0 #7a9aba,13px -2px 0 0 #7a9aba,4px 3px 0 #4a6a8a,10px 3px 0 #4a6a8a,6px 5px 0 #4a6a8a,5px 4px 0 #c0c0c0,11px 4px 0 #c0c0c0}.i-cart:after{left:5px;top:16px;width:4px;height:3px;background:#333;border-radius:0 0 2px 2px;box-shadow:10px 0 0 0 #333,0 -1px 0 #555,10px -1px 0 #555,5px 0 0 #444,15px 0 0 #444,1px 1px 0 #222,11px 1px 0 #222}
-.i-chart:before{inset:3px;background:#1a2a1a;border:2px solid #2a3a2a;box-shadow:inset 0 0 0 1px #3a5a3a,0 15% 0 0 #2a3a2a,0 45% 0 0 #2a3a2a,0 70% 0 0 #2a3a2a,4px 5px 0 0 #7eff15,8px 5px 0 0 #a0ff55,12px 10px 0 0 #ffd700,16px 10px 0 0 #ffe44d,4px 14px 0 0 #45d0d0,8px 14px 0 0 #70e8e8,12px 3px 0 0 #7eff15,16px 15px 0 0 #ff5555}.i-chart:after{display:none}
-.i-link:before{left:3px;top:6px;width:7px;height:12px;border:2px solid #5a7a9a;border-radius:4px;border-right:0;background:transparent;box-shadow:9px 0 0 0 #5a7a9a,0 0 0 1px #7a9aba inset,9px 0 0 1px #7a9aba inset,4px 3px 0 0 #5a7a9a,8px 3px 0 0 #5a7a9a,4px 8px 0 0 #5a7a9a,8px 8px 0 0 #5a7a9a}.i-link:after{display:none}
-.i-fail:before{inset:0;background:repeating-conic-gradient(#1a1a2e 0 25%,#0d0d1a 0 50%) 0 0/8px 8px;box-shadow:inset 4px 4px 0 0 #ffd700,inset 4px 18px 0 0 #b09820,inset 4px 4px 0 5px #ffd700,inset 4px 4px 0 6px #ffe44d,inset 4px 18px 0 5px #b09820,inset 20px 4px 0 5px #b09820,inset 20px 18px 0 5px #b09820,inset 10px 6px 0 0 #8a6a10,inset 8px 8px 0 0 #8a6a10,inset 12px 8px 0 0 #8a6a10,inset 10px 10px 0 0 #8a6a10,inset 10px 12px 0 0 #8a6a10,inset 10px 15px 0 0 #8a6a10,inset 8px 9px 0 0 #8a6a10,inset 12px 9px 0 0 #8a6a10}.i-fail:after{display:none}
+/* Clean SVG Icon References */
+.i-grass:before{background:url(/assets/mc/grass_block.svg) center/contain no-repeat;image-rendering:pixelated}.i-grass:after{display:none}
+.i-book:before,.i-book2:before,.i-enchant:before,.i-note:before{background:url(/assets/mc/book.svg) center/contain no-repeat;image-rendering:pixelated}.i-book:after,.i-book2:after,.i-enchant:after,.i-note:after{display:none}
+.i-pick:before,.i-hammer:before{background:url(/assets/mc/diamond_pickaxe.svg) center/contain no-repeat;image-rendering:pixelated}.i-pick:after,.i-hammer:after{display:none}
+.i-map:before{background:url(/assets/mc/map.svg) center/contain no-repeat;image-rendering:pixelated}.i-map:after{display:none}
+.i-chest:before,.i-cart:before{background:url(/assets/mc/chest.svg) center/contain no-repeat;image-rendering:pixelated}.i-chest:after,.i-cart:after{display:none}
+.i-friends:before,.i-players:before{background:url(/assets/mc/steve.svg) center/contain no-repeat;image-rendering:pixelated}.i-friends:after,.i-players:after{display:none}
+.i-sign:before{background:url(/assets/mc/oak_sign.svg) center/contain no-repeat;image-rendering:pixelated}.i-sign:after{display:none}
+.i-crafting-table:before{background:url(/assets/mc/crafting_table.svg) center/contain no-repeat;image-rendering:pixelated}.i-crafting-table:after{display:none}
+.i-dirt:before{background:url(/assets/mc/dirt.svg) center/contain no-repeat;image-rendering:pixelated}.i-dirt:after{display:none}
+.i-log:before{background:url(/assets/mc/oak_log.svg) center/contain no-repeat;image-rendering:pixelated}.i-log:after{display:none}
+.i-tnt:before{background:url(/assets/mc/tnt.svg) center/contain no-repeat;image-rendering:pixelated}.i-tnt:after{display:none}
+.i-diamond:before{background:url(/assets/mc/diamond.svg) center/contain no-repeat;image-rendering:pixelated}.i-diamond:after{display:none}
+.i-sword:before{background:url(/assets/mc/diamond_sword.svg) center/contain no-repeat;image-rendering:pixelated}.i-sword:after{display:none}
+.i-furnace:before{background:url(/assets/mc/furnace.svg) center/contain no-repeat;image-rendering:pixelated}.i-furnace:after{display:none}
+.i-anvil:before{background:url(/assets/mc/anvil.svg) center/contain no-repeat;image-rendering:pixelated}.i-anvil:after{display:none}
+.i-totem:before{background:url(/assets/mc/totem.svg) center/contain no-repeat;image-rendering:pixelated}.i-totem:after{display:none}
+.i-potion:before{background:url(/assets/mc/potion.svg) center/contain no-repeat;image-rendering:pixelated}.i-potion:after{display:none}
+.i-star:before{background:url(/assets/mc/nether_star.svg) center/contain no-repeat;image-rendering:pixelated}.i-star:after{display:none}
+.i-clock:before{background:url(/assets/mc/clock.svg) center/contain no-repeat;image-rendering:pixelated}.i-clock:after{display:none}
+.i-arrow:before{background:url(/assets/mc/arrow.svg) center/contain no-repeat;image-rendering:pixelated}.i-arrow:after{display:none}
+
+.i-discord:before,.i-chat:before{background:url(/assets/mc/discord.svg) center/contain no-repeat;image-rendering:pixelated}.i-discord:after,.i-chat:after{display:none}
+.i-github:before,.i-code:before{background:url(/assets/mc/github.svg) center/contain no-repeat;image-rendering:pixelated}.i-github:after,.i-code:after{display:none}
+.i-email:before,.i-mail:before{background:url(/assets/mc/email.svg) center/contain no-repeat;image-rendering:pixelated}.i-email:after,.i-mail:after{display:none}
+.i-instagram:before{background:url(/assets/mc/instagram.svg) center/contain no-repeat;image-rendering:pixelated}.i-instagram:after{display:none}
+.i-twitter:before{background:url(/assets/mc/twitter.svg) center/contain no-repeat;image-rendering:pixelated}.i-twitter:after{display:none}
+.i-steam:before{background:url(/assets/mc/steam.svg) center/contain no-repeat;image-rendering:pixelated}.i-steam:after{display:none}
+.i-redbull:before{background:url(/assets/mc/redbull.svg) center/contain no-repeat;image-rendering:pixelated}.i-redbull:after{display:none}
+
+.i-music-note:before{background:url(/assets/mc/note_block.svg) center/contain no-repeat;image-rendering:pixelated}.i-music-note:after{display:none}
+.i-game:before{background:url(/assets/mc/diamond_sword.svg) center/contain no-repeat;image-rendering:pixelated}.i-game:after{display:none}
+.i-screen:before{background:url(/assets/mc/comparator.svg) center/contain no-repeat;image-rendering:pixelated}.i-screen:after{display:none}
+.i-link:before{background:url(/assets/mc/paper.svg) center/contain no-repeat;image-rendering:pixelated}.i-link:after{display:none}
+.i-sound:before{background:url(/assets/mc/jukebox.svg) center/contain no-repeat;image-rendering:pixelated}.i-sound:after{display:none}
+.i-mute:before{background:url(/assets/mc/tnt.svg) center/contain no-repeat;image-rendering:pixelated}.i-mute:after{display:none}
+.i-close:before{content:"×";display:grid;place-items:center;font-family:'Press Start 2P',monospace;font-size:16px;color:#ff5555}.i-close:after{display:none}
+.i-play:before{content:"▶";display:inline-grid;place-items:center;font-size:12px;color:var(--xp)}.i-play:after{display:none}
+.i-done:before{content:"✓";display:inline-grid;place-items:center;font-size:14px;color:var(--cyan)}.i-done:after{display:none}
+.i-circle:before{content:"●";display:inline-grid;place-items:center;font-size:10px;color:var(--gold)}.i-circle:after{display:none}
+.i-fail:before{background:url(/assets/mc/dirt.svg) center/contain no-repeat;image-rendering:pixelated}.i-fail:after{display:none}.i-save:before{background:url(/assets/mc/crafting_table.svg) center/contain no-repeat;image-rendering:pixelated}.i-save:after{display:none}
+.i-door:before{background:url(/assets/mc/oak_sign.svg) center/contain no-repeat;image-rendering:pixelated}.i-door:after{display:none}
+.i-pen:before{background:url(/assets/mc/paper.svg) center/contain no-repeat;image-rendering:pixelated}.i-pen:after{display:none}
+.i-image:before{background:url(/assets/mc/map.svg) center/contain no-repeat;image-rendering:pixelated}.i-image:after{display:none}
+.i-palette:before{background:url(/assets/mc/potion.svg) center/contain no-repeat;image-rendering:pixelated}.i-palette:after{display:none}
+.i-eye:before{background:url(/assets/mc/clock.svg) center/contain no-repeat;image-rendering:pixelated}.i-eye:after{display:none}
+.i-hamburger:before{background:url(/assets/mc/oak_log.svg) center/contain no-repeat;image-rendering:pixelated}.i-hamburger:after{display:none}
 .i-bullet:before{left:8px;top:6px;width:8px;height:12px;background:linear-gradient(135deg,#70e8e8 0 30%,#45d0d0 30% 70%,#208888 70%);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);filter:drop-shadow(0 0 2px rgba(69,208,208,.4))}.i-bullet:after{display:none}
 .i-arrow:before{left:4px;top:10px;width:12px;height:4px;background:linear-gradient(90deg,#bbb 0 2px,#999 2px 12px,#777 12px);border-radius:1px}.i-arrow:after{left:16px;top:8px;width:0;height:0;border:4px solid transparent;border-left:6px solid #999;border-right:0;filter:drop-shadow(1px 0 0 #777)}
 /* i-save: Floppy Disk / Save — classic 3.5" disk with label */
@@ -344,7 +353,6 @@ input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:
     <div class="nav-item" onclick="showPanel('library',this)"><span class="ni"><span class="mc-item i-cart"></span></span>Library</div>
     <div class="nav-item" onclick="showPanel('friends',this)"><span class="ni"><span class="mc-item i-game"></span></span>Friends / Badges</div>
     <div class="nav-item" onclick="showPanel('projects',this)"><span class="ni"><span class="mc-item i-hammer"></span></span>Projects</div>
-    <div class="nav-item" onclick="showPanel('recipes',this)"><span class="ni"><span class="mc-item i-crafting-table"></span></span>Crafting & Recipes</div>
     <div class="nav-item" onclick="showPanel('blog',this)"><span class="ni"><span class="mc-item i-pen"></span></span>Blog</div>
     <div class="nav-item" onclick="showPanel('album',this)"><span class="ni"><span class="mc-item i-image"></span></span>Album</div>
     <div class="nav-item" onclick="showPanel('phrases',this)"><span class="ni"><span class="mc-item i-chat"></span></span>Easter Eggs</div>
@@ -393,8 +401,7 @@ input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:
       <div class="field"><label>Discord User ID (for link)</label><input class="mc-input" id="cfg-discord" value="744808879036170272"></div>
       <div class="field"><label>GitHub Username</label><input class="mc-input" id="cfg-github" placeholder="Rafie-kun"></div>
       <div class="field"><label>Twitter / X URL</label><input class="mc-input" id="cfg-twitter" placeholder="https://twitter.com/..."></div>
-      <div class="field"><label>Instagram URL / Handle</label><input class="mc-input" id="cfg-instagram" placeholder="https://instagram.com/..."></div>
-      <div class="field"><label>Guns.lol URL / Handle</label><input class="mc-input" id="cfg-guns" placeholder="https://guns.lol/... or username"></div>
+      <div class="field"><label>Instagram URL</label><input class="mc-input" id="cfg-instagram" placeholder="https://instagram.com/..."></div>
       <div class="field"><label>Spotify Profile URL</label><input class="mc-input" id="cfg-spotify" placeholder="https://open.spotify.com/user/..."></div>
       <div style="margin-bottom:14px">
         <div class="panel-title" style="font-size:7px;margin-top:10px"><span class="mc-item i-link inline"></span> Extra Socials</div>
@@ -473,45 +480,6 @@ input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:
       <div class="save-bar" style="margin-top:18px">
         <button class="mc-btn green" onclick="saveProjects()"><span class="mc-item i-save inline"></span> Save Projects</button>
         <span class="save-msg" id="proj-msg"></span>
-      </div>
-    </div>
-
-    <!-- CRAFTING & RECIPES -->
-    <div id="panel-recipes" class="panel" style="display:none">
-      <div class="panel-title"><span class="mc-item i-crafting-table inline"></span> Minecraft Crafting Bench & Creative Recipes</div>
-      <p style="font-family:'VT323',monospace;font-size:18px;color:#888;margin-bottom:14px">
-        Manage all 3x3 Minecraft crafting recipes, result blocks, category tags, and creative inventory blocks. Click any slot in the 3x3 bench to choose an ingredient from the list!
-      </p>
-
-      <!-- Sub-tabs for Crafting Manager -->
-      <div style="display:flex;gap:8px;margin-bottom:16px;border-bottom:2px solid #2e2e42;padding-bottom:10px;">
-        <button class="mc-btn green" id="btn-tab-recipes" onclick="switchRecipeSubTab('recipes')" type="button">⚒️ 3x3 Recipes (<span id="cnt-recipes">0</span>)</button>
-        <button class="mc-btn" id="btn-tab-creative" onclick="switchRecipeSubTab('creative')" type="button">🧱 Creative Items (<span id="cnt-creative">0</span>)</button>
-      </div>
-
-      <!-- RECIPES SUB-PANEL -->
-      <div id="subpanel-recipes">
-        <div class="card-list" id="recipes-list"></div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
-          <button class="mc-btn" onclick="addRecipe()" style="width:auto;padding:8px 14px">+ Add New Recipe</button>
-          <button class="mc-btn red" onclick="resetDefaultRecipes()" style="width:auto;padding:8px 14px">⚡ Reset Defaults</button>
-        </div>
-      </div>
-
-      <!-- CREATIVE ITEMS SUB-PANEL -->
-      <div id="subpanel-creative" style="display:none;">
-        <p style="font-family:'VT323',monospace;font-size:16px;color:#aaa;margin-bottom:12px;">
-          Add or edit items available in the Creative Mode Inventory. Any custom block/item added here instantly becomes available in the 3x3 crafting grid slots!
-        </p>
-        <div class="card-list" id="creative-items-list"></div>
-        <div style="margin-top:16px;">
-          <button class="mc-btn" onclick="addCreativeItem()" style="width:auto;padding:8px 14px">+ Add Creative Item / Block</button>
-        </div>
-      </div>
-
-      <div class="save-bar" style="margin-top:20px">
-        <button class="mc-btn green" onclick="saveRecipes()"><span class="mc-item i-save inline"></span> Save Recipes & Items</button>
-        <span class="save-msg" id="recipes-msg"></span>
       </div>
     </div>
 
@@ -643,217 +611,6 @@ const ADMIN_PW_KEY = 'reef-admin-pw';
 const DATA_KEY = 'reef-cms';
 const SESSION_KEY = 'reef-admin-session';
 
-const DEFAULT_RECIPES = [
-  {
-    id: 'r-sword',
-    name: 'Diamond Sword',
-    category: 'Tools & Combat',
-    icon: 'i-sword',
-    desc: 'Classic melee weapon crafted with 2 Diamonds and 1 Oak Log in the middle column.',
-    link: '',
-    grid: [
-      null, 'i-diamond', null,
-      null, 'i-diamond', null,
-      null, 'i-log', null
-    ]
-  },
-  {
-    id: 'r-pickaxe',
-    name: 'Diamond Pickaxe',
-    category: 'Tools & Combat',
-    icon: 'i-pick',
-    desc: 'Mining tool crafted with 3 Diamonds on top and 2 Oak Logs in the center column.',
-    link: '',
-    grid: [
-      'i-diamond', 'i-diamond', 'i-diamond',
-      null, 'i-log', null,
-      null, 'i-log', null
-    ]
-  },
-  {
-    id: 'r-crafting-table',
-    name: 'Crafting Table',
-    category: 'Building Blocks',
-    icon: 'i-crafting-table',
-    desc: 'Essential 3x3 workbench crafted with 4 Oak Logs or Dirt blocks in a 2x2 grid.',
-    link: '',
-    grid: [
-      'i-log', 'i-log', null,
-      'i-log', 'i-log', null,
-      null, null, null
-    ]
-  },
-  {
-    id: 'r-furnace',
-    name: 'Furnace',
-    category: 'Building Blocks',
-    icon: 'i-furnace',
-    desc: 'Smelting block crafted with 8 Dirt/Cobblestone around the outer border.',
-    link: '',
-    grid: [
-      'i-dirt', 'i-dirt', 'i-dirt',
-      'i-dirt', null, 'i-dirt',
-      'i-dirt', 'i-dirt', 'i-dirt'
-    ]
-  },
-  {
-    id: 'r-chest',
-    name: 'Storage Chest',
-    category: 'Building Blocks',
-    icon: 'i-chest',
-    desc: 'Container block crafted with 8 Oak Logs around the outer border.',
-    link: '',
-    grid: [
-      'i-log', 'i-log', 'i-log',
-      'i-log', null, 'i-log',
-      'i-log', 'i-log', 'i-log'
-    ]
-  },
-  {
-    id: 'r-tnt',
-    name: 'TNT Explosive',
-    category: 'Redstone & Utility',
-    icon: 'i-tnt',
-    desc: 'High explosive block crafted in a checkerboard pattern of TNT and Dirt.',
-    link: '',
-    grid: [
-      'i-tnt', 'i-dirt', 'i-tnt',
-      'i-dirt', 'i-tnt', 'i-dirt',
-      'i-tnt', 'i-dirt', 'i-tnt'
-    ]
-  },
-  {
-    id: 'r-grass',
-    name: 'Grass Block',
-    category: 'Building Blocks',
-    icon: 'i-grass',
-    desc: 'Natural surface block created with Dirt and Oak Log.',
-    link: '',
-    grid: [
-      null, null, null,
-      null, 'i-dirt', null,
-      null, 'i-log', null
-    ]
-  },
-  {
-    id: 'r-enchant',
-    name: 'Enchanting Table',
-    category: 'Magic & Decor',
-    icon: 'i-enchant',
-    desc: 'Mystical table crafted with 1 Book on top, 2 Diamonds, and Dirt/Obsidian.',
-    link: '',
-    grid: [
-      null, 'i-book', null,
-      'i-diamond', 'i-dirt', 'i-diamond',
-      'i-dirt', 'i-dirt', 'i-dirt'
-    ]
-  },
-  {
-    id: 'r-anvil',
-    name: 'Anvil',
-    category: 'Tools & Combat',
-    icon: 'i-anvil',
-    desc: 'Heavy repair station crafted with Dirt/Iron blocks in an anvil layout.',
-    link: '',
-    grid: [
-      'i-dirt', 'i-dirt', 'i-dirt',
-      null, 'i-dirt', null,
-      'i-dirt', 'i-dirt', 'i-dirt'
-    ]
-  },
-  {
-    id: 'r-star',
-    name: 'Beacon',
-    category: 'Magic & Decor',
-    icon: 'i-star',
-    desc: 'Powerful light beacon crafted with Nether Stars and Diamonds.',
-    link: '',
-    grid: [
-      'i-star', 'i-star', 'i-star',
-      'i-star', 'i-diamond', 'i-star',
-      'i-dirt', 'i-dirt', 'i-dirt'
-    ]
-  },
-  {
-    id: 'r-totem',
-    name: 'Totem of Undying',
-    category: 'Magic & Decor',
-    icon: 'i-totem',
-    desc: 'Life-saving relic crafted with Stars and Diamonds.',
-    link: '',
-    grid: [
-      null, 'i-star', null,
-      'i-star', 'i-diamond', 'i-star',
-      null, 'i-star', null
-    ]
-  },
-  {
-    id: 'r-redbull-clock',
-    name: 'Overclocked Red Bull Clock',
-    category: 'Redstone & Utility',
-    icon: 'i-clock',
-    desc: 'Energy-boosted timer crafted with 4 Red Bulls and 1 Clock.',
-    link: '',
-    grid: [
-      null, 'i-redbull', null,
-      'i-redbull', 'i-clock', 'i-redbull',
-      null, 'i-redbull', null
-    ]
-  },
-  {
-    id: 'r-cms-portfolio',
-    name: 'REEF Portfolio App',
-    category: 'CMS Projects',
-    icon: 'i-crafting-table',
-    desc: 'Custom web app project crafted with Code, Crafting Table, and Nether Star.',
-    link: '#home',
-    grid: [
-      'i-crafting-table', 'i-code', 'i-star',
-      'i-book', 'i-diamond', 'i-hammer',
-      'i-map', 'i-totem', 'i-chest'
-    ]
-  },
-  {
-    id: 'r-cms-bot',
-    name: 'Discord Webhook Bot',
-    category: 'CMS Projects',
-    icon: 'i-discord',
-    desc: 'Automated Discord bot build crafted with Discord and Code blocks.',
-    link: 'https://discord.com',
-    grid: [
-      'i-discord', 'i-code', 'i-discord',
-      'i-code', 'i-star', 'i-code',
-      'i-discord', 'i-code', 'i-discord'
-    ]
-  }
-];
-
-const DEFAULT_CREATIVE_ITEMS = [
-  { id: 'i-grass', name: 'Grass Block', cat: 'Building Blocks' },
-  { id: 'i-dirt', name: 'Dirt / Cobble', cat: 'Building Blocks' },
-  { id: 'i-log', name: 'Oak Log', cat: 'Building Blocks' },
-  { id: 'i-crafting-table', name: 'Crafting Table', cat: 'Redstone & Utility' },
-  { id: 'i-furnace', name: 'Furnace', cat: 'Redstone & Utility' },
-  { id: 'i-chest', name: 'Chest', cat: 'Redstone & Utility' },
-  { id: 'i-tnt', name: 'TNT', cat: 'Redstone & Utility' },
-  { id: 'i-diamond', name: 'Diamond Gem', cat: 'Tools & Combat' },
-  { id: 'i-sword', name: 'Diamond Sword', cat: 'Tools & Combat' },
-  { id: 'i-pick', name: 'Diamond Pickaxe', cat: 'Tools & Combat' },
-  { id: 'i-anvil', name: 'Anvil', cat: 'Tools & Combat' },
-  { id: 'i-book', name: 'Book & Quill', cat: 'Magic & Decor' },
-  { id: 'i-enchant', name: 'Enchanting Table', cat: 'Magic & Decor' },
-  { id: 'i-star', name: 'Nether Star', cat: 'Magic & Decor' },
-  { id: 'i-totem', name: 'Totem of Undying', cat: 'Magic & Decor' },
-  { id: 'i-clock', name: 'Clock', cat: 'Redstone & Utility' },
-  { id: 'i-map', name: 'Map', cat: 'Redstone & Utility' },
-  { id: 'i-potion', name: 'Potion', cat: 'Magic & Decor' },
-  { id: 'i-sign', name: 'Oak Sign', cat: 'Building Blocks' },
-  { id: 'i-code', name: 'Code Block', cat: 'CMS Projects' },
-  { id: 'i-discord', name: 'Discord Module', cat: 'CMS Projects' },
-  { id: 'i-hammer', name: 'Dev Hammer', cat: 'Tools & Combat' },
-  { id: 'i-redbull', name: 'Red Bull Energy Can', cat: 'Redstone & Utility' }
-];
-
 const DEFAULT_DATA = {
   name: 'Reef',
   bio: "Hey, I'm Reef. I build things, break things, and occasionally sleep. Welcome to my little corner of the internet.",
@@ -876,8 +633,6 @@ const DEFAULT_DATA = {
     {name:'squizzy',img:'https://squizzy.dev/images/squizzy-button-88x31.png',url:'https://squizzy.dev/',code:''},
   ],
   projects: [],
-  recipes: DEFAULT_RECIPES,
-  creativeItems: DEFAULT_CREATIVE_ITEMS,
   blog: [],
   album: [],
   phrases: [
@@ -1013,7 +768,6 @@ function loadAllPanels() {
   document.getElementById('cfg-github').value = d.socials?.github || '';
   document.getElementById('cfg-twitter').value = d.socials?.twitter || '';
   document.getElementById('cfg-instagram').value = d.socials?.instagram || '';
-  document.getElementById('cfg-guns').value = d.socials?.guns || '';
   document.getElementById('cfg-spotify').value = d.socials?.spotify || '';
   renderExtraSocials(d.socials?.extra || []);
   ['music','proj','read'].forEach(tab => renderLibList(tab, d.library?.[tab] || []));
@@ -1022,8 +776,6 @@ function loadAllPanels() {
   renderBadges(d.friends || []);
   loadAdminCardPreview(d);
   renderProjects(d.projects || []);
-  renderCreativeItems(d.creativeItems || DEFAULT_CREATIVE_ITEMS);
-  renderRecipes(d.recipes || DEFAULT_RECIPES);
   renderBlog(d.blog || []);
   renderAlbum(d.album || []);
   renderPhrases(d.phrases || DEFAULT_DATA.phrases);
@@ -1053,7 +805,6 @@ async function loadAllPanelsAsync(){
       document.getElementById('cfg-github').value=d.socials.github||'';
       document.getElementById('cfg-twitter').value=d.socials.twitter||'';
       document.getElementById('cfg-instagram').value=d.socials.instagram||'';
-      document.getElementById('cfg-guns').value=d.socials.guns||'';
       document.getElementById('cfg-spotify').value=d.socials.spotify||'';
       renderExtraSocials(d.socials.extra||[]);
     }
@@ -1067,8 +818,6 @@ async function loadAllPanelsAsync(){
     if(d.friends) renderBadges(d.friends);
     loadAdminCardPreview(d);
     if(d.projects) renderProjects(d.projects);
-    renderCreativeItems(d.creativeItems || DEFAULT_CREATIVE_ITEMS);
-    if(d.recipes) renderRecipes(d.recipes);
     if(d.blog) renderBlog(d.blog);
     if(d.album) renderAlbum(d.album);
     if(d.phrases) renderPhrases(d.phrases);
@@ -1133,7 +882,6 @@ function saveSocials() {
     github: document.getElementById('cfg-github').value,
     twitter: document.getElementById('cfg-twitter').value,
     instagram: document.getElementById('cfg-instagram').value,
-    guns: document.getElementById('cfg-guns').value,
     spotify: document.getElementById('cfg-spotify').value,
     extra: extraSocials,
   };
@@ -1231,9 +979,7 @@ function renderGamesList(list) {
   if (!el) return;
   el.innerHTML = list.map((g, i) => {
     const thumbSrc = g.img || (g.appid ? 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+g.appid+'/header.jpg' : '');
-    const thumbSrcAttr = escAttr(thumbSrc);
-    const titleAttr = escAttr(g.title||'');
-    const thumbHtml = thumbSrc ? `<img class="game-thumb" src="${thumbSrcAttr}" alt="${titleAttr}" onerror="this.onerror=null;var fb=this.dataset.f?'':'${escAttr(g.appid?'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+g.appid+'/library_600x900.jpg':'')}';if(fb&&!this.dataset.f){this.dataset.f='1';this.src=fb}else{this.outerHTML='<div class=&quot;game-thumb-fail&quot;><span class=&quot;mc-item i-fail&quot; style=&quot;display:flex;align-items:center;justify-content:center;width:100%;height:100%&quot;></span></div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">` : '<div class="game-thumb-fail"><span class="mc-item i-fail" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%"></span></div>';
+    const thumbHtml = thumbSrc ? `<img class="game-thumb" src="${thumbSrc}" alt="${esc(g.title||'')}" onerror="this.onerror=null;var fb=this.dataset.f?'':'${g.appid?'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/'+g.appid+'/library_600x900.jpg':''}';if(fb&&!this.dataset.f){this.dataset.f='1';this.src=fb}else{this.outerHTML='<div class=&quot;game-thumb-fail&quot;><span class=&quot;mc-item i-fail&quot; style=&quot;display:flex;align-items:center;justify-content:center;width:100%;height:100%&quot;></span></div>'}" style="background:repeating-conic-gradient(#ff69b4 0% 25%,#000 0% 50%) 0 0/10px 10px">` : '<div class="game-thumb-fail"><span class="mc-item i-fail" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%"></span></div>';
     const statusOptions = ['playing','completed','backlog'];
     return `<div class="card-item">
       <div style="display:flex;flex-direction:column;gap:4px;align-items:center;cursor:grab;color:#555;font-size:14px;user-select:none" onclick="moveGame(${i},-1)" title="Move up">[^]</div>
@@ -1400,227 +1146,6 @@ function saveProjects() {
   saveData(d);
   savedOk('proj');
   toast('Projects saved!');
-}
-
-// ============================================
-// CRAFTING BENCH, CREATIVE ITEMS & RECIPES
-// ============================================
-let recipesData = [];
-let creativeItemsData = [];
-
-function getItemOptions() {
-  const options = [{ val: '', label: '❌ Empty' }];
-  const items = (creativeItemsData && creativeItemsData.length) ? creativeItemsData : (DEFAULT_CREATIVE_ITEMS || []);
-  items.forEach(item => {
-    if (item && item.id) {
-      options.push({ val: item.id, label: (item.name || item.id) + ' (' + item.id + ')' });
-    }
-  });
-  return options;
-}
-
-function switchRecipeSubTab(tab) {
-  const recSub = document.getElementById('subpanel-recipes');
-  const creSub = document.getElementById('subpanel-creative');
-  const btnRec = document.getElementById('btn-tab-recipes');
-  const btnCre = document.getElementById('btn-tab-creative');
-
-  if (tab === 'recipes') {
-    if (recSub) recSub.style.display = 'block';
-    if (creSub) creSub.style.display = 'none';
-    if (btnRec) btnRec.className = 'mc-btn green';
-    if (btnCre) btnCre.className = 'mc-btn';
-  } else {
-    if (recSub) recSub.style.display = 'none';
-    if (creSub) creSub.style.display = 'block';
-    if (btnRec) btnRec.className = 'mc-btn';
-    if (btnCre) btnCre.className = 'mc-btn green';
-  }
-}
-
-function renderCreativeItems(list) {
-  const d = loadData();
-  creativeItemsData = Array.isArray(list) && list.length ? list : (d.creativeItems || DEFAULT_CREATIVE_ITEMS);
-  const el = document.getElementById('creative-items-list');
-  const cnt = document.getElementById('cnt-creative');
-  if (cnt) cnt.textContent = creativeItemsData.length;
-  if (!el) return;
-
-  el.innerHTML = creativeItemsData.map((item, i) => `
-    <div class="card-item" style="display:flex;align-items:center;gap:12px;background:#101018;border:2px solid #2e2e42;padding:10px;margin-bottom:8px;">
-      <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#14141e;border:1px solid #3d3d52;flex-shrink:0;">
-        <span class="mc-item ${item.id} inline" style="transform:scale(1.1)"></span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex:1;">
-        <div>
-          <label style="font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;display:block;margin-bottom:2px;">Item CSS Class ID</label>
-          <input class="mc-input" value="${escAttr(item.id || '')}" oninput="creativeItemsData[${i}].id=this.value;renderRecipes(recipesData);" placeholder="e.g. i-diamond">
-        </div>
-        <div>
-          <label style="font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;display:block;margin-bottom:2px;">Display Name</label>
-          <input class="mc-input" value="${escAttr(item.name || '')}" oninput="creativeItemsData[${i}].name=this.value" placeholder="e.g. Diamond Gem">
-        </div>
-        <div>
-          <label style="font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;display:block;margin-bottom:2px;">Category</label>
-          <input class="mc-input" value="${escAttr(item.cat || item.category || 'General')}" oninput="creativeItemsData[${i}].cat=this.value" placeholder="e.g. Building Blocks">
-        </div>
-      </div>
-      <button class="btn-sm del" onclick="rmCreativeItem(${i})" title="Delete Item"><span class="mc-item i-close inline"></span></button>
-    </div>
-  `).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">No creative items added. Click "+ Add Creative Item" to create one.</div>';
-}
-
-function addCreativeItem() {
-  creativeItemsData.push({
-    id: 'i-custom-' + Date.now(),
-    name: 'New Custom Block',
-    cat: 'Building Blocks'
-  });
-  renderCreativeItems(creativeItemsData);
-  renderRecipes(recipesData);
-  toast('New creative item added!');
-}
-
-function rmCreativeItem(i) {
-  creativeItemsData.splice(i, 1);
-  renderCreativeItems(creativeItemsData);
-  renderRecipes(recipesData);
-  toast('Item removed.');
-}
-
-function renderRecipes(list) {
-  recipesData = Array.isArray(list) ? list : JSON.parse(JSON.stringify(DEFAULT_RECIPES));
-  const el = document.getElementById('recipes-list');
-  const cnt = document.getElementById('cnt-recipes');
-  if (cnt) cnt.textContent = recipesData.length;
-  if (!el) return;
-
-  const options = getItemOptions();
-
-  el.innerHTML = recipesData.map((r, i) => {
-    if (!r.grid || !Array.isArray(r.grid) || r.grid.length !== 9) {
-      r.grid = Array(9).fill(null);
-    }
-
-    const gridHtml = r.grid.map((slotItem, slotIdx) => `
-      <div style="position:relative;width:42px;height:42px;">
-        <select onchange="setRecipeSlot(${i}, ${slotIdx}, this.value)" 
-                style="position:absolute;inset:0;opacity:0;cursor:pointer;z-index:3;width:100%;height:100%;" 
-                title="Slot ${slotIdx + 1}: Click to choose ingredient">
-          ${options.map(o => `<option value="${o.val}" ${slotItem === o.val ? 'selected' : ''}>${esc(o.label)}</option>`).join('')}
-        </select>
-        <button type="button" class="mc-btn" 
-                style="position:absolute;inset:0;width:100%;height:100%;padding:0;display:flex;align-items:center;justify-content:center;background:#14141e;border:1px solid ${slotItem ? '#7eff15' : '#3d3d52'};pointer-events:none;">
-          ${slotItem ? `<span class="mc-item ${slotItem} inline" style="transform:scale(1.1)"></span>` : '<span style="font-size:10px;color:#444">+</span>'}
-        </button>
-      </div>
-    `).join('');
-
-    return `
-      <div class="card-item" style="display:flex;flex-direction:column;gap:12px;background:#101018;border:2px solid #2e2e42;padding:14px;margin-bottom:12px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2a2a3d;padding-bottom:8px;">
-          <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);display:flex;align-items:center;gap:8px;">
-            <span class="mc-item ${r.icon || 'i-crafting-table'} inline" style="transform:scale(1.1)"></span>
-            Recipe #${i + 1}: ${esc(r.name || 'Untitled Recipe')}
-          </div>
-          <button class="btn-sm del" onclick="rmRecipe(${i})" title="Delete Recipe"><span class="mc-item i-close inline"></span> Delete</button>
-        </div>
-
-        <div style="display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;">
-          <!-- 3x3 Ingredient Grid Matrix -->
-          <div>
-            <div style="font-family:'Press Start 2P',monospace;font-size:6px;color:var(--xp);margin-bottom:6px;text-align:center;">3x3 BENCH PATTERN</div>
-            <div style="display:grid;grid-template-columns:repeat(3, 42px);gap:4px;background:#09090d;padding:6px;border:2px solid #222234;">
-              ${gridHtml}
-            </div>
-            <div style="font-family:'VT323',monospace;font-size:12px;color:#888;text-align:center;margin-top:4px;">Click slot to choose item</div>
-          </div>
-
-          <!-- Recipe Metadata Inputs -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div>
-              <label style="font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;display:block;margin-bottom:4px;">Recipe Name</label>
-              <input class="mc-input" value="${escAttr(r.name || '')}" oninput="recipesData[${i}].name=this.value" placeholder="e.g. Diamond Sword">
-            </div>
-
-            <div>
-              <label style="font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;display:block;margin-bottom:4px;">Category</label>
-              <select class="mc-input" onchange="recipesData[${i}].category=this.value">
-                <option value="Building Blocks" ${r.category==='Building Blocks'?'selected':''}>Building Blocks</option>
-                <option value="Tools & Combat" ${r.category==='Tools & Combat'?'selected':''}>Tools & Combat</option>
-                <option value="Redstone & Utility" ${r.category==='Redstone & Utility'?'selected':''}>Redstone & Utility</option>
-                <option value="Magic & Decor" ${r.category==='Magic & Decor'?'selected':''}>Magic & Decor</option>
-                <option value="CMS Projects" ${r.category==='CMS Projects'?'selected':''}>CMS Projects</option>
-              </select>
-            </div>
-
-            <div>
-              <label style="font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;display:block;margin-bottom:4px;">Result Icon Class</label>
-              <select class="mc-input" onchange="recipesData[${i}].icon=this.value;renderRecipes(recipesData);">
-                ${options.filter(o => o.val).map(o => `<option value="${o.val}" ${r.icon===o.val?'selected':''}>${o.label}</option>`).join('')}
-              </select>
-            </div>
-
-            <div>
-              <label style="font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;display:block;margin-bottom:4px;">Project Link (Optional)</label>
-              <input class="mc-input" value="${escAttr(r.link || '')}" oninput="recipesData[${i}].link=this.value" placeholder="e.g. #projects or https://...">
-            </div>
-
-            <div style="grid-column:1/-1;">
-              <label style="font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;display:block;margin-bottom:4px;">Description</label>
-              <input class="mc-input" value="${escAttr(r.desc || '')}" oninput="recipesData[${i}].desc=this.value" placeholder="Crafting recipe description...">
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('') || '<div style="color:#555;font-family:VT323;font-size:18px;padding:10px">No custom recipes added yet. Click "+ Add New Recipe" to start!</div>';
-}
-
-function setRecipeSlot(recipeIdx, slotIdx, val) {
-  if (!recipesData[recipeIdx]) return;
-  recipesData[recipeIdx].grid[slotIdx] = val || null;
-  renderRecipes(recipesData);
-  admPlay('click');
-}
-
-function addRecipe() {
-  recipesData.push({
-    id: 'r-custom-' + Date.now(),
-    name: 'New Recipe',
-    category: 'Tools & Combat',
-    icon: 'i-sword',
-    desc: 'Custom player recipe build.',
-    link: '',
-    grid: Array(9).fill(null)
-  });
-  renderRecipes(recipesData);
-  toast('New recipe added!');
-}
-
-function rmRecipe(i) {
-  recipesData.splice(i, 1);
-  renderRecipes(recipesData);
-  toast('Recipe removed.');
-}
-
-function resetDefaultRecipes() {
-  if (confirm('Are you sure you want to reset all crafting recipes and creative items to original defaults?')) {
-    recipesData = JSON.parse(JSON.stringify(DEFAULT_RECIPES));
-    creativeItemsData = JSON.parse(JSON.stringify(DEFAULT_CREATIVE_ITEMS));
-    renderCreativeItems(creativeItemsData);
-    renderRecipes(recipesData);
-    toast('Recipes reset to default!');
-  }
-}
-
-function saveRecipes() {
-  const d = loadData();
-  d.recipes = recipesData;
-  d.creativeItems = creativeItemsData;
-  saveData(d);
-  savedOk('recipes');
-  toast('Crafting recipes and creative items saved successfully!');
 }
 
 // ============================================
