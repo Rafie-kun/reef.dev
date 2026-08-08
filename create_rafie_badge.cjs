@@ -1,4 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 31" width="88" height="31">
+const fs = require('fs');
+const path = require('path');
+
+// Generate 88x31 SVG representing the exact RaFie pixel badge
+const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 31" width="88" height="31">
   <defs>
     <style>
       .bg { fill: #20042b; }
@@ -86,4 +90,11 @@
 
   <!-- Side framing vignette -->
   <rect x="85" y="2" width="1" height="27" fill="#48125c"/>
-</svg>
+</svg>`;
+
+fs.writeFileSync('public/assets/rafie-badge.svg', svgContent);
+fs.writeFileSync('public/assets/rafie_badge.svg', svgContent);
+fs.writeFileSync('public/assets/button-88x31.webp', svgContent);
+fs.writeFileSync('public/assets/reef-card.webp', svgContent);
+
+console.log('✅ Created RaFie badge SVG at public/assets/rafie-badge.svg');

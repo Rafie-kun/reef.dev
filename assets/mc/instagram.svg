@@ -1,19 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
-      <!-- Gradient / Pixel Art Camera Body -->
-      <rect x="2" y="2" width="12" height="12" fill="#e1306c"/>
-      <rect x="3" y="1" width="10" height="14" fill="#fd1d1d"/>
-      <rect x="1" y="3" width="14" height="10" fill="#833ab4"/>
-      <!-- Outer gold frame -->
-      <rect x="2" y="1" width="12" height="1" fill="#fccc63"/>
-      <rect x="1" y="2" width="1" height="12" fill="#fccc63"/>
-      <!-- Lens outer ring -->
-      <rect x="5" y="5" width="6" height="6" fill="#ffffff"/>
-      <rect x="6" y="4" width="4" height="8" fill="#ffffff"/>
-      <rect x="4" y="6" width="8" height="4" fill="#ffffff"/>
-      <!-- Lens inner black -->
-      <rect x="6" y="6" width="4" height="4" fill="#181818"/>
-      <!-- Lens blue reflection -->
-      <rect x="6" y="6" width="2" height="2" fill="#3897f0"/>
-      <!-- Flash dot -->
-      <rect x="11" y="3" width="2" height="2" fill="#fccc63"/>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <style>rect { image-rendering: pixelated; }</style>
+  <!-- Outer Dark Frame -->
+  <rect x="0" y="0" width="16" height="16" fill="#1b1220"/>
+  <rect x="1" y="1" width="14" height="14" fill="#2b1a32"/>
+  <rect x="2" y="2" width="12" height="12" fill="#833ab4"/>
+
+  <!-- Sunset Instagram Gradient Pixels -->
+  <!-- Top row magenta -->
+  <rect x="3" y="3" width="10" height="2" fill="#c13584"/>
+  <!-- Middle rows orange/pink -->
+  <rect x="3" y="5" width="10" height="3" fill="#e1306c"/>
+  <rect x="3" y="8" width="10" height="3" fill="#fd1d1d"/>
+  <!-- Bottom rows warm orange/gold -->
+  <rect x="3" y="11" width="10" height="2" fill="#f56040"/>
+  <rect x="4" y="12" width="8" height="1" fill="#ffdc80"/>
+
+  <!-- Camera Outer Square (White Pixel Outline) -->
+  <rect x="4" y="4" width="8" height="8" fill="none" stroke="#ffffff" stroke-width="1"/>
+
+  <!-- Camera Lens Center (Circle) -->
+  <rect x="7" y="7" width="2" height="2" fill="#ffffff"/>
+  <rect x="6" y="7" width="1" height="2" fill="#222222"/>
+
+  <!-- Flash Dot Top Right -->
+  <rect x="10" y="5" width="1" height="1" fill="#ffffff"/>
+</svg>
