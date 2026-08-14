@@ -17,10 +17,28 @@ No build step. No Node.js. No framework. Just drop it on Vercel.
 
 Visit `/admin` on your live site.
 
-**Default password:** `reef2026`
+Authentication is verified **server-side** by the `/api/login` serverless function
+and returns a short-lived session token. The admin UI is only a gate — every write
+(`POST /api/data`, `POST /api/change-password`) requires that token, so the API is
+safe even though `admin.html` is publicly reachable.
 
-> ⚠️ Change this immediately after first login via Settings → Change Admin Password.
-> The new password is stored in your browser's localStorage on the device you use to manage the site.
+### Setting the admin password
+
+Set an `ADMIN_PASSWORD` environment variable in **Vercel → Settings → Environment
+Variables** (and, recommended, a random `SESSION_SECRET`). That value is never
+shipped to the browser.
+
+Alternatively, once Vercel KV is configured you can change the password from
+**Settings → Change Admin Password** in the admin panel; the new value is stored
+only as a salted **scrypt hash** in KV — never in plaintext, and never in the
+public CMS blob.
+
+> 🛟 **Backup credential:** the site's original password still works as an
+> emergency fallback (its hash is baked in — the plaintext is not in the repo).
+> To disable the backup entirely, set `DISABLE_BACKUP_PASSWORD=1`.
+
+> 🔒 Brute force is blunted by per-IP rate limiting on `/api/login`
+> (8 attempts / 15 min). All mutating and proxy endpoints are rate limited too.
 
 ### What you can edit from admin:
 - Bio text & display name

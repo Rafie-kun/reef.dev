@@ -405,7 +405,7 @@ function applySiteData(){
   document.getElementById('bio-copy').textContent=bio;
   const mailEl=document.getElementById('contact-actions').querySelector('a[href^="mailto:"]');
   if(mailEl) mailEl.href='mailto:'+email;
-  if(bg){const o=document.getElementById('panorama-bg-overlay');o.style.backgroundImage=`url('${bg}')`;o.classList.add('active')}
+  if(bg){const sb=safeUrl(bg);if(sb&&!/["'()\\]/.test(sb)){const o=document.getElementById('panorama-bg-overlay');o.style.backgroundImage=`url("${sb}")`;o.classList.add('active')}}
   const phrasesList=Array.isArray(phrases)&&phrases.length?phrases:DEFAULT_PHRASES;
   rotatePhrases(phrasesList);
   const fn=document.getElementById('footer-note');fn.textContent=phrasesList[Math.floor(Math.random()*phrasesList.length)];
@@ -417,7 +417,7 @@ function applySiteData(){
   if(socials.instagram) links.push({label:'Instagram',href:socials.instagram});
   if(socials.spotify) links.push({label:'Spotify',href:socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>s?.url&&links.push({label:s.icon||s.name||'Link',href:s.url}));
-  socialActions.innerHTML=['<a class="mc-btn" href="#library">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`)].join('');
+  socialActions.innerHTML=['<a class="mc-btn" href="#library">View Builds</a>',...links.map(l=>`<a class="mc-btn" href="${esc(safeUrl(l.href))}" target="_blank" rel="noreferrer">${esc(l.label)}</a>`)].join('');
   const iconMap={'💬':'i-chat','✉':'i-mail','🐙':'i-code','𝕏':'i-link','📷':'i-instagram','🎵':'i-music-note','🔗':'i-link','→':'i-arrow'};
   const mapIcon=c=>`<span class="mc-item ${iconMap[c]||'i-link'}"></span>`;
   const contactAct=document.getElementById('contact-actions');
@@ -428,9 +428,9 @@ function applySiteData(){
   if(socials.instagram) contactSlots.push({icon:'📷',label:'Instagram',line:socials.instagram.replace('https://',''),hint:'Photos',href:socials.instagram});
   if(socials.spotify) contactSlots.push({icon:'🎵',label:'Spotify',line:socials.spotify.replace('https://','').split('/').pop()||'Profile',hint:'Music',href:socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>{if(s?.url) contactSlots.push({icon:s.icon||'🔗',label:s.name||'Link',line:s.url.replace('https://',''),hint:'Extra',href:s.url})});
-  contactAct.innerHTML=contactSlots.map(s=>`<a class="contact-slot" href="${s.href}" target="_blank" rel="noreferrer"><span class="cs-icon">${mapIcon(s.icon)}</span><span class="cs-label">${s.label}</span><span class="cs-line">${s.line}</span><span class="cs-hint">${s.hint||mapIcon('→')}</span></a>`).join('');
+  contactAct.innerHTML=contactSlots.map(s=>`<a class="contact-slot" href="${esc(safeUrl(s.href))}" target="_blank" rel="noreferrer"><span class="cs-icon">${mapIcon(s.icon)}</span><span class="cs-label">${esc(s.label)}</span><span class="cs-line">${esc(s.line)}</span><span class="cs-hint">${s.hint?esc(s.hint):mapIcon('→')}</span></a>`).join('');
   const bookSocials=document.getElementById('book-socials');
-  bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${l.href}" target="_blank" rel="noreferrer">${l.label}</a>`).join('');
+  bookSocials.innerHTML=links.slice(0,5).map(l=>`<a class="book-sl" href="${esc(safeUrl(l.href))}" target="_blank" rel="noreferrer">${esc(l.label)}</a>`).join('');
   renderAllTabs();
   fetchMissingGameImgs();
   renderBlogPosts(siteData.blog||JSON.parse(localStorage.getItem('reef-blog')||'[]'));
@@ -810,12 +810,12 @@ function loadBadges(){
   }catch(e){}
   if(!list.length) list=DEFAULT_FRIENDS;
   friendsEl.innerHTML=list.map(item=>{
-    const href=item.url||'#',label=(item.name||'Friend').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const href=safeUrl(item.url||'#')||'#',label=esc(item.name||'Friend');
     if(item.code && String(item.code).trim()){
       return `<div class="badge-embed" data-tip="${label}" title="${label}">${String(item.code)}</div>`;
     }
-    const img=item.img?`<img src="${item.img}" alt="${label}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'badge-fallback',textContent:'${label}'}))">`:`<div class="badge-fallback">${label}</div>`;
-    return `<a class="badge-link" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer" data-tip="${label}">${img}</a>`;
+    const img=item.img?`<img src="${esc(safeUrl(item.img))}" alt="${label}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'badge-fallback',textContent:this.alt}))">`:`<div class="badge-fallback">${label}</div>`;
+    return `<a class="badge-link" href="${esc(href)}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer" data-tip="${label}">${img}</a>`;
   }).join('');
   friendsEl.querySelectorAll('.badge-link,.badge-embed').forEach(el=>{el.addEventListener('click',()=>playClick('click'));el.addEventListener('mouseenter',()=>playClick('hover'))});
 }
@@ -873,7 +873,7 @@ function renderGamesTab(el){
     const statusIcons={playing:'<span class="mc-item i-play inline"></span>',completed:'<span class="mc-item i-done inline"></span>',backlog:'<span class="mc-item i-circle inline"></span>'};
     const statusLabel=(statusIcons[status]||'')+' '+{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status]||'Playing';
     const failIcon='<span class="mc-item i-fail" style="display:flex;align-items:center;justify-content:center"></span>';
-    const imgHtml=appId?`<img class="game-card-img" src="${imgSrc}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>${failIcon}</div>'}" loading="lazy">`:`<div class="game-card-img game-card-fail">${failIcon}</div>`;
+    const imgHtml=appId?`<img class="game-card-img" src="${esc(safeUrl(imgSrc))}" alt="${title}" onerror="var a=this;if(!a.dataset.f){a.dataset.f='1';a.src='${fbSrc}'}else{a.outerHTML='<div class=&quot;game-card-img game-card-fail&quot;>${failIcon}</div>'}" loading="lazy">`:`<div class="game-card-img game-card-fail">${failIcon}</div>`;
     const itemJson=escAttr(JSON.stringify({type:'steam',name:g.title,url:'https://store.steampowered.com/app/'+appId,appid:appId,status:status,hours:hours}));
     return `<div class="game-card" data-item='${itemJson}'>${imgHtml}<div class="game-card-body"><span class="game-card-title">${title}</span><span class="game-card-status s-${status}">${statusLabel}</span><span class="game-card-hours"><span class="mc-item i-clock inline"></span> ${hours}h</span></div></div>`;
   }).join('')+'</div>';
@@ -888,8 +888,8 @@ function renderOGItem(item,key,idx){
   const href=item.url||'#';
   const itemJson=escAttr(JSON.stringify({...item,_key:key,_idx:idx,og:item.og||null}));
   const failIcon='<span class="mc-item i-fail" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%"></span>';
-  const imgHtml=img?`<img class="og-item-img" src="${img}" alt="${name}" onerror="this.outerHTML='<div class=og-item-fail>${failIcon}</div>'" loading="lazy">`:'<div class="og-item-fail">'+failIcon+'</div>';
-  const favHtml=fav?`<img class="og-item-fav" src="${fav}" alt="" onerror="this.style.display='none'">`:'';
+  const imgHtml=img?`<img class="og-item-img" src="${esc(safeUrl(img))}" alt="${name}" onerror="this.outerHTML='<div class=og-item-fail>${failIcon}</div>'" loading="lazy">`:'<div class="og-item-fail">'+failIcon+'</div>';
+  const favHtml=fav?`<img class="og-item-fav" src="${esc(safeUrl(fav))}" alt="" onerror="this.style.display='none'">`:'';
   return `<div class="og-item" data-item='${itemJson}'>${imgHtml}<div class="og-item-body"><span class="og-item-title">${name}</span>${desc?`<span class="og-item-desc">${desc}</span>`:''}<div class="og-item-footer">${favHtml}<span class="og-item-site">${site}</span></div></div></div>`;
 }
 function openLibModal(item,key,idx){
@@ -916,9 +916,9 @@ function openLibModal(item,key,idx){
   const desc=esc(og.description||'');
   const site=esc(og.siteName||'');
   const fav=og.favicon||'';
-  const imgHtml=img?`<img class="m-img" src="${img}" alt="${name}" onerror="this.style.display='none'">`:'';
-  const favHtml=fav?`<img src="${fav}" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;image-rendering:pixelated" alt="" onerror="this.style.display='none'">`:'';
-  c.innerHTML=`${imgHtml}<div class="m-body"><h3>${name}</h3>${desc?`<div class="m-desc">${desc}</div>`:''}<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #222">${favHtml}<span style="color:#888;font-family:VT323;font-size:18px">${site||'Link'}</span></div><div class="m-actions"><a class="mc-btn" href="${href}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-link inline"></span> Open Link</a></div></div>`;
+  const imgHtml=img?`<img class="m-img" src="${esc(safeUrl(img))}" alt="${name}" onerror="this.style.display='none'">`:'';
+  const favHtml=fav?`<img src="${esc(safeUrl(fav))}" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;image-rendering:pixelated" alt="" onerror="this.style.display='none'">`:'';
+  c.innerHTML=`${imgHtml}<div class="m-body"><h3>${name}</h3>${desc?`<div class="m-desc">${desc}</div>`:''}<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #222">${favHtml}<span style="color:#888;font-family:VT323;font-size:18px">${site||'Link'}</span></div><div class="m-actions"><a class="mc-btn" href="${esc(safeUrl(href))}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-link inline"></span> Open Link</a></div></div>`;
 }
 function modalSteamHtml(data,name,appId,status,hours){
   const label=data.name||name;
@@ -942,25 +942,25 @@ function modalSteamHtml(data,name,appId,status,hours){
   const statusLabel=status?{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status]||status:'';
   const statusRow=statusLabel?`<div class="m-row">${statusIcon}<b style="color:var(--gold);margin:0 4px">${esc(statusLabel)}</b></div>`:'';
   const hoursRow=hours?`<div class="m-row"><b><span class="mc-item i-clock inline"></span> Hours</b><span>${hours}h</span></div>`:'';
-  return `${header?`<img class="m-img" src="${header}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3>${statusRow}${hoursRow}<div class="m-row"><b>${bl} Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>${bl} Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>${bl} Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>${bl} Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>${bl} Release</b><span>${esc(release)}</span></div><div class="m-row"><b>${bl} Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>${bl} Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-cart inline"></span> Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-chart inline"></span> SteamDB</a></div></div>`;
+  return `${header?`<img class="m-img" src="${esc(safeUrl(header))}" alt="${esc(label)}">`:''}<div class="m-body"><h3>${esc(label)}</h3>${statusRow}${hoursRow}<div class="m-row"><b>${bl} Price</b><span style="color:var(--xp)">${esc(price)}</span></div>${platforms?`<div class="m-row"><b>${bl} Platforms</b><span>${platforms}</span></div>`:''}${dev?`<div class="m-row"><b>${bl} Developer</b><span>${esc(dev)}</span></div>`:''}${pub&&pub!==dev?`<div class="m-row"><b>${bl} Publisher</b><span>${esc(pub)}</span></div>`:''}<div class="m-row"><b>${bl} Release</b><span>${esc(release)}</span></div><div class="m-row"><b>${bl} Metacritic</b>${rating}</div>${recs?`<div class="m-row"><b>${bl} Recommendations</b>${recs}</div>`:''}${desc?`<div class="m-desc">${desc}</div>`:''}${genres?`<div class="m-tags">${genres}</div>`:''}${cats?`<div class="m-tags">${cats}</div>`:''}${reqsHtml}<div class="m-actions">${data.steam_appid?`<a class="mc-btn" href="https://store.steampowered.com/app/${data.steam_appid}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-cart inline"></span> Steam Store</a>`:''}<a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-chart inline"></span> SteamDB</a></div></div>`;
 }
 function modalErrorHtml(name,appId,status,hours){const bl='<span class="mc-item i-bullet inline"></span>';const statusIcons={playing:'<span class="mc-item i-play inline"></span>',completed:'<span class="mc-item i-done inline"></span>',backlog:'<span class="mc-item i-circle inline"></span>'};const statusIcon=statusIcons[status]||'';const statusLabel=status?{playing:'Playing',completed:'Completed',backlog:'Backlog'}[status]||status:'';const statusRow=statusLabel?`<div class="m-row">${statusIcon}<b style="color:var(--gold);margin:0 4px">${esc(statusLabel)}</b></div>`:'';const hoursRow=hours?`<div class="m-row"><b><span class="mc-item i-clock inline"></span> Hours</b><span>${hours}h</span></div>`:'';return `<div class="m-body"><h3>${esc(name)}</h3>${statusRow}${hoursRow}<div class="m-desc" style="color:#888">Steam data unavailable.</div><div class="m-actions"><a class="mc-btn" href="https://store.steampowered.com/app/${appId}" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-cart inline"></span> Steam Store</a><a class="mc-btn" href="https://steamdb.info/app/${appId}/" target="_blank" rel="noreferrer" style="font-size:7px;padding:6px 12px"><span class="mc-item i-chart inline"></span> SteamDB</a></div></div>`}
 function closeLibModal(e){if(e&&e.target!==e.currentTarget) return;document.getElementById('lib-modal').classList.remove('open')}
 
-function escAttr(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escAttr(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function renderLibraryItem(item,key,idx){
   const icon=(item.icon||'i-book').replace(/[^a-z-]/g,'');
-  const name=(item.name||'Item').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const name=esc(item.name||'Item');
   const href=item.url||'#';
   const itemJson=escAttr(JSON.stringify({...item,_key:key,_idx:idx}));
   if((item.type||'basic')==='steam'){
     const steamAppId=extractSteamAppId(item);
     const slotId=`steam-slot-${key}-${idx}`;
     queueSteamRender(slotId,item,steamAppId,name,itemJson);
-    const imgHtml=item.img?`<div class="inv-img-wrap"><img src="${item.img}" alt="${name}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item ${icon}"></span></div>';
+    const imgHtml=item.img?`<div class="inv-img-wrap"><img src="${esc(safeUrl(item.img))}" alt="${name}"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item ${icon}"></span></div>';
     return `<div class="inv-item" data-item='${itemJson}' id="${slotId}">${imgHtml}<span class="label">${name}</span><span class="label i-price">—</span></div>`;
   }
-  const img=item.img||item.og?.image||'';const imgHtml=img?`<div class="inv-img-wrap"><img src="${img}" alt="${name}" onerror="this.outerHTML='<div class=inv-img-wrap-empty><span class=mc-item ${icon}></span></div>'"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item ${icon}"></span></div>';
+  const img=item.img||item.og?.image||'';const imgHtml=img?`<div class="inv-img-wrap"><img src="${esc(safeUrl(img))}" alt="${name}" onerror="this.outerHTML='<div class=inv-img-wrap-empty><span class=mc-item ${icon}></span></div>'"></div>`:'<div class="inv-img-wrap inv-img-wrap-empty"><span class="mc-item ${icon}"></span></div>';
   return `<div class="inv-item" data-item='${itemJson}'>${imgHtml}<span class="label">${name}</span></div>`;
 }
 
@@ -1070,7 +1070,7 @@ function renderBlogPosts(posts){
   const el=document.getElementById('blog-grid');
   if(!el) return;
   const list=Array.isArray(posts)&&posts.length?posts:[{title:'No posts yet',date:'',body:'Nothing published yet. Check back later!'}];
-  el.innerHTML=list.map(p=>`<article class="blog-post"><h3>${esc(p.title||'Untitled')}</h3><div class="date">${esc(p.date||'')}</div>${p.img?`<img class="blog-img" src="${p.img}" alt="${esc(p.title||'')}">`:''}<p>${esc(p.body||'').replace(/\n/g,'<br>')}</p></article>`).join('');
+  el.innerHTML=list.map(p=>`<article class="blog-post"><h3>${esc(p.title||'Untitled')}</h3><div class="date">${esc(p.date||'')}</div>${p.img?`<img class="blog-img" src="${esc(safeUrl(p.img))}" alt="${esc(p.title||'')}">`:''}<p>${esc(p.body||'').replace(/\n/g,'<br>')}</p></article>`).join('');
 }
 
 function renderAlbumItems(items){
@@ -1078,9 +1078,9 @@ function renderAlbumItems(items){
   if(!el) return;
   const list=Array.isArray(items)&&items.length?items:[{caption:'No images yet. Check back soon!',img:'',link:''}];
   el.innerHTML=list.map(item=>{
-    const caption=String(item.caption||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const inner=item.img?`<img src="${item.img}" alt="${caption}" onerror="this.style.display='none'"><div class="cap">${caption}</div>`:`<div class="cap">${caption||'No image yet'}</div>`;
-    return item.link?`<a class="album-item" href="${item.link}" target="_blank" rel="noreferrer">${inner}</a>`:`<div class="album-item">${inner}</div>`;
+    const caption=esc(item.caption||'');
+    const inner=item.img?`<img src="${esc(safeUrl(item.img))}" alt="${caption}" onerror="this.style.display='none'"><div class="cap">${caption}</div>`:`<div class="cap">${caption||'No image yet'}</div>`;
+    return item.link?`<a class="album-item" href="${esc(safeUrl(item.link))}" target="_blank" rel="noreferrer">${inner}</a>`:`<div class="album-item">${inner}</div>`;
   }).join('');
 }
 
@@ -1092,9 +1092,9 @@ function loadProjects(){
     const list=Array.isArray(cms.projects)&&cms.projects.length?cms.projects:(JSON.parse(localStorage.getItem('reef-projects')||'[]'));
     if(Array.isArray(list)&&list.length){
       repoGrid.innerHTML=list.map(p=>{
-        const href=p.url||p.repo||'#';
+        const href=safeUrl(p.url||p.repo||'#')||'#';
         const tags=(p.tags||'').split(',').map(s=>s.trim()).filter(Boolean);
-        return `<a class="project" href="${href}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><h3>${p.name||'Untitled Project'}</h3><p>${p.desc||'No description provided.'}</p><div class="meta">${tags.map(t=>`<span>${t}</span>`).join('')||'<span>Custom build</span>'}</div></a>`;
+        return `<a class="project" href="${esc(href)}" target="${href==='#'?'_self':'_blank'}" rel="noreferrer"><h3>${esc(p.name||'Untitled Project')}</h3><p>${esc(p.desc||'No description provided.')}</p><div class="meta">${tags.map(t=>`<span>${esc(t)}</span>`).join('')||'<span>Custom build</span>'}</div></a>`;
       }).join('');
     } else {
       repoGrid.innerHTML='<div class="project" style="background:#2a2a2a;border-color:#444"><h3 style="color:#888">No projects yet</h3><p style="color:#666">Add projects from the admin panel.</p></div>';
@@ -1104,7 +1104,21 @@ function loadProjects(){
 
 function fmtTime(ms){const s=Math.floor(ms/1000);if(s>=3600){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return h+'h '+m+'m '+sec+'s'}return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function fmtElapsed(start,end){const now=Date.now(),el=now-start;if(end){const t=end-start;return fmtTime(el)+' / '+fmtTime(t)}return fmtTime(el)}
-function esc(s){return(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+// Neutralise dangerous URL schemes before interpolating a user-controlled URL
+// into an href/src attribute. Browsers ignore whitespace/control chars inside a
+// scheme (e.g. "java\tscript:"), so strip those first, then parse the scheme.
+function safeUrl(u){
+  let s=String(u==null?'':u).split('').filter(c=>{const n=c.charCodeAt(0);return n>31&&n!==127;}).join('').trim();
+  if(!s)return'';
+  const scheme=(s.match(/^([a-z][a-z0-9+.\-]*):/i)||[])[1];
+  if(scheme){
+    const sl=scheme.toLowerCase();
+    if(sl==='javascript'||sl==='vbscript'||sl==='file')return'';
+    if(sl==='data')return /^data:image\/(?:png|jpe?g|gif|webp|avif|bmp|x-icon|vnd\.microsoft\.icon);/i.test(s)?s:'';
+  }
+  return s;
+}
 const appIconCache={};
 function getActIcon(assets,appId){
   if(!assets){console.log('[act] no assets',assets,appId);return null}

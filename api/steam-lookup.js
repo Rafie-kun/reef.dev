@@ -1,27 +1,28 @@
-function setCORS(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-}
+// GET /api/steam-lookup?url=...|?appid=... — return public Steam app details.
+import { applyCors, handlePreflight, rateLimit } from './_lib.js';
 
 export default async function handler(req, res) {
-  if (req.method === 'OPTIONS') { res.status(200); setCORS(res); res.end(); return; }
+  if (handlePreflight(req, res, { methods: 'GET, OPTIONS', wildcard: true })) return;
+  applyCors(req, res, { methods: 'GET, OPTIONS', wildcard: true });
+
+  if (!(await rateLimit(req, res, { bucket: 'steam-lookup', limit: 40, windowSec: 60 }))) return;
 
   const { url: inputUrl, appid } = req.query;
   let appId = appid || '';
 
   if (!appId && inputUrl) {
-    const m = inputUrl.match(/store\.steampowered\.com\/app\/(\d+)/i) ||
-              inputUrl.match(/steamdb\.info\/app\/(\d+)/i) ||
-              inputUrl.match(/steamcommunity\.com\/app\/(\d+)/i) ||
-              inputUrl.match(/app\/(\d+)/i) ||
-              inputUrl.match(/^(\d+)$/);
+    const s = String(inputUrl);
+    const m = s.match(/store\.steampowered\.com\/app\/(\d+)/i) ||
+              s.match(/steamdb\.info\/app\/(\d+)/i) ||
+              s.match(/steamcommunity\.com\/app\/(\d+)/i) ||
+              s.match(/app\/(\d+)/i) ||
+              s.match(/^(\d+)$/);
     if (m) appId = m[1];
   }
 
-  if (!appId) {
-    res.status(400); setCORS(res);
-    res.json({ error: 'Could not extract a numeric Steam App ID from the input.' });
+  // App IDs are numeric; reject anything else before hitting the upstream API.
+  if (!/^\d{1,10}$/.test(String(appId))) {
+    res.status(400).json({ error: 'Could not extract a numeric Steam App ID from the input.' });
     return;
   }
 
@@ -30,12 +31,10 @@ export default async function handler(req, res) {
     const j = await r.json();
     const data = j?.[appId]?.data;
     if (!data) {
-      res.status(404); setCORS(res);
-      res.json({ error: `Steam App ID ${appId} not found.` });
+      res.status(404).json({ error: `Steam App ID ${appId} not found.` });
       return;
     }
-    res.status(200); setCORS(res);
-    res.json({
+    res.status(200).json({
       appid: appId,
       steam_appid: data.steam_appid,
       name: data.name || '',
@@ -55,7 +54,6 @@ export default async function handler(req, res) {
       pc_requirements: data.pc_requirements || null,
     });
   } catch (e) {
-    res.status(502); setCORS(res);
-    res.json({ error: 'Failed to fetch from Steam API.' });
+    res.status(502).json({ error: 'Failed to fetch from Steam API.' });
   }
 }
