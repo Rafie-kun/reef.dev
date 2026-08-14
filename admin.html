@@ -623,14 +623,24 @@ input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:
 // HELPERS
 // ============================================
 function esc(s){return(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
-function escAttr(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escAttr(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
 // ============================================
 // STORAGE â€” localStorage based CMS
 // ============================================
-const ADMIN_PW_KEY = 'reef-admin-pw';
 const DATA_KEY = 'reef-cms';
 const SESSION_KEY = 'reef-admin-session';
+const TOKEN_KEY = 'reef-admin-token';
+// One-time purge of any plaintext admin password left in localStorage by older builds.
+try{ localStorage.removeItem('reef-admin-pw'); }catch(e){}
+function getToken(){ return sessionStorage.getItem(TOKEN_KEY) || ''; }
+function authHeaders(){ const t=getToken(); return t ? {'Authorization':'Bearer '+t} : {}; }
+function forceRelogin(msg){
+  sessionStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(SESSION_KEY);
+  toast(msg || 'Session expired — please log in again.', false);
+  setTimeout(()=>location.reload(), 1200);
+}
 
 const DEFAULT_DATA = {
   name: 'Reef',
@@ -669,7 +679,6 @@ const DEFAULT_DATA = {
   bg: '',
   cardImg: '/assets/button-88x31.webp',
   soundDefault: true,
-  adminPw: '',
   steamId: '',
 };
 
@@ -696,8 +705,9 @@ function loadData(){
 }
 function saveData(d) {
   localStorage.setItem(DATA_KEY, JSON.stringify(d));
-  fetch('/api/data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})
+  fetch('/api/data',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify(d)})
     .then(async r=>{
+      if(r.status===401){ forceRelogin(); return; }
       if(r.ok){
         const j=await r.json();
         if(j&&j.stored===false)
@@ -707,40 +717,51 @@ function saveData(d) {
 }
 
 // ============================================
-// AUTH â€” password synced to server via CMS
+// AUTH â€” verified server-side via /api/login
 // ============================================
-const DEFAULT_PW = 'reef2026';
-
-function getAdminPw() {
-  const d=loadData();
-  return d.adminPw||localStorage.getItem(ADMIN_PW_KEY)||DEFAULT_PW;
-}
-
 async function doLogin() {
   const pw = document.getElementById('pw-input').value;
-  let valid = pw === getAdminPw();
-  if(!valid){
-    try{
-      const d=await loadDataAsync();
-      valid = d&&pw===d.adminPw;
-    }catch(e){}
-  }
-  if (valid) {
-    localStorage.setItem(ADMIN_PW_KEY, pw);
-    sessionStorage.setItem(SESSION_KEY, '1');
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'flex';
-    loadAllPanels();
-    setTimeout(()=>loadAllPanelsAsync(),100);
-  } else {
-    document.getElementById('login-error').style.display = 'block';
+  const errEl = document.getElementById('login-error');
+  const btn = document.querySelector('#login-screen .mc-btn');
+  errEl.style.display = 'none';
+  if(!pw) return;
+  if(btn) btn.disabled = true;
+  try{
+    const r = await fetch('/api/login',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({password: pw})
+    });
+    if(r.ok){
+      const j = await r.json();
+      sessionStorage.setItem(TOKEN_KEY, j.token);
+      sessionStorage.setItem(SESSION_KEY, '1');
+      document.getElementById('pw-input').value = '';
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'flex';
+      loadAllPanels();
+      setTimeout(()=>loadAllPanelsAsync(),100);
+      return;
+    }
+    if(r.status===429){
+      errEl.textContent = 'Too many attempts. Wait a few minutes and try again.';
+    }else{
+      errEl.innerHTML = '<span class="mc-item i-close inline"></span> Wrong password. Try again.';
+    }
+    errEl.style.display = 'block';
     document.getElementById('pw-input').value = '';
     document.getElementById('pw-input').focus();
+  }catch(e){
+    errEl.textContent = 'Login failed — server unreachable.';
+    errEl.style.display = 'block';
+  }finally{
+    if(btn) btn.disabled = false;
   }
 }
 
 function doLogout() {
   sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
   location.reload();
 }
 
@@ -748,7 +769,7 @@ document.getElementById('pw-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();
 });
 
-if (sessionStorage.getItem(SESSION_KEY)) {
+if (sessionStorage.getItem(SESSION_KEY) && sessionStorage.getItem(TOKEN_KEY)) {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'flex';
   setTimeout(()=>{loadAllPanels();loadAllPanelsAsync()}, 0);
@@ -1338,7 +1359,7 @@ function toggleSnd() {
   document.getElementById('snd-label').textContent = on ? 'Sound ON' : 'Sound OFF';
   document.getElementById('snd-label').style.color = on ? 'var(--xp)' : '#888';
 }
-function saveSettings() {
+async function saveSettings() {
   const d = loadData();
   d.soundDefault = document.getElementById('snd-toggle').classList.contains('on');
   d.steamId = document.getElementById('cfg-steamid').value.trim();
@@ -1346,12 +1367,23 @@ function saveSettings() {
   const newPw2 = document.getElementById('new-pw2').value;
   if(newPw) {
     if(newPw !== newPw2) { toast('Passwords do not match!', false); return; }
-    if(newPw.length < 6) { toast('Password too short (min 6 chars)', false); return; }
-    localStorage.setItem(ADMIN_PW_KEY, newPw);
-    d.adminPw = newPw;
-    document.getElementById('new-pw').value = '';
-    document.getElementById('new-pw2').value = '';
+    if(newPw.length < 8) { toast('Password too short (min 8 chars)', false); return; }
+    try{
+      const r = await fetch('/api/change-password',{
+        method:'POST',
+        headers:{'Content-Type':'application/json',...authHeaders()},
+        body:JSON.stringify({newPassword:newPw})
+      });
+      const j = await r.json().catch(()=>({}));
+      if(r.status===401){ forceRelogin(); return; }
+      if(!r.ok){ toast(j.error || 'Could not change password.', false); return; }
+      document.getElementById('new-pw').value = '';
+      document.getElementById('new-pw2').value = '';
+      toast('Admin password updated.');
+    }catch(e){ toast('Password change failed — server unreachable.', false); return; }
   }
+  // Never persist the admin password into the (publicly readable) CMS blob.
+  delete d.adminPw;
   saveData(d);
   localStorage.setItem('reef-muted', d.soundDefault ? 'false' : 'true');
   savedOk('settings');
