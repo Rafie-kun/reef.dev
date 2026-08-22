@@ -1326,6 +1326,13 @@ loadSiteData();loadBadges();loadProjects();connectLanyard();actTimer=setInterval
     ['/seed','display world seed'],
     ['/locate <structure>','locate nearby structure'],
     ['redbull','drink a Red Bull from terminal'],
+    ['herobrine','??? (do it at night)'],
+    ['tnt','place a TNT block... and run'],
+    ['dragon','the Ender Dragon flies by'],
+    ['wither','summon the Wither boss'],
+    ['thunder','storm: rain + lightning over the page'],
+    ['firework','launch a firework show'],
+    ['end','enter The End']
     ['matrix','toggle digital rain matrix mode'],
     ['rainbow','toggle rainbow text mode'],
     ['limbo','teleport to Limbo easter egg'],
@@ -1351,6 +1358,81 @@ loadSiteData();loadBadges();loadProjects();connectLanyard();actTimer=setInterval
     }
 
     switch(name){
+case 'herobrine':{
+      line('Herobrine joined the game', 'term-warn');
+      if(window.playClick)playClick('tab');
+      MCFX.vignette(true);MCFX.eyes(true);
+      let fl=0;const fi=setInterval(()=>{flash_(0.25);if(++fl>5){clearInterval(fi)}},420);
+      function flash_(o){const f=document.createElement('div');f.style.cssText='position:fixed;inset:0;background:#fff;opacity:'+o+';z-index:99997;pointer-events:none';document.body.appendChild(f);setTimeout(()=>f.remove(),70)}
+      setTimeout(()=>{line('Reef: who is that..?', 'term-out')},1800);
+      setTimeout(()=>{line('Herobrine left the game', 'term-warn');MCFX.eyes(false);MCFX.vignette(false);MCFX.chat('You will never be safe.', '#ff5555');if(window.playClick)playClick('boom')},5200);
+      break;
+    }
+case 'tnt':{
+      line('TNT placed. Run!', 'term-warn');
+      const el=document.createElement('img');el.src='/assets/mc/icons/tnt.png';el.style.cssText='position:fixed;left:50%;top:42%;width:130px;height:130px;image-rendering:pixelated;transform:translate(-50%,-50%);z-index:99998;pointer-events:none;transition:opacity .2s';
+      document.body.appendChild(el);
+      let bl=0;const bi=setInterval(()=>{el.style.filter=(bl%2)?'brightness(3) saturate(0)':'none';bl++},160);
+      if(window.playClick)playClick('click');
+      setTimeout(()=>{
+        clearInterval(bi);el.remove();
+        MCFX.burst(innerWidth/2,innerHeight*0.44,['#e23b2e','#ff8a3d','#ffd23d','#7a7a7a','#4a4a4a'],90);
+        MCFX.shake(700);MCFX.flash(.65,140);
+        add('<div style="color:#ff5555;font-size:20px;font-weight:bold">💥 BOOM! [TNT exploded]</div>','term-err');
+        line('Reef was blown up by TNT','term-warn');
+        if(window.playClick)playClick('boom');
+      },2100);
+      break;
+    }
+case 'dragon':{
+      line('Summoned the Ender Dragon!','term-mag');
+      MCFX.fly('/assets/mc/icons/dragon_head.png',{size:130,trail:true,top:'30vh'});
+      MCFX.shake(500);
+      setTimeout(()=>{line('The Ender Dragon flew away...','term-dim');MCFX.chat('Dragon defeated! +12000 XP','#c8a2ff')},2700);
+      break;
+    }
+case 'wither':{
+      line('Spawning Wither...','term-warn');
+      MCFX.vignette(true);MCFX.shake(300);
+      ['wither_skeleton_skull','skeleton_skull','wither_skeleton_skull'].forEach((sk,i)=>{
+        setTimeout(()=>MCFX.spriteFlash('/assets/mc/icons/'+sk+'.png',900),i*550);
+      });
+      setTimeout(()=>{
+        MCFX.burst(innerWidth/2,innerHeight/2,['#3a3a3a','#666','#222'],70);
+        MCFX.shake(600);add('<div style="color:#bbb;font-size:20px;font-weight:bold">☠ WITHER BOSS SPAWNED!</div>','term-err');
+        if(window.playClick)playClick('boom');
+      },1900);
+      setTimeout(()=>{MCFX.vignette(false);line('The Wither was slain.','term-out')},4200);
+      break;
+    }
+case 'thunder':
+    case 'storm':{
+      line('Storm summoned over the world!','term-out');
+      MCFX.rain(true,true);MCFX.shake(250);
+      setTimeout(()=>{MCFX.rain(false,false);line('Weather set to clear.','term-dim')},8000);
+      break;
+    }
+case 'firework':
+    case 'fw':{
+      const cols=[['#ff4d4d','#ffb84d'],['#4dff88','#4dc3ff'],['#d94dff','#ff4da6'],['#ffe14d','#ffffff']];
+      line('Launching fireworks! 🎆'.replace(' 🎆',''),'term-out');
+      let i=0;const iv=setInterval(()=>{
+        const x=innerWidth*(0.15+Math.random()*0.7),y=innerHeight*(0.15+Math.random()*0.4);
+        MCFX.burst(x,y,cols[i%cols.length],55);
+        if(window.playClick)playClick('xp');
+        if(++i>=6)clearInterval(iv);
+      },380);
+      break;
+    }
+case 'end':{
+      line('Entering The End...','term-mag');
+      const v=document.createElement('div');v.style.cssText='position:fixed;inset:0;z-index:99996;pointer-events:none;background:conic-gradient(from 0deg,#1a0b2e,#3a1258,#1a0b2e,#47207a,#1a0b2e);animation:mcendspin 2.4s linear forwards';
+      document.body.appendChild(v);
+      const st=document.createElement('style');st.textContent='@keyframes mcendspin{from{opacity:0;transform:scale(.2) rotate(0deg)}60%{opacity:1}to{opacity:0;transform:scale(3.2) rotate(360deg)}}';
+      document.head.appendChild(st);
+      setTimeout(()=>{v.remove();st.remove();line('You reached The End. Thank you for playing! 💜'.replace(' 💜',''),'term-boot');MCFX.burst(innerWidth/2,innerHeight/2,['#c8a2ff','#8a4fd0','#e6d6ff'],80)},2400);
+      break;
+    }
       case 'help':
         line('Available Commands & Shortcuts:', 'term-out');
         HELP.forEach(pair=>add('<span style="color:#7eff15">'+esc(pair[0])+'</span> — '+esc(pair[1]),'term-out'));
@@ -1602,5 +1684,38 @@ loadSiteData();loadBadges();loadProjects();connectLanyard();actTimer=setInterval
 </script>
 <script src="./mc-data.js?v=6"></script>
     <script src="./crafting.js?v=6"></script>
-</body>
+<script>
+/* ===== Minecraft Terminal FX engine v2 ===== */
+(function(){
+  const D=E=>document.createElement(E);
+  function shake(ms){ms=ms||500;document.body.classList.add('mc-shake');setTimeout(()=>document.body.classList.remove('mc-shake'),ms)}
+  function burst(x,y,colors,n){n=n||40;for(let i=0;i<n;i++){const p=D('div');const c=colors[i%colors.length];p.style.cssText='position:fixed;z-index:99998;pointer-events:none;width:6px;height:6px;background:'+c+';border:1px solid rgba(0,0,0,.5);left:'+x+'px;top:'+y+'px';document.body.appendChild(p);const a=Math.random()*6.283,sp=2+Math.random()*7;let vx=Math.cos(a)*sp,vy=Math.sin(a)*sp-3,ox=x,oy=y,life=1;const t=setInterval(()=>{ox+=vx;oy+=vy;vy+=.22;life-=.03;p.style.left=ox+'px';p.style.top=oy+'px';p.style.opacity=life;if(life<=0){clearInterval(t);p.remove()}},20)}}
+  function flash(op,ms){const f=D('div');f.style.cssText='position:fixed;inset:0;background:#fff;opacity:'+op+';z-index:99997;pointer-events:none;transition:opacity '+(ms||90)+'ms';document.body.appendChild(f);requestAnimationFrame(()=>{f.style.opacity='0'});setTimeout(()=>f.remove(),(ms||90)+80)}
+  function vignette(on){let v=document.getElementById('mcfx-vig');if(on){if(!v){v=D('div');v.id='mcfx-vig';v.style.cssText='position:fixed;inset:0;z-index:99996;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.92) 100%);transition:opacity .8s;opacity:0';document.body.appendChild(v)}requestAnimationFrame(()=>v.style.opacity='1')}else if(v){v.style.opacity='0';setTimeout(()=>v.remove(),900)}}
+  function chat(msg,color){const c=D('div');c.style.cssText='position:fixed;left:14px;bottom:90px;z-index:99997;background:rgba(0,0,0,.72);border-left:4px solid #555;padding:8px 14px;font-family:VT323,monospace;font-size:22px;color:'+(color||'#fff')+';max-width:70vw';c.textContent=msg;document.body.appendChild(c);setTimeout(()=>{c.style.transition='opacity .6s';c.style.opacity='0';setTimeout(()=>c.remove(),650)},2600)}
+  let rainI=null;
+  function rain(on,thunder){
+    if(on&&!rainI){rainI=setInterval(()=>{for(let k=0;k<9;k++){const d=D('div');d.style.cssText='position:fixed;z-index:99995;pointer-events:none;width:2px;height:'+(12+Math.random()*14)+'px;background:linear-gradient(#7fb2ff,rgba(127,178,255,.1));left:'+(Math.random()*100)+'vw;top:-20px';document.body.appendChild(d);const dur=500+Math.random()*400;d.animate([{transform:'translateY(-10px)'},{transform:'translateY('+innerHeight+'px)'}],{duration:dur}).onfinish=()=>d.remove()}},60);
+      if(thunder){thunderI=setInterval(()=>{flash(.85,120);shake(220)},3200);setTimeout(()=>{},0)}
+    } else if(!on&&rainI){clearInterval(rainI);rainI=null;if(thunderI){clearInterval(thunderI);thunderI=null}}
+  }
+  let thunderI=null;
+  function eyes(show){
+    document.querySelectorAll('.mcfx-eye').forEach(e=>e.remove());
+    if(!show)return;
+    [[8,'top'],[null,0]].forEach(()=>{});
+    const mk=(x,y)=>{const e=D('div');e.className='mcfx-eye';e.style.cssText='position:fixed;z-index:99997;pointer-events:none;width:34px;height:16px;left:'+x+';top:'+y+';background:#000;display:flex;gap:4px;padding:3px;border:2px solid #111';['#fff','#fff'].forEach(()=>{const w=D('i');w.style.cssText='flex:1;background:radial-gradient(circle,#fff 35%,#d0f0ff 60%,#7ec8ff);box-shadow:0 0 14px #bfeaff;border-radius:2px';e.appendChild(w)});document.body.appendChild(e)};
+    mk('4vw','18vh');mk('88vw','24vh');mk('46vw','64vh');
+  }
+  function fly(src,opts){opts=opts||{};const el=D('img');el.src=src;el.style.cssText='position:fixed;z-index:99998;pointer-events:none;width:'+(opts.size||110)+'px;height:'+(opts.size||110)+'px;image-rendering:pixelated;left:'+(-160)+'px;top:'+(opts.top||'38vh');document.body.appendChild(el);
+    const dur=opts.dur||2600;el.animate([{transform:'translateX(0) rotate(0deg)',offset:0},{transform:'translateX('+(innerWidth*0.25)+'px) translateY(-40px) rotate(-8deg)',offset:.25},{transform:'translateX('+(innerWidth*0.55)+'px) translateY(30px) rotate(6deg)',offset:.55},{transform:'translateX('+(innerWidth+200)+'px) rotate(0deg)',offset:1}],{duration:dur,easing:'ease-in-out'});
+    if(opts.trail){const t=setInterval(()=>{const r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,['#a05cd5','#c99df0','#7a3aa8'],6)},90);setTimeout(()=>clearInterval(t),dur)}
+    setTimeout(()=>el.remove(),dur+50);
+  }
+  function spriteFlash(iconUrl,ms){const el=D('img');el.src=iconUrl;el.style.cssText='position:fixed;z-index:99998;pointer-events:none;left:50%;top:44%;width:150px;height:150px;image-rendering:pixelated;transform:translate(-50%,-50%) scale(.4);opacity:0;filter:drop-shadow(0 0 26px rgba(255,255,255,.9));transition:all .45s cubic-bezier(.2,1.6,.4,1)';document.body.appendChild(el);requestAnimationFrame(()=>{el.style.opacity='1';el.style.transform='translate(-50%,-50%) scale(1.15)'});setTimeout(()=>{el.style.opacity='0';el.style.transform='translate(-50%,-50%) scale(2.2)'},(ms||1400)-450);setTimeout(()=>el.remove(),(ms||1400))}
+  window.MCFX={shake,burst,flash,vignette,chat,rain,eyes,fly,spriteFlash};
+})();
+/* ===== shake css ===== */
+(function(){const st=document.createElement('style');st.textContent='.mc-shake{animation:mcshake .09s linear infinite}@keyframes mcshake{0%{transform:translate(0,0)}25%{transform:translate(-6px,4px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-4px,-3px)}100%{transform:translate(4px,5px)}}';document.head.appendChild(st)})();
+</script></body>
 </html>
