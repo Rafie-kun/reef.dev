@@ -338,6 +338,29 @@ input[type="file"]::-webkit-file-upload-button{font-family:'Press Start 2P',mono
 input[type="file"]::-webkit-file-upload-button:hover{filter:brightness(1.3);color:var(--yellow)}
 input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:6px;background:var(--stone);color:#eee;border:none;padding:8px 12px;cursor:pointer}
 </style>
+<style id="polish-v2">
+/* ---- visual polish pass v2 ---- */
+body{background:radial-gradient(1200px 700px at 70% -10%,#1a1f33 0%,#0d101a 55%,#090b12 100%) fixed}
+#sidebar{background:linear-gradient(180deg,#161b2b 0%,#0f1220 100%);border-right:1px solid #232840}
+.nav-item{transition:transform .12s,background .12s,border-color .12s}
+.nav-item:hover{transform:translateX(4px)}
+.nav-item.active{background:linear-gradient(90deg,rgba(255,215,64,.13),rgba(255,215,64,0))!important;border-left:4px solid #ffd740!important}
+.panel{box-shadow:0 14px 44px rgba(0,0,0,.5);border-radius:8px;background:#141824;border:1px solid #232941}
+.panel-title{letter-spacing:.5px}
+.mc-btn{transition:filter .12s ease,transform .06s ease}
+.mc-btn:hover{filter:brightness(1.18)}
+.mc-btn:active{transform:translateY(1px)}
+.mc-btn.green:hover{box-shadow:0 0 14px rgba(80,220,120,.35)}
+.mc-btn.red:hover{box-shadow:0 0 14px rgba(255,90,90,.35)}
+.card-item{transition:border-color .15s, box-shadow .15s}
+.card-item:hover{border-color:#5a6591;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.game-thumb{transition:transform .18s ease}
+.card-item:hover .game-thumb{transform:scale(1.03)}
+.mc-input:focus{outline:none;border-color:#6fa8ff;box-shadow:0 0 0 2px rgba(110,160,255,.25)}
+.badge-slot,.phrase-pill{transition:border-color .15s}
+#login-screen .login-box,#login-screen>div[style*="panel"]{box-shadow:0 20px 60px rgba(0,0,0,.6)}
+::selection{background:#ffd740;color:#000}
+</style>
 </head>
 <body>
 
@@ -538,7 +561,7 @@ input[type="file"]::-ms-browse{font-family:'Press Start 2P',monospace;font-size:
     <div id="panel-appearance" class="panel" style="display:none">
       <div class="panel-title"><span class="mc-item i-palette inline"></span> Appearance</div>
       <div class="field">
-        <label>Background Image URL (overlays panorama at 35% opacity)</label>
+        <label>Background Image URL (replaces the panorama at full quality)</label>
         <input class="mc-input" id="cfg-bg" placeholder="https://... (leave blank for default panorama)">
         <small style="color:#666;font-family:'VT323';font-size:16px;">Tip: Use a Minecraft screenshot. Paste any direct image URL.</small>
       </div>
