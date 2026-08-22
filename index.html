@@ -450,7 +450,19 @@ function applySiteData(){
     {icon:'✉',label:'Email',line:email,hint:'Reply within 24h',href:'mailto:'+email},
     {icon:'🐙',label:'GitHub',line:'/'+(socials.github||GITHUB_USER),hint:'Open source',href:`https://github.com/${socials.github||GITHUB_USER}`}];
   if(socials.twitter) contactSlots.push({icon:'𝕏',label:'X',line:socials.twitter.replace('https://',''),hint:'Social',href:socials.twitter});
-  if(socials.instagram) contactSlots.push({icon:'📷',label:'Instagram',line:socials.instagram.replace('https://',''),hint:'Photos',href:socials.instagram});
+  if(socials.instagram){
+    // show @handle instead of the URL, still links to the profile
+    let igHandle=socials.instagram;
+    if(!igHandle.startsWith('@')){
+      const looksLikeUrl=/^https?:\/\//i.test(igHandle)||igHandle.includes('/')||\.[a-z]{2,}$/i.test(igHandle);
+      if(looksLikeUrl){
+        try{ const u=new URL(igHandle.startsWith('http')?igHandle:'https://'+igHandle); igHandle=(u.pathname.split('/').filter(Boolean)[0]||''); }catch(e){}
+        igHandle='@'+String(igHandle).replace(/^@/,'').replace(/\/$/,'');
+      } else igHandle='@'+igHandle;
+    }
+    igHandle='@'+String(igHandle).replace(/^@/,'').replace(/\/$/,'');
+    contactSlots.push({icon:'📷',label:'Instagram',line:igHandle,hint:'Photos',href:socials.instagram});
+  }
   if(socials.spotify) contactSlots.push({icon:'🎵',label:'Spotify',line:socials.spotify.replace('https://','').split('/').pop()||'Profile',hint:'Music',href:socials.spotify});
   if(Array.isArray(socials.extra)) socials.extra.forEach(s=>{if(s?.url) contactSlots.push({icon:s.icon||'🔗',label:s.name||'Link',line:s.url.replace('https://',''),hint:'Extra',href:s.url})});
   contactAct.innerHTML=contactSlots.map(s=>`<a class="contact-slot" href="${esc(safeUrl(s.href))}" target="_blank" rel="noreferrer"><span class="cs-icon">${mapIcon(s.icon)}</span><span class="cs-label">${esc(s.label)}</span><span class="cs-line">${esc(s.line)}</span><span class="cs-hint">${s.hint?esc(s.hint):mapIcon('→')}</span></a>`).join('');
