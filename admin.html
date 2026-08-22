@@ -465,6 +465,7 @@ body{background:radial-gradient(1200px 700px at 70% -10%,#1a1f33 0%,#0d101a 55%,
   <div class="card-list" id="games-list"></div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
     <button class="mc-btn" onclick="addGame()" style="width:auto;padding:8px 16px">+ Add Game</button>
+    <button class="mc-btn" onclick="resetGamesDefaults()" style="width:auto;padding:8px 16px">↺ Reset to Minecraft & Indie Defaults</button>
     <button class="mc-btn green" onclick="saveGames()" style="width:auto;padding:8px 22px"><span class="mc-item i-save inline"></span> Save Games</button>
     <span class="save-msg" id="games-msg"></span>
   </div>
@@ -665,6 +666,7 @@ function forceRelogin(msg){
   setTimeout(()=>location.reload(), 1200);
 }
 
+const DEFAULT_GAMES=[{"appid":"1796680","title":"Minecraft Dungeons","status":"completed","hours":32},{"appid":"1928980","title":"Minecraft Legends","status":"playing","hours":14},{"appid":"105600","title":"Terraria","status":"playing","hours":120},{"appid":"413150","title":"Stardew Valley","status":"playing","hours":85},{"appid":"367520","title":"Hollow Knight","status":"completed","hours":41},{"appid":"504230","title":"Celeste","status":"completed","hours":26},{"appid":"1145360","title":"Hades","status":"playing","hours":57},{"appid":"588650","title":"Dead Cells","status":"backlog","hours":12},{"appid":"391540","title":"Undertale","status":"completed","hours":11},{"appid":"268910","title":"Cuphead","status":"backlog","hours":9}];
 const DEFAULT_DATA = {
   name: 'Reef',
   bio: "Hey, I'm Reef. I build things, break things, and occasionally sleep. Welcome to my little corner of the internet.",
@@ -678,7 +680,7 @@ const DEFAULT_DATA = {
     extra: [],
   },
   library: { music:[], proj:[], read:[] },
-  games: [],
+  games: JSON.parse(JSON.stringify(DEFAULT_GAMES)),
   friends: [
     {name:'peeblyweeb',img:'',url:'https://salamithecat.com/',code:'<a href="https://salamithecat.com/" target="_blank" rel="noopener noreferrer"><img src="https://salamithecat.com/button.webp" width="88" height="31" alt="peeblyweeb" /></a>'},
     {name:'xs10',img:'',url:'https://xs10.dev',code:'<a href="https://xs10.dev" target="_blank" rel="noopener"><img src="https://xs10.dev/buttons/xs10.webp" srcset="https://xs10.dev/buttons/xs10@2x.webp 2x" alt="xs10" width="256" height="90" /></a>'},
@@ -1094,6 +1096,13 @@ function saveGames() {
   toast('Games saved!');
 }
 // Load games on panel init â€” called from loadAllPanels/loadAllPanelsAsync
+function resetGamesDefaults(){
+  if(!confirm('Replace current games list with the curated Minecraft & indie selection?'))return;
+  gamesData=JSON.parse(JSON.stringify(DEFAULT_GAMES));
+  renderGamesList(gamesData);
+  saveGames();
+  toast('Reset to default games!');
+}
 async function loadGamesPanel(d){
   const list=Array.isArray(d.games)?d.games:(Array.isArray(d.library?.games)?d.library.games:[]);
   gamesData=JSON.parse(JSON.stringify(list));
