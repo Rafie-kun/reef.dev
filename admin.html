@@ -1234,13 +1234,17 @@ function renderBlog(list){
     <div class="card-item">
       <div class="card-content">
         <input class="mc-input" value="${p.title||''}" oninput="blogData[${i}].title=this.value" placeholder="Post title">
-        <input class="mc-input" value="${p.date||''}" oninput="blogData[${i}].date=this.value" placeholder="Date">
+        <div style="display:flex;gap:6px;margin-bottom:6px">
+          <input class="mc-input" value="${p.date||''}" oninput="blogData[${i}].date=this.value" placeholder="Date" style="flex:1">
+          <input class="mc-input" value="${p.tags||''}" oninput="blogData[${i}].tags=this.value" placeholder="Tags (comma separated)" style="flex:1">
+        </div>
         <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
           <input class="mc-input" value="${p.img||''}" oninput="blogData[${i}].img=this.value" placeholder="Image URL (optional)" style="flex:1">
           <input type="file" accept="image/*" onchange="uploadBlogImg(${i},this)" style="font-size:12px;font-family:VT323;max-width:130px">
         </div>
         ${p.img?`<img src="${p.img}" style="max-width:160px;height:auto;margin-bottom:6px;border:2px solid var(--stone-dark)">`:''}
-        <textarea class="mc-input" oninput="blogData[${i}].body=this.value" placeholder="Blog post body">${p.body||''}</textarea>
+        <textarea class="mc-input" oninput="blogData[${i}].body=this.value" placeholder="Blog post body — supports **bold**, *italic*, \`code\`, \`\`\`code blocks\`\`\`, [links](url), # Headings, - lists" style="min-height:90px">${p.body||''}</textarea>
+        <small style="color:#888;font-family:VT323;font-size:13px">Tip: Use markdown — shown as a Minecraft written book on the site.</small>
       </div>
       <div class="card-actions"><button class="btn-sm del" onclick="rmBlog(${i})"><span class="mc-item i-close inline"></span></button></div>
     </div>
@@ -1250,7 +1254,7 @@ function uploadBlogImg(i,input){
   const file=input.files[0];if(!file) return;
   const r=new FileReader();r.onload=e=>{blogData[i].img=e.target.result;renderBlog(blogData);};r.readAsDataURL(file);
 }
-function addBlogPost(){ blogData.push({title:'New Post',date:'',body:'',img:''}); renderBlog(blogData); }
+function addBlogPost(){ blogData.push({title:'New Post',date:'',body:'',img:'',tags:''}); renderBlog(blogData); }
 function rmBlog(i){ blogData.splice(i,1); renderBlog(blogData); }
 function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); savedOk('blog'); toast('Blog saved!'); }
 
