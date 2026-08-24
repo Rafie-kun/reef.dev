@@ -19,7 +19,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'VT323',monospace;font-size:20px;color:var(--text);background:#09090d;overflow-x:hidden;cursor:crosshair}
+body{font-family:'VT323',monospace;font-size:20px;color:var(--text);background:#09090d;overflow-x:hidden;cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M11%200h2v9h-2zM11%2015h2v9h-2zM0%2011h9v2H0zM15%2011h9v2h-9z%22%20fill%3D%22%23fff%22%20stroke%3D%22%23000%22%20stroke-width%3D%22.8%22%2F%3E%3Crect%20x%3D%2210.6%22%20y%3D%2210.6%22%20width%3D%222.8%22%20height%3D%222.8%22%20fill%3D%22%23fff%22%20stroke%3D%22%23000%22%20stroke-width%3D%22.8%22%2F%3E%3C%2Fsvg%3E") 12 12,crosshair}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--xp);color:#000}
 [hidden]{display:none!important}
@@ -28,7 +28,17 @@ a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar-thumb{background:var(--stone);border:3px solid #000}
 ::-webkit-scrollbar-thumb:hover{background:var(--stone-light)}
 
-.mc-panorama{position:fixed;inset:0;z-index:-5;background:url('/assets/mc-panorama.svg?v=3') center/cover no-repeat;filter:blur(3px) saturate(1.4) brightness(1.08) contrast(1.04);transform:scale(1.06);animation:pan 34s ease-in-out infinite alternate}
+/* Mojang-style loading screen */
+#load-screen{position:fixed;inset:0;z-index:100000;background:#ef323d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:opacity .5s}
+#load-screen .ls-brand{font-family:'Press Start 2P',monospace;color:#fff;font-size:clamp(16px,3.4vw,30px);letter-spacing:2px;text-shadow:3px 3px 0 rgba(0,0,0,.35)}
+#load-screen .ls-sub{font-family:VT323,monospace;color:rgba(255,255,255,.85);font-size:18px}
+#load-screen .ls-bar{width:min(420px,70vw);height:10px;border:2px solid #fff;padding:2px}
+#load-screen .ls-fill{height:100%;width:0%;background:#fff;transition:width .18s linear}
+/* Minecraft chat feed */
+#mc-chat{position:fixed;left:12px;bottom:76px;z-index:900;display:flex;flex-direction:column;gap:3px;pointer-events:none;max-width:74vw}
+.mc-chat-line{font-family:VT323,monospace;font-size:19px;line-height:1.15;color:#fff;background:rgba(0,0,0,.55);padding:3px 10px;width:max-content;max-width:100%;text-shadow:1px 1px 0 #000;opacity:1;transition:opacity .8s;border-radius:2px}
+.mc-panorama{position:fixed;inset:0;z-index:-5;background:url('/assets/mc-panorama.svg?v=3') center/cover no-repeat;filter:blur(3px) saturate(1.4) brightness(1.08) contrast(1.04);transform:scale(1.06);animation:pan 34s ease-in-out infinite alternate,daynight 480s linear infinite}
+@keyframes daynight{0%,36%{filter:blur(3px) saturate(1.4) brightness(1.08) contrast(1.04) hue-rotate(0deg)}48%,86%{filter:blur(3px) saturate(.8) brightness(.45) contrast(1.15) hue-rotate(-20deg)}100%{filter:blur(3px) saturate(1.4) brightness(1.08) contrast(1.04) hue-rotate(0deg)}}
 .mc-panorama:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(120,190,255,.10),rgba(255,214,140,.06) 40%,rgba(0,0,0,.10) 70%,rgba(4,4,10,.5))}
 .mc-panorama:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,transparent 60%,rgba(0,0,0,.34) 100%)}
 @keyframes pan{from{background-position:44% 50%;transform:scale(1.08)}to{background-position:58% 50%;transform:scale(1.13)}}
@@ -173,6 +183,9 @@ a{color:inherit;text-decoration:none}
 
 .mc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;font-family:'Press Start 2P',monospace;font-size:8px;background:var(--stone);color:#eee;box-shadow:inset -3px -5px 0 var(--stone-dark),inset 3px 3px 0 var(--stone-light),0 4px 0 #222;cursor:pointer;border:0}
 .mc-btn:hover{filter:brightness(1.22);color:var(--gold)}.mc-btn:active{transform:translateY(3px);box-shadow:inset 3px 5px 0 var(--stone-dark),inset -3px -3px 0 var(--stone-light),0 1px 0 #222}
+.cape{position:absolute;left:-16%;top:-6%;width:118%;height:112%;z-index:0;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2028%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20width%3D%2216%22%20height%3D%2228%22%20fill%3D%22%231d2b53%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2214%22%20height%3D%2226%22%20fill%3D%22%2324357a%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2214%22%20height%3D%222%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%225%22%20width%3D%225%22%20height%3D%225%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%229%22%20y%3D%229%22%20width%3D%225%22%20height%3D%225%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2214%22%20width%3D%225%22%20height%3D%225%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%229%22%20y%3D%2218%22%20width%3D%225%22%20height%3D%225%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2226%22%20width%3D%2216%22%20height%3D%222%22%20fill%3D%22%2353d3ff%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2216%22%20height%3D%2228%22%20fill%3D%22none%22%20stroke%3D%22%230d1330%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat;image-rendering:pixelated;transform-origin:50% 0%;animation:capeWave 3.4s ease-in-out infinite alternate;filter:drop-shadow(3px 6px 0 rgba(0,0,0,.45));border-radius:6px 6px 10px 10px}
+@keyframes capeWave{0%{transform:rotate(-7deg) skewX(3deg)}100%{transform:rotate(7deg) skewX(-3deg) translateY(3px)}}
+.avatar>*:not(.cape){position:relative;z-index:1}
 .sound-btn{position:fixed;bottom:16px;right:16px;z-index:800;width:44px;height:44px;padding:0;font-size:18px;min-width:0}
 
 main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:92px 24px 72px}section:not(#home){opacity:0;transform:translateY(16px)}[data-reveal]{opacity:0;transform:translateY(16px)}.revealed{opacity:1;transform:none;animation:pixel-in 180ms steps(5,end) both}@keyframes pixel-in{0%{opacity:0;transform:translateY(16px) scale(.96)}60%{opacity:1}100%{opacity:1;transform:none}}#home{opacity:1;transform:none}@media(prefers-reduced-motion:reduce){section:not(#home),[data-reveal]{opacity:1;transform:none;animation:none!important}}.hero{min-height:100vh;display:grid;align-items:center;padding-top:112px}.hero-grid{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:center}
@@ -283,8 +296,10 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 </style>
 </head>
 <body>
+<div id="load-screen"><div class="ls-brand">REEF STUDIOS</div><div class="ls-bar"><div class="ls-fill" id="ls-fill"></div></div><div class="ls-sub">Building the world...</div></div>
 <div class="mc-panorama" id="mc-panorama"></div>
 <div class="clouds" aria-hidden="true"></div>
+<div id="mc-chat" aria-live="polite"></div>
 <div id="panorama-bg-overlay"></div>
 <canvas id="particle-canvas" aria-hidden="true"></canvas>
 <div class="tooltip" id="tooltip"></div>
@@ -327,7 +342,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 <main>
   <section id="home" class="hero">
     <div class="hero-grid">
-      <div class="avatar"><div class="fallback" id="avatar-fallback">R</div><img id="avatar" alt="REEF avatar" hidden><div class="status offline" id="status-dot"></div></div>
+      <div class="avatar"><div class="cape" aria-hidden="true"></div><div class="fallback" id="avatar-fallback">R</div><img id="avatar" alt="REEF avatar" hidden><div class="status offline" id="status-dot"></div></div>
       <div>
         <h1 class="logo">REEF</h1>
         <div class="subtitle">Minecraft portfolio world</div>
@@ -618,8 +633,22 @@ function toggleF3() {
   }
 }
 
+/* ===== Real Minecraft sounds (official client.jar assets) ===== */
+window.MCSND=(function(){
+  const F={click:'click',tab:'click',nav:'door',hover:null,xp:'xp',boom:'explode',levelup:'levelup',pop:'pop',creeper:'creeper',dragon:'dragon',wither:'wither',portal:'portal',door:'door'};
+  const cache={};
+  function raw(name,vol){
+    const file=F[name]||name;if(!file)return false;
+    try{let a=cache[file];if(!a){a=new Audio('/assets/mc/sounds/'+file+'.ogg');a.preload='auto';cache[file]=a}
+      const b=a.cloneNode();b.volume=(vol==null?0.55:vol);b.play().catch(()=>{});return true}catch(e){return false}
+  }
+  function play(kind){const f=F[kind];if(!f)return false;const v={click:.4,tab:.35,hover:.15,xp:.5,boom:.7}[kind]||.5;return raw(f,v)}
+  return {play,raw};
+})();
+
 function playClick(kind='click'){
   if(muted) return;
+  if(window.MCSND && MCSND.play(kind)) return;
   try{
     audioCtx ??= new (window.AudioContext || window.webkitAudioContext)();
     if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -1386,14 +1415,14 @@ case 'tnt':{
       break;
     }
 case 'dragon':{
-      line('Summoned the Ender Dragon!','term-mag');
+      line('Summoned the Ender Dragon!','term-mag');if(window.MCSND)MCSND.raw('dragon',.55);
       MCFX.fly('/assets/mc/icons/dragon_head.png',{size:130,trail:true,top:'30vh'});
       MCFX.shake(500);
       setTimeout(()=>{line('The Ender Dragon flew away...','term-dim');MCFX.chat('Dragon defeated! +12000 XP','#c8a2ff')},2700);
       break;
     }
 case 'wither':{
-      line('Spawning Wither...','term-warn');
+      line('Spawning Wither...','term-warn');if(window.MCSND)MCSND.raw('wither',.5);
       MCFX.vignette(true);MCFX.shake(300);
       ['wither_skeleton_skull','skeleton_skull','wither_skeleton_skull'].forEach((sk,i)=>{
         setTimeout(()=>MCFX.spriteFlash('/assets/mc/icons/'+sk+'.png',900),i*550);
@@ -1426,7 +1455,7 @@ case 'firework':
       break;
     }
 case 'end':{
-      line('Entering The End...','term-mag');
+      line('Entering The End...','term-mag');if(window.MCSND)MCSND.raw('portal',.55);
       const v=document.createElement('div');v.style.cssText='position:fixed;inset:0;z-index:99996;pointer-events:none;background:conic-gradient(from 0deg,#1a0b2e,#3a1258,#1a0b2e,#47207a,#1a0b2e);animation:mcendspin 2.4s linear forwards';
       document.body.appendChild(v);
       const st=document.createElement('style');st.textContent='@keyframes mcendspin{from{opacity:0;transform:scale(.2) rotate(0deg)}60%{opacity:1}to{opacity:0;transform:scale(3.2) rotate(360deg)}}';
@@ -1440,7 +1469,7 @@ case 'end':{
         break;
       case 'creeper':
       case 'ssss':
-        line('sssssssssSSSSSSSSS...', 'term-warn');
+        line('sssssssssSSSSSSSSS...', 'term-warn');if(window.MCSND)MCSND.raw('creeper',.6);
         if(window.playClick) playClick('boom');
         if (typeof window.giveItemToGrid === 'function') {
           window.giveItemToGrid('creeper', 1);
@@ -1718,5 +1747,41 @@ case 'end':{
 })();
 /* ===== shake css ===== */
 (function(){const st=document.createElement('style');st.textContent='.mc-shake{animation:mcshake .09s linear infinite}@keyframes mcshake{0%{transform:translate(0,0)}25%{transform:translate(-6px,4px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-4px,-3px)}100%{transform:translate(4px,5px)}}';document.head.appendChild(st)})();
+</script><script>
+/* ===== loading screen + chat + click particles ===== */
+(function(){
+  // loading
+  const ls=document.getElementById('load-screen');
+  if(ls){
+    if(sessionStorage.getItem('reef-loaded')){ls.remove();}
+    else{
+      const fill=document.getElementById('ls-fill');let pr=0;
+      const iv=setInterval(()=>{pr=Math.min(92,pr+6+Math.random()*10);if(fill)fill.style.width=pr+'%'},110);
+      const done=()=>{clearInterval(iv);if(fill)fill.style.width='100%';setTimeout(()=>{ls.style.opacity='0';setTimeout(()=>ls.remove(),520);sessionStorage.setItem('reef-loaded','1')},260)};
+      if(document.readyState==='complete')setTimeout(done,700);else window.addEventListener('load',()=>setTimeout(done,500));
+    }
+  }
+  // chat
+  const box=document.getElementById('mc-chat');
+  function chat(msg,color){
+    if(!box)return;const d=document.createElement('div');d.className='mc-chat-line';d.textContent=msg;if(color)d.style.color=color;
+    box.appendChild(d);if(window.MCSND)MCSND.play('pop');
+    while(box.children.length>5)box.firstChild.remove();
+    setTimeout(()=>{d.style.opacity='0';setTimeout(()=>d.remove(),850)},7000);
+  }
+  window.MCCHAT={push:chat};
+  window.toast=window.toast||function(msg){chat('✔ '+msg,'#7fe64a')};
+  setTimeout(()=>chat('Player joined the game','#ffff55'),900);
+  // section visits via hotbar
+  document.querySelectorAll('.hotbar a').forEach(a=>a.addEventListener('click',()=>{
+    const t=(a.getAttribute('title')||a.textContent||'').trim().split(/\s+/)[0];
+    if(t)chat('Reef reached '+t);
+  }));
+  // block-crack click particles
+  document.addEventListener('pointerdown',e=>{
+    if(e.target.closest('#term-overlay,.term-window,#load-screen'))return;
+    if(window.MCFX)MCFX.burst(e.clientX,e.clientY,['#9a9a9a','#6e6e6e','#c6c6c6'],7);
+  });
+})();
 </script></body>
 </html>
