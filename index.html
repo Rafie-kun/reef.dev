@@ -183,9 +183,7 @@ a{color:inherit;text-decoration:none}
 
 .mc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;font-family:'Press Start 2P',monospace;font-size:8px;background:var(--stone);color:#eee;box-shadow:inset -3px -5px 0 var(--stone-dark),inset 3px 3px 0 var(--stone-light),0 4px 0 #222;cursor:pointer;border:0}
 .mc-btn:hover{filter:brightness(1.22);color:var(--gold)}.mc-btn:active{transform:translateY(3px);box-shadow:inset 3px 5px 0 var(--stone-dark),inset -3px -3px 0 var(--stone-light),0 1px 0 #222}
-.cape{position:absolute;left:-16%;top:-6%;width:118%;height:112%;z-index:0;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2028%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20width%3D%2216%22%20height%3D%2228%22%20fill%3D%22%231d2b53%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2214%22%20height%3D%2226%22%20fill%3D%22%2324357a%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2214%22%20height%3D%222%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%225%22%20width%3D%225%22%20height%3D%225%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%229%22%20y%3D%229%22%20width%3D%225%22%20height%3D%225%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2214%22%20width%3D%225%22%20height%3D%225%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%229%22%20y%3D%2218%22%20width%3D%225%22%20height%3D%225%22%20fill%3D%22%233d54b0%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2226%22%20width%3D%2216%22%20height%3D%222%22%20fill%3D%22%2353d3ff%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2216%22%20height%3D%2228%22%20fill%3D%22none%22%20stroke%3D%22%230d1330%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat;image-rendering:pixelated;transform-origin:50% 0%;animation:capeWave 3.4s ease-in-out infinite alternate;filter:drop-shadow(3px 6px 0 rgba(0,0,0,.45));border-radius:6px 6px 10px 10px}
-@keyframes capeWave{0%{transform:rotate(-7deg) skewX(3deg)}100%{transform:rotate(7deg) skewX(-3deg) translateY(3px)}}
-.avatar>*:not(.cape){position:relative;z-index:1}
+
 .sound-btn{position:fixed;bottom:16px;right:16px;z-index:800;width:44px;height:44px;padding:0;font-size:18px;min-width:0}
 
 main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:92px 24px 72px}section:not(#home){opacity:0;transform:translateY(16px)}[data-reveal]{opacity:0;transform:translateY(16px)}.revealed{opacity:1;transform:none;animation:pixel-in 180ms steps(5,end) both}@keyframes pixel-in{0%{opacity:0;transform:translateY(16px) scale(.96)}60%{opacity:1}100%{opacity:1;transform:none}}#home{opacity:1;transform:none}@media(prefers-reduced-motion:reduce){section:not(#home),[data-reveal]{opacity:1;transform:none;animation:none!important}}.hero{min-height:100vh;display:grid;align-items:center;padding-top:112px}.hero-grid{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:center}
@@ -342,7 +340,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 <main>
   <section id="home" class="hero">
     <div class="hero-grid">
-      <div class="avatar"><div class="cape" aria-hidden="true"></div><div class="fallback" id="avatar-fallback">R</div><img id="avatar" alt="REEF avatar" hidden><div class="status offline" id="status-dot"></div></div>
+      <div class="avatar"><div class="fallback" id="avatar-fallback">R</div><img id="avatar" alt="REEF avatar" hidden><div class="status offline" id="status-dot"></div></div>
       <div>
         <h1 class="logo">REEF</h1>
         <div class="subtitle">Minecraft portfolio world</div>
