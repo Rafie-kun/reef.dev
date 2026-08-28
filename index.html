@@ -339,6 +339,24 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 
 .pickaxe-cursor{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M8 3 L14 3 L12 7 L14 9 L12 11 L8 7 Z' fill='%235ac8ff' stroke='%23000' stroke-width='1'/%3E%3Crect x='10.5' y='8' width='3' height='12' fill='%238b623e' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") 6 2, pointer}
 a:hover, button:hover, .mc-btn:hover, .tab:hover, .project:hover, .inv-item:hover, .og-item:hover, .dash-tile:hover, .badge-link:hover, .book-sl:hover{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M8 3 L14 3 L12 7 L14 9 L12 11 L8 7 Z' fill='%235ac8ff' stroke='%23000' stroke-width='1'/%3E%3Crect x='10.5' y='8' width='3' height='12' fill='%238b623e' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") 6 2, pointer}
+.ach-toasts{position:fixed;top:18px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.ach-toast{display:flex;gap:10px;align-items:center;background:#212121;border:2px solid #555;box-shadow:inset 2px 2px 0 #3a3a3a,inset -2px -2px 0 #000,0 6px 14px rgba(0,0,0,.5);padding:10px 14px 10px 10px;min-width:260px;max-width:360px;transform:translateX(110%);opacity:0;transition:transform .35s steps(4,end),opacity .35s}
+.ach-toast.show{transform:translateX(0);opacity:1}
+.ach-icon{width:32px;height:32px;flex:0 0 32px;background:#3a3a3a;border:2px solid #000;display:grid;place-items:center}
+.ach-text{flex:1;min-width:0}
+.ach-title{font-family:'Press Start 2P',monospace;font-size:6px;color:#55FF55;line-height:1.4}
+.ach-desc{font-family:VT323,monospace;font-size:16px;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ach-sub{font-family:VT323,monospace;font-size:13px;color:#aaa}
+#cmd-palette{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.62);display:flex;align-items:flex-start;justify-content:center;padding-top:18vh}
+#cmd-palette[hidden]{display:none}
+.cmd-box{width:min(560px,92vw);background:#1a1a1a;border:3px solid #555;box-shadow:inset 2px 2px 0 #3a3a3a,inset -2px -2px 0 #000,0 12px 30px rgba(0,0,0,.6)}
+.cmd-input-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#111;border-bottom:2px solid #333}
+.cmd-prompt{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--xp)}
+#cmd-input{flex:1;background:transparent;border:0;outline:0;color:#fff;font-family:VT323,monospace;font-size:20px}
+.cmd-list{max-height:320px;overflow:auto}
+.cmd-item{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-family:VT323,monospace;font-size:18px;color:#ddd;cursor:pointer;border-bottom:1px solid #222}
+.cmd-item:hover,.cmd-item.active{background:#333;color:#fff}
+.cmd-item span{font-family:'Press Start 2P',monospace;font-size:6px;color:#999}
 </style>
 </head>
 <body>
@@ -346,6 +364,8 @@ a:hover, button:hover, .mc-btn:hover, .tab:hover, .project:hover, .inv-item:hove
 <div class="mc-panorama" id="mc-panorama"></div>
 <div class="clouds" aria-hidden="true"></div>
 <div id="mc-chat" aria-live="polite"></div>
+<div id="cmd-palette" hidden><div class="cmd-box"><div class="cmd-input-row"><span class="cmd-prompt">/</span><input id="cmd-input" type="text" placeholder="Jump to..." autocomplete="off" spellcheck="false"></div><div id="cmd-list" class="cmd-list"></div></div></div>
+<div id="ach-toasts" aria-live="polite"></div>
 <div id="panorama-bg-overlay"></div>
 <canvas id="particle-canvas" aria-hidden="true"></canvas>
 <div class="tooltip" id="tooltip"></div>
@@ -1468,6 +1488,91 @@ function setupCardCopy(name){
 loadSiteData();loadBadges();loadProjects();connectLanyard();actTimer=setInterval(updateActivityBars,1000);
 </script>
 
+
+<script>
+(function(){
+  const map=[
+    {id:'about',title:'Adventuring Time',desc:'Opened the Written Book',icon:'i-book'},
+    {id:'projects',title:'Bench Crafted',desc:'Inspected the Crafting Bench',icon:'i-crafting-table'},
+    {id:'blog',title:'Book Worm',desc:'Browsed the library of books',icon:'i-book2'},
+    {id:'library',title:'Inventory Full',desc:'Checked the Inventory',icon:'i-chest'},
+    {id:'contact',title:'Signal Sent',desc:'Found the Anvil',icon:'i-anvil'}
+  ];
+  const seen=new Set(JSON.parse(sessionStorage.getItem('reef-ach')||'[]'));
+  function toast(a){
+    const wrap=document.getElementById('ach-toasts'); if(!wrap) return;
+    const el=document.createElement('div'); el.className='ach-toast';
+    el.innerHTML='<div class="ach-icon"><span class="mc-item '+a.icon+'"></span></div><div class="ach-text"><div class="ach-title">Achievement Get!</div><div class="ach-desc">'+a.title+'</div><div class="ach-sub">'+a.desc+'</div></div>';
+    wrap.appendChild(el); requestAnimationFrame(()=>el.classList.add('show'));
+    if(window.playClick) try{playClick('xp')}catch(e){}
+    if(window.MCCHAT) MCCHAT.push('Achievement: '+a.title,'#55ff55');
+    setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(110%)'; setTimeout(()=>el.remove(),400); }, 3400);
+  }
+  function unlock(id){
+    if(seen.has(id)) return;
+    const a=map.find(x=>x.id===id); if(!a) return;
+    seen.add(id); sessionStorage.setItem('reef-ach',JSON.stringify([...seen]));
+    toast(a);
+  }
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) unlock(e.target.id); });
+  },{threshold:0.45});
+  map.forEach(m=>{ const el=document.getElementById(m.id); if(el) obs.observe(el); });
+})();
+</script>
+<script>
+(function(){
+  const overlay=document.getElementById('cmd-palette');
+  const input=document.getElementById('cmd-input');
+  const list=document.getElementById('cmd-list');
+  if(!overlay||!input||!list) return;
+  const cmds=[
+    {name:'Projects / Crafting Bench',id:'projects',hint:'Bench'},
+    {name:'Blog / Reading',id:'blog',hint:'Books'},
+    {name:'Album / Gallery',id:'album',hint:'Gallery'},
+    {name:'Library / Inventory',id:'library',hint:'Inventory'},
+    {name:'Guestbook / Signatures',id:'guestbook',hint:'Sign'},
+    {name:'Friends / Badges',id:'friends',hint:'Badges'},
+    {name:'Contact / Anvil',id:'contact',hint:'Signal'},
+    {name:'About / Book',id:'about',hint:'Book'}
+  ];
+  let idx=0;
+  function render(filter){
+    const q=(filter||'').toLowerCase();
+    const filtered=cmds.filter(c=>!q||c.name.toLowerCase().includes(q)||c.id.includes(q));
+    list.innerHTML=filtered.map((c,i)=>'<div class="cmd-item '+(i===idx?'active':'')+'" data-id="'+c.id+'"><span>'+c.name+'</span><span>'+c.hint+'</span></div>').join('') || '<div class="cmd-item">No match</div>';
+    list.querySelectorAll('.cmd-item').forEach(el=>el.addEventListener('click',()=>go(el.dataset.id)));
+  }
+  function go(id){
+    const el=document.getElementById(id);
+    if(el){ el.scrollIntoView({behavior:'smooth'}); if(window.playClick)try{playClick('nav')}catch(e){} }
+    close();
+  }
+  function open(initial){
+    overlay.hidden=false; idx=0; input.value=initial||''; render(input.value); input.focus();
+  }
+  function close(){ overlay.hidden=true; input.value=''; }
+  document.addEventListener('keydown',e=>{
+    if(e.key==='/' && !overlay.hidden){return;}
+    if(e.key==='/' && document.activeElement && ['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+    if(e.key==='/' && !e.ctrlKey && !e.metaKey && !e.altKey){
+      const ae=document.activeElement;
+      if(ae && (ae.tagName==='INPUT' || ae.tagName==='TEXTAREA' || ae.isContentEditable)) return;
+      e.preventDefault(); open('');
+    }
+    if(e.key==='Escape' && !overlay.hidden){ e.preventDefault(); close(); }
+  });
+  overlay.addEventListener('click',e=>{ if(e.target===overlay) close(); });
+  input.addEventListener('input',()=>{ idx=0; render(input.value); });
+  input.addEventListener('keydown',e=>{
+    const items=[...list.querySelectorAll('.cmd-item[data-id]')];
+    if(e.key==='ArrowDown'){ e.preventDefault(); idx=Math.min(idx+1,items.length-1); render(input.value); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); idx=Math.max(idx-1,0); render(input.value); }
+    else if(e.key==='Enter'){ e.preventDefault(); const sel=items[idx]||items[0]; if(sel) go(sel.dataset.id); }
+  });
+})();
+</script>
+
 <!-- ===== Terminal easter egg ===== -->
 <button class="mc-btn term-toggle" id="term-toggle" type="button" title="Terminal (press `)" aria-label="Open terminal"><span class="mc-item i-screen"></span></button>
 <div class="term-overlay" id="term-overlay" hidden>
@@ -1535,6 +1640,8 @@ loadSiteData();loadBadges();loadProjects();connectLanyard();actTimer=setInterval
   }
 
   const HELP=[
+    ['herobrine','summon Herobrine (don\'t)'],
+    ['notch','say hi to Notch'],
     ['help / /help','show available commands'],
     ['creeper / ssss','trigger Creeper explosion easter egg'],
     ['/gamemode <survival|creative|adventure|spectator>','change game mode'],
@@ -1783,6 +1890,17 @@ case 'end':{
       case 'rainbow':
         add('<div style="background:linear-gradient(90deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:bold;font-size:20px">🌈 Rainbow power enabled!</div>');
         break;
+      case 'herobrine':{
+        line('Herobrine joined the game', 'term-warn');
+        if(window.MCFX){MCFX.eyes(true);MCFX.vignette(true);MCFX.shake(600);}
+        setTimeout(()=>{ line('Herobrine left the game','term-dim'); if(window.MCFX){MCFX.eyes(false);MCFX.vignette(false);} }, 4200);
+        break;
+      }
+      case 'notch':{
+        line('Notch whispers: Keep crafting!','term-out');
+        if(window.MCCHAT) MCCHAT.push('Notch whispers: Keep crafting!','#55ff55');
+        break;
+      }
       case 'limbo':
         navTo('home');
         line('Welcome to Limbo. Enjoy your stay.', 'term-out');
