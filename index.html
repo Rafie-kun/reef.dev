@@ -964,7 +964,7 @@ function renderTab(id,silent){
   const srcMap={music:d.library?.music,reading:d.library?.read||d.library?.reading||[],proj:d.library?.proj||[]};
   const src=srcMap[id]||[];
   const items=Array.isArray(src)?src.filter(i=>!i.hidden):[];
-  if(!items.length){el.innerHTML='<div class="empty-state"><span class="mc-item i-chest"></span>Nothing here yet. Import from the admin panel.</div>';return}
+  if(!items.length){const fb={music:DEFAULT_MUSIC,reading:DEFAULT_READING,proj:DEFAULT_PROJECTS}[id]||[]; if(fb.length){el.innerHTML='<div class="inv-grid">'+fb.map((item,idx)=>renderLibraryItem(item,id,idx)).join('')+'</div>'; return;} el.innerHTML='<div class="empty-state"><span class="mc-item i-chest"></span>Nothing here yet. Import from the admin panel.</div>';return}
   el.innerHTML='<div class="inv-grid">'+items.map((item,idx)=>renderLibraryItem(item,id,idx)).join('')+'</div>';
 }
 
@@ -1112,6 +1112,19 @@ async function fetchSteamApp(appId){
 }
 
 const DEFAULT_GAMES=[{"appid":"1796680","title":"Minecraft Dungeons","status":"completed","hours":32},{"appid":"1928980","title":"Minecraft Legends","status":"playing","hours":14},{"appid":"105600","title":"Terraria","status":"playing","hours":120},{"appid":"413150","title":"Stardew Valley","status":"playing","hours":85},{"appid":"367520","title":"Hollow Knight","status":"completed","hours":41},{"appid":"504230","title":"Celeste","status":"completed","hours":26},{"appid":"1145360","title":"Hades","status":"playing","hours":57},{"appid":"588650","title":"Dead Cells","status":"backlog","hours":12},{"appid":"391540","title":"Undertale","status":"completed","hours":11},{"appid":"268910","title":"Cuphead","status":"backlog","hours":9}];
+const DEFAULT_BLOG_POSTS=[
+  {title:'World Spawn: First Log',date:'2024-08-24',tags:'minecraft, log',body:'# Welcome\n\nFirst entry in this **written book**. This portfolio runs on single-file HTML with custom pixel icons and a twilight panorama.\n\n```js\nconsole.log("hello reef");\n```\n\n> Tip: Press `/` to jump anywhere — Projects, Blog, Library, Contact.',img:''},
+  {title:'Redstone Notes',date:'2024-08-20',tags:'redstone, tutorial',body:'## Comparator Clock\n\nA tiny 2-tick loop using `observer` + `repeater`.\n\n- Place observer facing repeater\n- Dust loop, 2-tick delay\n- Add a lever to gate it\n\n---\n\nMore on [Minecraft Wiki](https://minecraft.wiki/w/Redstone).',img:''},
+  {title:'Reading: Bitwise Tricks',date:'2024-08-15',tags:'reading, code',body:'### Today I learned\n\n*Fast floor* with `~~x` vs `Math.floor(x)` — handy in particle loops.\n\n*Why it works:* truncates toward zero, great for pixel math.\n\n> Next up: inventory persistence via Vercel KV.',img:''}
+];
+const DEFAULT_ALBUM_ITEMS=[
+  {caption:'Sunset over spawn — seed 20240822',img:'/assets/mc-panorama.svg',link:''},
+  {caption:'Redstone door prototype',img:'/assets/mc/icons/piston.png',link:''},
+  {caption:'Written book shelf',img:'/assets/mc/icons/book.png',link:''}
+];
+const DEFAULT_MUSIC=[{name:'C418 — Sweden',url:'https://open.spotify.com/track/3z2hRIWTsGxPVnZBWiv0uK',img:'',icon:'i-music-note'},{name:'Lena Raine — Pigstep',url:'https://open.spotify.com/track/2x7My0H1GuvHandaN8V8Y2',img:'',icon:'i-music-note'}];
+const DEFAULT_READING=[{name:'Minecraft Wiki — Redstone',url:'https://minecraft.wiki/w/Redstone',img:'',icon:'i-book'},{name:'Game Programming Patterns',url:'https://gameprogrammingpatterns.com/',img:'',icon:'i-book2'}];
+const DEFAULT_PROJECTS=[{name:'Reef Craft Bench',desc:'1,666 items, 1,089 recipes — vanilla GUI built from client.jar.',url:'#projects',repo:'https://github.com/Rafie-kun/reef.dev',tags:'minecraft, vanilla'},{name:'Panorama Engine',desc:'Twilight sky with aurora bands and day/night cycle.',url:'#home',repo:'',tags:'canvas, svg'}];
 function loadData(){
   try{
     const d=JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{};
@@ -1213,7 +1226,7 @@ function mdBlocks(md){
 function renderBlogPosts(posts){
   const el=document.getElementById('blog-grid'); if(!el) return;
   _blogAllPosts=Array.isArray(posts)?posts.slice():[];
-  const list=_blogAllPosts.length?_blogAllPosts:[{title:'No posts yet',date:'',body:'Nothing published yet. Check back later!',tags:''}];
+  const list=_blogAllPosts.length?_blogAllPosts:DEFAULT_BLOG_POSTS;
   // build tag filter
   const tagSet=new Set(); _blogAllPosts.forEach(p=>String(p.tags||'').split(',').map(t=>t.trim()).filter(Boolean).forEach(t=>tagSet.add(t)));
   const tf=document.getElementById('blog-tag-filter');
@@ -1244,7 +1257,7 @@ function _renderBlogFiltered(){
 function renderAlbumItems(items){
   const el=document.getElementById('album-grid');
   if(!el) return;
-  const list=Array.isArray(items)&&items.length?items:[{caption:'No images yet. Check back soon!',img:'',link:''}];
+  const list=Array.isArray(items)&&items.length?items:DEFAULT_ALBUM_ITEMS;
   el.innerHTML=list.map(item=>{
     const caption=esc(item.caption||'');
     const inner=item.img?`<img src="${esc(safeUrl(item.img))}" alt="${caption}" onerror="this.style.display='none'"><div class="cap">${caption}</div>`:`<div class="cap">${caption||'No image yet'}</div>`;
