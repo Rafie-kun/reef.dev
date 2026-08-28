@@ -292,6 +292,50 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .game-img-wrap{display:block;position:relative;background:#101018 url('/assets/mc/tex/oak_planks.png');background-size:48px;image-rendering:pixelated}
 .game-img-wrap .game-img-dead{visibility:hidden}
 .game-img-wrap.game-img-dead:before{content:'';position:absolute;inset:0;background:url('/assets/mc/icons/crafting_table.png') center/38% no-repeat;image-rendering:pixelated;opacity:.85}
+
+/* ---- Mobile refinements ---- */
+@media(max-width:600px){
+  /* hotbar: single scrollable row instead of wrapping */
+  .hotbar{left:0;right:0;transform:none;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:6px 8px 0;scrollbar-width:none}
+  .hotbar::-webkit-scrollbar{display:none}
+  .hotbar a{width:52px;height:52px;flex:0 0 auto}
+  .hero{padding-top:130px}
+  .logo{font-size:40px}
+  .avatar{width:150px;height:150px}
+  .subtitle{font-size:22px}
+  .tagline{font-size:19px}
+  /* crafting grid shrinks */
+  .ct-table{padding:10px;gap:8px;background-size:64px}
+  .ct-grid{grid-template-columns:repeat(3,34px);gap:3px}
+  .craft-slot{width:34px;height:34px}
+  .ct-result{width:44px;height:44px}
+  .ct-arrow{width:26px;height:16px}
+  .mc-gui{padding:10px}
+  .inv-items{max-height:240px}
+  /* chat feed smaller + above term toggle */
+  #mc-chat{bottom:70px;left:8px;max-width:88vw}
+  .mc-chat-line{font-size:15px;padding:2px 7px}
+  /* blog paper cards tighter */
+  .blog-post{padding:14px 12px 12px}
+  .blog-post .blog-body{font-size:18px}
+  /* section padding */
+  section{padding:80px 14px 64px}
+  .title{font-size:12px}
+  /* contact + modal */
+  .modal-box{max-height:92vh}
+  /* xp bar */
+  .xp-label{max-width:100%}
+  .xp-bar{max-width:100%}
+  #hero-activity{max-width:100%}
+  /* friends badges wrap tighter */
+  .badge-wall{padding:10px}
+}
+@media(max-width:380px){
+  .hotbar a{width:46px;height:46px;font-size:5px}
+  .ct-grid{grid-template-columns:repeat(3,30px)}
+  .craft-slot{width:30px;height:30px}
+}
+
 </style>
 </head>
 <body>
