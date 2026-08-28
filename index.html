@@ -1351,7 +1351,7 @@ function _renderBlogFiltered(){
     const words=String(p.body||'').split(/\s+/).filter(Boolean).length;
     const mins=Math.max(1,Math.round(words/180));
     const md=mdBlocks(p.body||'');
-    return `<article class="blog-post"><h3>${esc(p.title||'Untitled')}</h3><div class="date">${esc(p.date||'')}${mins?` · ${mins} min read`:''}</div>${p.img?`<img class="blog-img" src="${esc(safeUrl(p.img))}" alt="${esc(p.title||'')}">`:''}<div class="blog-body">${md||'<p></p>'}</div>${tags.length?`<div class="blog-tags">${tags.map(t=>`<span class="blog-tag">${esc(t)}</span>`).join('')}</div>`:''}<div class="blog-meta">${words} words</div></article>`;
+    return `<article class="blog-post"><h3>${esc(p.title||'Untitled')}</h3><div class="date">${esc(p.date||'')}${mins?` · ${mins} min read`:''}</div>${p.img?`<img class="blog-img" src="${esc(safeUrl(p.img))}" alt="${esc(p.title||'')}" loading="lazy" decoding="async">`:''}<div class="blog-body">${md||'<p></p>'}</div>${tags.length?`<div class="blog-tags">${tags.map(t=>`<span class="blog-tag">${esc(t)}</span>`).join('')}</div>`:''}<div class="blog-meta">${words} words</div></article>`;
   }).join('');
 }
 
@@ -1361,7 +1361,7 @@ function renderAlbumItems(items){
   const list=Array.isArray(items)&&items.length?items:DEFAULT_ALBUM_ITEMS;
   el.innerHTML=list.map(item=>{
     const caption=esc(item.caption||'');
-    const inner=item.img?`<img src="${esc(safeUrl(item.img))}" alt="${caption}" onerror="this.style.display='none'"><div class="cap">${caption}</div>`:`<div class="cap">${caption||'No image yet'}</div>`;
+    const inner=item.img?`<img src="${esc(safeUrl(item.img))}" alt="${caption}" loading="lazy" decoding="async" onerror="this.style.display='none'"><div class="cap">${caption}</div>`:`<div class="cap">${caption||'No image yet'}</div>`;
     return item.link?`<a class="album-item" href="${esc(safeUrl(item.link))}" target="_blank" rel="noreferrer">${inner}</a>`:`<div class="album-item">${inner}</div>`;
   }).join('');
 }
