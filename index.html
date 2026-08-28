@@ -202,6 +202,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
 .title{font-family:'Press Start 2P',monospace;font-size:16px;color:var(--gold);text-shadow:2px 2px 0 #3f3f00;margin-bottom:28px}.title:before{content:"[ ";color:#aaa}.title:after{content:" ]";color:#aaa}
 .book{background:#c2a46f;border:4px solid #623c1b;box-shadow:5px 5px 0 #2b1907}.book-pages{display:grid;grid-template-columns:1fr 1fr}.page{position:relative;min-height:320px;padding:26px 22px;background:#f5e7c9;color:#2c1b08}.page:first-child{border-right:2px solid #a88458}.page:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 27px,rgba(101,63,29,.18) 27px 28px);pointer-events:none}.page h3{font-family:'Press Start 2P',monospace;font-size:9px;margin-bottom:14px;position:relative;z-index:1}.page p,.page li{position:relative;z-index:1;font-size:22px;line-height:1.35}.page ul{padding-left:18px;display:grid;gap:8px}
 .book-socials{margin-top:18px;display:grid;gap:6px;position:relative;z-index:1}.book-sl{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(80,50,15,.12);border:1px solid rgba(80,50,15,.25);color:#3a1a00;font-size:18px;text-decoration:none}.book-sl:hover{background:rgba(80,50,15,.25)}
+.book-nav button:disabled{opacity:.45;cursor:default;filter:grayscale(.2)}
 .panel{background:var(--panel);border:3px solid var(--stone-dark);box-shadow:3px 3px 0 rgba(0,0,0,.45);padding:18px}
 .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px;background:var(--stone-dark);padding:6px;border:4px solid var(--stone)}.project{background:#3a3a3a;border:2px solid;border-color:var(--stone-dark) #e4e4e4 #e4e4e4 var(--stone-dark);padding:16px;display:flex;flex-direction:column;gap:8px}.project h3{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold)}.project p{font-size:18px;color:#d3d0c6}.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto}
 .inventory{background:var(--stone-light);border:4px solid var(--stone-dark);box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 var(--stone-dark)}.tabs{display:flex;flex-wrap:wrap;border-bottom:3px solid var(--stone-dark)}.tab{padding:10px 14px;background:var(--stone);color:#222;border-right:2px solid var(--stone-dark);font-family:'Press Start 2P',monospace;font-size:6px;cursor:pointer;user-select:none}.tab.active{background:var(--stone-light);color:#000;margin-bottom:-3px;border-bottom:3px solid var(--stone-light)}.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;background:var(--stone-dark);padding:8px}
@@ -446,6 +447,7 @@ main{position:relative;z-index:1}section{max-width:1160px;margin:0 auto;padding:
   <section id="blog"><h2 class="title">Blog / Reading</h2><div class="panel"><div class="blog-controls"><input id="blog-search" type="text" placeholder="Search posts..."><div id="blog-tag-filter"></div></div><div class="blog-grid" id="blog-grid"></div></div></section>
   <section id="album"><h2 class="title">Album / Gallery</h2><div class="panel"><div class="album-grid" id="album-grid"></div></div></section>
   <section id="library"><h2 class="title">Library / Inventory</h2><div class="inventory"><div class="tabs"><div class="tab active" data-tab="all">All</div><div class="tab" data-tab="games">Games</div><div class="tab" data-tab="music">Music</div><div class="tab" data-tab="reading">Reading</div><div class="tab" data-tab="proj">Projects</div></div><div class="tab-panel" id="tab-all"></div><div class="tab-panel" id="tab-games" hidden></div><div class="tab-panel" id="tab-music" hidden></div><div class="tab-panel" id="tab-reading" hidden></div><div class="tab-panel" id="tab-proj" hidden></div></div></section>
+  <section id="guestbook"><h2 class="title">Guestbook / Signatures</h2><div class="panel"><div class="book" id="guestbook-book"><div id="guestbook-list" class="book-pages" style="min-height:180px"></div><div class="book-nav" style="display:flex;gap:8px;align-items:center;margin-top:12px;padding-top:8px;border-top:2px solid #a88458"><input id="gb-name" class="mc-input" placeholder="Name" style="flex:0 0 140px" maxlength="24"><input id="gb-msg" class="mc-input" placeholder="Message — leave your mark!" style="flex:1" maxlength="140"><button class="mc-btn" id="gb-sign" type="button" style="padding:8px 14px;font-size:6px;white-space:nowrap">Sign Book ✍</button></div><div id="gb-status" style="font-family:VT323,monospace;font-size:14px;color:#8a6b4a;margin-top:6px;min-height:18px"></div></div></div></section>
   <section id="friends"><h2 class="title">Friends / Badges</h2><div class="badge-wall"><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:var(--gold);margin-bottom:4px">My Card</div><div id="my-card-preview-wrap" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;width:100%;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid #555"><button id="my-card-preview" class="badge-link" type="button" style="width:88px;height:31px;padding:0;border:1px solid #888;cursor:pointer"><img id="my-card-img" src="assets/button-88x31.webp" alt="REEF card"></button><div style="font-family:'Press Start 2P';font-size:5px;color:#888;line-height:1.6">Click card to copy embed code</div></div><div style="width:100%;font-family:'Press Start 2P';font-size:7px;color:#999;margin:4px 0">Friend Badges</div><div id="friends-badges" style="display:flex;flex-wrap:wrap;gap:8px;width:100%"></div></div></section>
   <section id="contact"><h2 class="title">Contact / Anvil</h2><div class="contact-anvil"><div class="contact-anvil-head"><span class="mc-item i-hammer inline"></span> Contact<span>Right-click to use</span></div><div class="contact-table" id="contact-actions"></div></div></section>
   <footer class="footer"><div>(C) REEF 2026</div><div class="note" id="footer-note">Also try mining at sunset.</div></footer>
@@ -534,6 +536,9 @@ function applySiteData(){
   renderBlogPosts(siteData.blog||JSON.parse(localStorage.getItem('reef-blog')||'[]'));
   renderAlbumItems(siteData.album||JSON.parse(localStorage.getItem('reef-album')||'[]'));
   setupCardCopy(name);
+  loadGuestbook();
+  document.getElementById('gb-sign')?.addEventListener('click',signGuestbook);
+  document.getElementById('gb-msg')?.addEventListener('keydown',e=>{ if(e.key==='Enter') signGuestbook(); });
   return {name,bio,email,socials,bg,phrases:phrasesList};
 }
 function loadSiteData(){
@@ -915,6 +920,29 @@ const DEFAULT_FRIENDS=[
   {name:'squizzy',url:'https://squizzy.dev/',img:'https://squizzy.dev/images/squizzy-button-88x31.png'},
   {name:'abyad',url:'https://www.abyadzaman.me/',img:'/assets/mc/abyad-badge.svg',code:'<a href="https://www.abyadzaman.me/" target="_blank" rel="noopener noreferrer"><img src="https://reef-dev.vercel.app/assets/mc/abyad-badge.svg" width="88" height="31" alt="abyad" /></a>'}
 ];
+async function loadGuestbook(){
+  const el=document.getElementById('guestbook-list'); if(!el) return;
+  try{
+    const r=await fetch('/api/guestbook'); const j=await r.json().catch(()=>({}));
+    const list=Array.isArray(j.entries)?j.entries: (Array.isArray(j)?j:[]);
+    if(!list.length){ el.innerHTML='<div class="page" style="grid-column:1/-1"><h3>WELCOME</h3><p>No signatures yet — be the first to sign the book!</p><p style="font-size:18px;color:#8a6b4a;margin-top:8px">Your message is stored via the same KV/Blob persistence as the admin panel.</p></div>'; return; }
+    el.innerHTML=list.slice(-12).reverse().map(e=>'<div class="page" style="min-height:140px"><h3>'+esc(e.name||'Anonymous')+'</h3><div class="date">'+esc(e.date||'')+'</div><p>'+esc(e.msg||'').replace(/\n/g,'<br>')+'</p></div>').join('');
+  }catch(e){ el.innerHTML='<div class="page"><p>Could not load signatures.</p></div>'; }
+}
+async function signGuestbook(){
+  const nameEl=document.getElementById('gb-name'), msgEl=document.getElementById('gb-msg'), st=document.getElementById('gb-status');
+  const name=(nameEl.value||'').trim().slice(0,24)||'Anonymous', msg=(msgEl.value||'').trim().slice(0,140);
+  if(!msg){ if(st) st.textContent='Write a message first!'; return; }
+  if(st) st.textContent='Signing...';
+  try{
+    const r=await fetch('/api/guestbook',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,msg})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){ if(st) st.textContent=j.error||'Could not sign.'; return; }
+    nameEl.value=''; msgEl.value=''; if(st) st.textContent='Signed! ✓';
+    loadGuestbook(); if(window.playClick)try{playClick('xp')}catch(e){}
+    setTimeout(()=>{ if(st) st.textContent=''; },2200);
+  }catch(e){ if(st) st.textContent='Network error.'; }
+}
 function loadBadges(){
   let list=[];
   try{
@@ -1328,16 +1356,18 @@ function applyDiscord(d){
   const statusDots={online:'<span style="color:var(--xp)">●</span>',idle:'<span style="color:var(--yellow)">●</span>',dnd:'<span style="color:var(--red)">●</span>',offline:'<span style="color:#666">●</span>'};
   const dot=statusDots[st]||statusDots.offline;
   const lbl={online:'Online',idle:'Idle',dnd:'DND',offline:'Offline'}[st]||'Offline';
-  document.getElementById('act-primary').innerHTML=name+' '+dot+' '+lbl;
-  document.getElementById('act-primary').textContent=name+' '+lbl;
+  const expandedLbl={online:'Online — Exploring',idle:'Idle — AFK in the Nether',dnd:'Do Not Disturb — Mining',offline:'Offline — Sleeping'}[st]||lbl;
+  document.getElementById('act-primary').innerHTML=name+' '+dot+' '+expandedLbl;
   const acts=[];
+  if(d.listening_to_spotify && !d.spotify){ acts.push({icon:null,title:'Listening to Spotify',line1:'Spotify — idle',line2:'',start:null,end:null,controls:false,appId:null}); }
+  if(d.active_on_discord_mobile) acts.push({icon:null,title:'On Mobile',line1:'Active on phone',line2:'',start:null,end:null,controls:false,appId:null});
   if(d.spotify&&d.spotify.song) acts.push({
     icon:d.spotify.album_art_url,title:'Spotify',line1:d.spotify.song,line2:d.spotify.artist,
     start:d.spotify.timestamps?.start,end:d.spotify.timestamps?.end,
     url:d.spotify.track_id?'https://open.spotify.com/track/'+d.spotify.track_id:null,controls:true
   });
   (d.activities||[]).forEach(a=>{
-    if(a.type===2||a.type===4) return;
+    if(a.type===4){const emoji=a.emoji?(a.emoji.name?a.emoji.name+' ':''):'';const state=a.state||a.name||'';if(!emoji.trim()&&!state.trim())return;acts.push({icon:null,title:'Status',line1:emoji+state,line2:'',start:null,end:null,controls:false,appId:null});return;}
     const iconUrl=getActIcon(a.assets,a.application_id);
     console.log('[act]',a.name,a.type,a.application_id,JSON.stringify(a.assets),'→',iconUrl);
     acts.push({
