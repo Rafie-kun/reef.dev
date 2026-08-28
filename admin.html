@@ -845,7 +845,7 @@ function loadAllPanels() {
   loadAdminCardPreview(d);
   renderProjects(d.projects || []);
   renderBlog(d.blog || []);
-  renderAlbum(d.album || []);
+  renderAlbum(Array.isArray(d.album) ? d.album : DEFAULT_ALBUM_ITEMS_ADMIN);
   renderPhrases(d.phrases || DEFAULT_DATA.phrases);
   document.getElementById('cfg-bg').value = d.bg || '';
   document.getElementById('cfg-card-img').value = d.cardImg || '/assets/button-88x31.webp';
@@ -1261,6 +1261,11 @@ function saveBlog(){ const d=loadData(); d.blog=blogData; saveData(d); savedOk('
 // ============================================
 // ALBUM
 // ============================================
+const DEFAULT_ALBUM_ITEMS_ADMIN=[
+  {caption:'Sunset over spawn — seed 20240822',img:'/assets/mc-panorama.svg',link:''},
+  {caption:'Redstone door prototype',img:'/assets/mc/icons/piston.png',link:''},
+  {caption:'Written book shelf',img:'/assets/mc/icons/book.png',link:''}
+];
 let albumData = [];
 function renderAlbum(list){
   albumData = list;
