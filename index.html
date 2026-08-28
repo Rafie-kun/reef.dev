@@ -1221,9 +1221,9 @@ const DEFAULT_BLOG_POSTS=[
 const DEFAULT_ALBUM_ITEMS=[
   {caption:'Sunset over spawn — seed 20240822',img:'/assets/mc-panorama.svg',link:''}
 ];
-const DEFAULT_MUSIC=[{name:'C418 — Sweden',url:'https://open.spotify.com/track/3z2hRIWTsGxPVnZBWiv0uK',img:'https://upload.wikimedia.org/wikipedia/en/3/3d/C418_-_Minecraft_Volume_Alpha.jpg',icon:'i-music-note'},{name:'Lena Raine — Pigstep',url:'https://open.spotify.com/track/2x7My0H1GuvHandaN8V8Y2',img:'https://upload.wikimedia.org/wikipedia/en/a/a7/Pigstep_cover.png',icon:'i-music-note'}];
-const DEFAULT_READING=[{name:'Minecraft Wiki — Redstone',url:'https://minecraft.wiki/w/Redstone',img:'https://minecraft.wiki/images/thumb/Redstone_Dust.png/150px-Redstone_Dust.png',icon:'i-book'},{name:'Game Programming Patterns',url:'https://gameprogrammingpatterns.com/',img:'https://gameprogrammingpatterns.com/images/cover.png',icon:'i-book2'}];
-const DEFAULT_PROJECTS=[{name:'Reef Craft Bench',desc:'1,666 items, 1,089 recipes — vanilla GUI built from client.jar.',url:'#projects',repo:'https://github.com/Rafie-kun/reef.dev',tags:'minecraft, vanilla',img:'/assets/mc/tex/crafting_table_top.png'},{name:'Panorama Engine',desc:'Twilight sky with aurora bands and day/night cycle.',url:'#home',repo:'',tags:'canvas, svg',img:'/assets/mc-panorama.svg'}];
+const DEFAULT_MUSIC=[];
+const DEFAULT_READING=[];
+const DEFAULT_PROJECTS=[];
 function loadData(){
   try{
     const d=JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{};
