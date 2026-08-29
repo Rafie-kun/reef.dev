@@ -1438,6 +1438,7 @@ function applyDiscord(d){
     url:d.spotify.track_id?'https://open.spotify.com/track/'+d.spotify.track_id:null,controls:true
   });
   (d.activities||[]).forEach(a=>{
+    if(a.type===2 && d.spotify && d.spotify.song) return;
     if(a.type===4){const emoji=a.emoji?(a.emoji.name?a.emoji.name+' ':''):'';const state=a.state||a.name||'';if(!emoji.trim()&&!state.trim())return;acts.push({icon:null,title:'Status',line1:emoji+state,line2:'',start:null,end:null,controls:false,appId:null});return;}
     const iconUrl=getActIcon(a.assets,a.application_id);
     console.log('[act]',a.name,a.type,a.application_id,JSON.stringify(a.assets),'→',iconUrl);
